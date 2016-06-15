@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 import br.com.ciscience.controll.rest.service.impl.AdministratorRestService;
+import br.com.ciscience.controll.rest.service.impl.LevelRestService;
 import br.com.ciscience.controll.rest.service.impl.QuestionRestService;
 import br.com.ciscience.controll.rest.service.impl.StudentRestService;
 
@@ -19,6 +20,7 @@ public class MyRestApplication extends Application {
 		singletons.add(new AdministratorRestService());
 		singletons.add(new StudentRestService() );
 		singletons.add(new QuestionRestService());
+		singletons.add(new LevelRestService());
 	}
 
 	@Override
