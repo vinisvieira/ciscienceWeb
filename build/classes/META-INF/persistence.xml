@@ -6,12 +6,14 @@
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-		<class>br.com.unnamed.model.entity.impl.User</class>
-		<class>br.com.unnamed.model.entity.impl.Administrator</class>
-		<class>br.com.unnamed.model.entity.impl.Question</class>
-		<class>br.com.unnamed.model.entity.impl.Alternative</class>
-		<class>br.com.unnamed.model.entity.impl.Quiz</class>
-		<class>br.com.unnamed.model.entity.impl.QuestionAnswer</class>
+		<class>br.com.ciscience.model.entity.impl.User</class>
+		<class>br.com.ciscience.model.entity.impl.Administrator</class>
+		<class>br.com.ciscience.model.entity.impl.Question</class>
+		<class>br.com.ciscience.model.entity.impl.Alternative</class>
+		<class>br.com.ciscience.model.entity.impl.Quiz</class>
+		<class>br.com.ciscience.model.entity.impl.QuestionAnswer</class>
+		<class>br.com.ciscience.model.entity.impl.Level</class>
+		<class>br.com.ciscience.model.entity.impl.Contest</class>
 		
 
 		<properties>

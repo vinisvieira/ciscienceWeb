@@ -12,6 +12,8 @@
 		<class>br.com.ciscience.model.entity.impl.Alternative</class>
 		<class>br.com.ciscience.model.entity.impl.Quiz</class>
 		<class>br.com.ciscience.model.entity.impl.QuestionAnswer</class>
+		<class>br.com.ciscience.model.entity.impl.Level</class>
+		<class>br.com.ciscience.model.entity.impl.Contest</class>
 		
 
 		<properties>

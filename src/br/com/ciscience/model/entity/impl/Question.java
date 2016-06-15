@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Question {
@@ -15,6 +16,8 @@ public class Question {
 	private String text;
 	private int score;
 	private List<Alternative> alternatives;
+	private Contest contest;
+	private Level level;
 	private boolean status;
 
 	@Id
@@ -52,7 +55,25 @@ public class Question {
 		this.alternatives = alternatives;
 	}
 
-	public boolean isStatus() {
+	@OneToOne
+	public Contest getContest() {
+		return contest;
+	}
+
+	public void setContest(Contest contest) {
+		this.contest = contest;
+	}
+
+	@OneToOne
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public boolean getStatus() {
 		return status;
 	}
 
@@ -63,7 +84,7 @@ public class Question {
 	@Override
 	public String toString() {
 		return "Question [id=" + id + ", text=" + text + ", score=" + score + ", alternatives=" + alternatives
-				+ ", status=" + status + "]";
+				+ ", contest=" + contest + ", level=" + level + ", status=" + status + "]";
 	}
 
 }
