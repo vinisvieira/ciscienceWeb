@@ -8,6 +8,7 @@
 
 		<class>br.com.ciscience.model.entity.impl.User</class>
 		<class>br.com.ciscience.model.entity.impl.Administrator</class>
+		<class>br.com.ciscience.model.entity.impl.Student</class>
 		<class>br.com.ciscience.model.entity.impl.Question</class>
 		<class>br.com.ciscience.model.entity.impl.Alternative</class>
 		<class>br.com.ciscience.model.entity.impl.Quiz</class>

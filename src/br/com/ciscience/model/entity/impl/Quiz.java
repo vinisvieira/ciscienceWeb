@@ -1,11 +1,13 @@
 package br.com.ciscience.model.entity.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -13,8 +15,9 @@ import javax.persistence.OneToMany;
 public class Quiz {
 
 	private Long id;
-	private User user;
+	private Student student;
 	private List<QuestionAnswer> questionAnswers;
+	private Date date;
 	private int score;
 
 	@Id
@@ -28,12 +31,13 @@ public class Quiz {
 	}
 
 	@ManyToOne
-	public User getUser() {
-		return user;
+	@JoinColumn(name = "id_student")
+	public Student getStudent() {
+		return student;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 
 	@OneToMany
@@ -43,6 +47,14 @@ public class Quiz {
 
 	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
 		this.questionAnswers = questionAnswers;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public int getScore() {
@@ -55,7 +67,8 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", user=" + user + ", questionAnswers=" + questionAnswers + ", score=" + score + "]";
+		return "Quiz [id=" + id + ", student=" + student + ", questionAnswers=" + questionAnswers + ", date=" + date
+				+ ", score=" + score + "]";
 	}
 
 }
