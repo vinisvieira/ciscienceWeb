@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 public class QuestionAnswer {
 
 	private Long id;
-	private User user;
+	private Student student;
 	private Question question;
 	private boolean answer;
 
@@ -27,12 +27,12 @@ public class QuestionAnswer {
 
 	@OneToOne
 	@JoinColumn(name = "id_user")
-	public User getUser() {
-		return user;
+	public Student getStudent() {
+		return student;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 
 	public boolean isAnswer() {
@@ -43,6 +43,7 @@ public class QuestionAnswer {
 		this.answer = answer;
 	}
 
+	@OneToOne
 	public Question getQuestion() {
 		return question;
 	}
@@ -53,7 +54,7 @@ public class QuestionAnswer {
 
 	@Override
 	public String toString() {
-		return "QuestionAnswer [id=" + id + ", user=" + user + ", question=" + question + ", answer=" + answer + "]";
+		return "QuestionAnswer [id=" + id + ", student=" + student + ", question=" + question + ", answer=" + answer + "]";
 	}
 
 }

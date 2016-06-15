@@ -7,6 +7,7 @@ import javax.ws.rs.core.Application;
 
 import br.com.ciscience.controll.rest.service.impl.AdministratorRestService;
 import br.com.ciscience.controll.rest.service.impl.QuestionRestService;
+import br.com.ciscience.controll.rest.service.impl.StudentRestService;
 
 public class MyRestApplication extends Application {
 
@@ -16,6 +17,7 @@ public class MyRestApplication extends Application {
 
 		// Serviços REST
 		singletons.add(new AdministratorRestService());
+		singletons.add(new StudentRestService() );
 		singletons.add(new QuestionRestService());
 	}
 
