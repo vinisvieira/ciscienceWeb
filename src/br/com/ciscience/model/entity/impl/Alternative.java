@@ -5,12 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import br.com.ciscience.model.entity.IEntity;
+
 @Entity
-public class Alternative {
+public class Alternative implements IEntity {
 
 	private Long id;
 	private String text;
 	private boolean answer;
+	private boolean status;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +41,25 @@ public class Alternative {
 		this.answer = answer;
 	}
 
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	@Override
+	public boolean validateEmptyFields() {
+		if (getText() == null || getText().trim().equals("")) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public String toString() {
-		return "Alternative [id=" + id + ", text=" + text + ", answer=" + answer + "]";
+		return "Alternative [id=" + id + ", text=" + text + ", answer=" + answer + ", status=" + status + "]";
 	}
 
 }
