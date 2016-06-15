@@ -8,9 +8,9 @@ import javax.persistence.OneToMany;
 @Entity
 public class Student extends User {
 
-	@OneToMany
 	private List<Quiz> quiz;
-
+	
+	@OneToMany
 	public List<Quiz> getQuiz() {
 		return quiz;
 	}
