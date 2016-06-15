@@ -23,7 +23,7 @@ public class QuestionRestService {
 
 	@GET
 	@PermitAll
-	public Response read() {
+	public Response readQuestions() {
 
 		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
