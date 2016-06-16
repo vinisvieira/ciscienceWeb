@@ -1,5 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -10,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -75,7 +77,7 @@ public class LevelRestService {
 	@PUT
 	@PermitAll
 	@Path("/{id}")
-	public Response update(@FormParam("id") String id,
+	public Response update(@PathParam("id") String id,
 			@FormParam("name") String name, @FormParam("time") String time) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -122,7 +124,7 @@ public class LevelRestService {
 	@DELETE
 	@PermitAll
 	@Path("/{id}")
-	public Response delete(@FormParam("id") String id) {
+	public Response delete(@PathParam("id") String id) {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.levelDAO = new LevelDAO(simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
@@ -169,19 +171,19 @@ public class LevelRestService {
 		try {
 
 			List<Level> listLevel = this.levelDAO.findAll();
+			List<Level> listLevelToJson = new ArrayList();
 
 			for (Level level : listLevel) {
 
-				if (level.isStatus()) {
+				if (level.isStatus() == true) {
 
-					listLevel.add(level);
-
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseJSON(responseBuilder,
-									JSONUtil.objectToJSON(listLevel));
+					listLevelToJson.add(level);
 
 				}
 			}
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
+					responseBuilder, JSONUtil.objectToJSON(listLevelToJson));
+
 		} catch (Exception e) {
 
 			this.simpleEntityManager.rollBack();
@@ -200,7 +202,7 @@ public class LevelRestService {
 	@GET
 	@PermitAll
 	@Path("/{id}")
-	public Response getById(@FormParam("id") String id) {
+	public Response getById(@PathParam("id") String id) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.levelDAO = new LevelDAO(simpleEntityManager.getEntityManager());
@@ -210,9 +212,10 @@ public class LevelRestService {
 
 		try {
 
+			Level level = this.levelDAO.getById(Long.parseLong(id));
+
 			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
-					responseBuilder, JSONUtil.objectToJSON(this.levelDAO
-							.getById(Long.parseLong(id))));
+					responseBuilder, JSONUtil.objectToJSON(level));
 
 		} catch (Exception e) {
 
