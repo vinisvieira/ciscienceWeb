@@ -3,7 +3,6 @@ package br.com.ciscience.controll.rest.service.impl;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -15,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+
 import br.com.ciscience.model.dao.impl.StudentDAO;
 import br.com.ciscience.model.entity.impl.Student;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
@@ -119,14 +119,13 @@ public class StudentRestService {
 		this.simpleEntityManager.beginTransaction();
 
 		try {
-			
+
 			Student student = new Student();
 			student.setName(name);
 			student.setEmail(email);
 			student.setPassword(password);
 			student.setUserSince(MyDateGenerator.getCurrentDate());
 			student.setStatus(Constants.ACTIVE_ENTITY);
-			
 
 			if (!this.studentDAO.emailExists(student)) {
 
@@ -136,12 +135,12 @@ public class StudentRestService {
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				} else {
-					System.out.println("erro na validas�o dos campos");
+					System.out.println("erro na validação dos campos");
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 
 			} else {
-				System.out.println("erro no estudande existe");
+				System.out.println("erro no estudante existe");
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 

@@ -40,17 +40,13 @@ public class QuestionRestService {
 
 	@POST
 	@PermitAll
-	public Response create(@FormParam("idContest") String idContest,
-			@FormParam("idLevel") String idLevel,
-			@FormParam("text") String text, @FormParam("score") String score) {
+	public Response create(@FormParam("idContest") Long idContest, @FormParam("idLevel") Long idLevel,
+			@FormParam("text") String text, @FormParam("score") int score) {
 
 		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.mQuestionDAO = new QuestionDAO(
-				this.mSimpleEntityManager.getEntityManager());
-		this.mLevelDAO = new LevelDAO(
-				this.mSimpleEntityManager.getEntityManager());
-		this.mContestDAO = new ContestDAO(
-				this.mSimpleEntityManager.getEntityManager());
+		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
+		this.mLevelDAO = new LevelDAO(this.mSimpleEntityManager.getEntityManager());
+		this.mContestDAO = new ContestDAO(this.mSimpleEntityManager.getEntityManager());
 
 		ResponseBuilder responseBuilder = Response.noContent();
 
@@ -59,14 +55,13 @@ public class QuestionRestService {
 		try {
 
 			Question question = new Question();
-			Level level = this.mLevelDAO.getById(Long.parseLong(idLevel));
-			Contest contest = this.mContestDAO.getById(Long
-					.parseLong(idContest));
+			Level level = this.mLevelDAO.getById(idLevel);
+			Contest contest = this.mContestDAO.getById(idContest);
 
 			if (level != null && contest != null) {
 
 				question.setText(text);
-				question.setScore(Integer.parseInt(score));
+				question.setScore(score);
 				question.setStatus(Constants.ACTIVE_ENTITY);
 				question.setLevel(level);
 				question.setContest(contest);
@@ -76,19 +71,16 @@ public class QuestionRestService {
 					this.mQuestionDAO.save(question);
 					this.mSimpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseTextPlain(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				}
 			} else {
 
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 		} catch (Exception e) {
 			this.mSimpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.mSimpleEntityManager.close();
 		}
@@ -99,18 +91,13 @@ public class QuestionRestService {
 	@PUT
 	@PermitAll
 	@Path("/{id}")
-	public Response update(@PathParam("id") String id,
-			@FormParam("idContest") String idContest,
-			@FormParam("idLevel") String idLevel,
-			@FormParam("text") String text, @FormParam("score") String score) {
+	public Response update(@PathParam("id") String id, @FormParam("idContest") Long idContest,
+			@FormParam("idLevel") Long idLevel, @FormParam("text") String text, @FormParam("score") int score) {
 
 		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.mQuestionDAO = new QuestionDAO(
-				this.mSimpleEntityManager.getEntityManager());
-		this.mLevelDAO = new LevelDAO(
-				this.mSimpleEntityManager.getEntityManager());
-		this.mContestDAO = new ContestDAO(
-				this.mSimpleEntityManager.getEntityManager());
+		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
+		this.mLevelDAO = new LevelDAO(this.mSimpleEntityManager.getEntityManager());
+		this.mContestDAO = new ContestDAO(this.mSimpleEntityManager.getEntityManager());
 
 		ResponseBuilder responseBuilder = Response.noContent();
 
@@ -118,40 +105,34 @@ public class QuestionRestService {
 
 		try {
 
-			Question question = this.mQuestionDAO.getById(Long
-					.parseLong(id));
+			Question question = this.mQuestionDAO.getById(Long.parseLong(id));
 
 			if (question != null) {
 
-				Level level = this.mLevelDAO.getById(Long.parseLong(idLevel));
-				Contest contest = this.mContestDAO.getById(Long
-						.parseLong(idContest));
+				Level level = this.mLevelDAO.getById(idLevel);
+				Contest contest = this.mContestDAO.getById(idContest);
 
 				if (level != null && contest != null) {
 
 					question.setText(text);
-					question.setScore(Integer.parseInt(score));
+					question.setScore(score);
 					question.setLevel(level);
 					question.setContest(contest);
 
 					this.mQuestionDAO.save(question);
 					this.mSimpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseTextPlain(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				} else {
-					responseBuilder = ResponseBuilderGenerator
-							.createErrorResponse(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 			} else {
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 		} catch (Exception e) {
 			this.mSimpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.mSimpleEntityManager.close();
 		}
@@ -164,8 +145,7 @@ public class QuestionRestService {
 	public Response delete(@PathParam("id") String id) {
 
 		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.mQuestionDAO = new QuestionDAO(
-				this.mSimpleEntityManager.getEntityManager());
+		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.mSimpleEntityManager.beginTransaction();
@@ -178,18 +158,15 @@ public class QuestionRestService {
 
 				question.setStatus(question.getStatus() == false);
 				this.mSimpleEntityManager.commit();
-				responseBuilder = ResponseBuilderGenerator
-						.createOKResponseTextPlain(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 
 			} else {
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 		} catch (Exception e) {
 			this.mSimpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.mSimpleEntityManager.close();
 		}
@@ -202,8 +179,7 @@ public class QuestionRestService {
 	public Response listQuestion() {
 
 		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.mQuestionDAO = new QuestionDAO(
-				this.mSimpleEntityManager.getEntityManager());
+		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.mSimpleEntityManager.beginTransaction();
@@ -223,16 +199,15 @@ public class QuestionRestService {
 
 			}
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
-					responseBuilder, JSONUtil.objectToJSON(questionsToJson));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(questionsToJson));
 		} catch (Exception e) {
 
 			this.mSimpleEntityManager.rollBack();
 
 			e.printStackTrace();
 
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 
 			this.mSimpleEntityManager.close();
@@ -247,8 +222,7 @@ public class QuestionRestService {
 	public Response getById(@PathParam("id") String id) {
 
 		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.mQuestionDAO = new QuestionDAO(
-				this.mSimpleEntityManager.getEntityManager());
+		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.mSimpleEntityManager.beginTransaction();
@@ -257,8 +231,8 @@ public class QuestionRestService {
 
 			Question question = this.mQuestionDAO.getById(Long.parseLong(id));
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
-					responseBuilder, JSONUtil.objectToJSON(question));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(question));
 
 		} catch (Exception e) {
 
@@ -266,8 +240,7 @@ public class QuestionRestService {
 
 			e.printStackTrace();
 
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 
 			this.mSimpleEntityManager.close();

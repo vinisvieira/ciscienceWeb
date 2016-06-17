@@ -1,6 +1,7 @@
 package br.com.ciscience.controll.rest.service.impl;
 
 import java.util.List;
+
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
@@ -13,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+
 import br.com.ciscience.model.dao.impl.ContestDAO;
 import br.com.ciscience.model.entity.impl.Contest;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
@@ -25,10 +27,10 @@ public class ContestRestService {
 
 	private JPAUtil simpleEntityManager;
 	private ContestDAO contestDAO;
-	
+
 	@Context
 	private HttpServletRequest servletRequest;
-	
+
 	@GET
 	@PermitAll
 	public Response list() {
@@ -47,14 +49,14 @@ public class ContestRestService {
 					JSONUtil.objectToJSON(contest));
 
 		} catch (Exception e) {
-			
+
 			this.simpleEntityManager.rollBack();
-			
+
 			e.printStackTrace();
-			
+
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
-			
+
 			this.simpleEntityManager.close();
 		}
 
@@ -79,14 +81,14 @@ public class ContestRestService {
 					JSONUtil.objectToJSON(this.contestDAO.getById(Long.parseLong(id))));
 
 		} catch (Exception e) {
-			
+
 			this.simpleEntityManager.rollBack();
-			
+
 			e.printStackTrace();
-			
+
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
-		
+
 			this.simpleEntityManager.close();
 		}
 		return responseBuilder.build();
@@ -103,23 +105,16 @@ public class ContestRestService {
 		this.simpleEntityManager.beginTransaction();
 
 		try {
-			
+
 			Contest contest = new Contest();
-			
+
 			contest.setName(name);
 			contest.setStatus(Constants.ACTIVE_ENTITY);
-			
-				if (contest != null) {
-					this.contestDAO.save(contest);
-					this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
-				} else {
-					System.out.println("erro na validasão dos campos");
-					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
-				}
+			this.contestDAO.save(contest);
+			this.simpleEntityManager.commit();
 
-			
+			responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
@@ -150,7 +145,7 @@ public class ContestRestService {
 			if (contest != null) {
 
 				contest.setStatus(!contest.getStatus());
-				
+
 				this.simpleEntityManager.commit();
 
 				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
@@ -188,13 +183,11 @@ public class ContestRestService {
 			if (contest != null) {
 				contest.setName(name);
 
-				
-					this.contestDAO.update(contest);
-					this.simpleEntityManager.commit();
+				this.contestDAO.update(contest);
+				this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 
-				
 			} else {
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
@@ -210,5 +203,5 @@ public class ContestRestService {
 		return responseBuilder.build();
 
 	}
-	
+
 }
