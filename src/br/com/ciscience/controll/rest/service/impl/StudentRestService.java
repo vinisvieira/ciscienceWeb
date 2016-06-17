@@ -1,5 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -22,6 +23,7 @@ import br.com.ciscience.util.Constants;
 import br.com.ciscience.util.JSONUtil;
 import br.com.ciscience.util.MyDateGenerator;
 import br.com.ciscience.util.ResponseBuilderGenerator;
+import br.com.ciscience.util.StringUtil;
 
 @Path("/student")
 public class StudentRestService {
@@ -33,8 +35,9 @@ public class StudentRestService {
 	private HttpServletRequest servletRequest;
 
 	@GET
+	@Path("/active")
 	@PermitAll
-	public Response list() {
+	public Response listActive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
@@ -45,28 +48,61 @@ public class StudentRestService {
 			this.simpleEntityManager.beginTransaction();
 
 			List<Student> students = this.studentDAO.findAll();
+			List<Student> studentsToJson = new ArrayList<>();
 
 			for (int i = 0; i < students.size(); i++) {
 				if (students.get(i).getStatus()) {
 					students.get(i).setPassword(null);
+					studentsToJson.add(students.get(i));
 				}
 			}
 
 			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-					JSONUtil.objectToJSON(students));
+					JSONUtil.objectToJSON(studentsToJson));
 
 		} catch (Exception e) {
-			// Caso haja uma exceção, desfaz qualquer transação realizada
-			// com o
-			// banco de dados...
 			this.simpleEntityManager.rollBack();
-			// Imprime no console o stack da exceção...
 			e.printStackTrace();
-			// gera um response de erro interno
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
-			// Método close é chamado obrigatoriamente no final do tratamento
-			// try/catch
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+
+	}
+
+	@GET
+	@Path("/inactive")
+	@PermitAll
+	public Response listInactive() {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		try {
+
+			this.simpleEntityManager.beginTransaction();
+
+			List<Student> students = this.studentDAO.findAll();
+			List<Student> studentsToJson = new ArrayList<>();
+
+			for (int i = 0; i < students.size(); i++) {
+				if (!students.get(i).getStatus()) {
+					students.get(i).setPassword(null);
+					studentsToJson.add(students.get(i));
+				}
+			}
+
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(studentsToJson));
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
 			this.simpleEntityManager.close();
 		}
 
@@ -91,17 +127,10 @@ public class StudentRestService {
 					JSONUtil.objectToJSON(this.studentDAO.getById(Long.parseLong(id))));
 
 		} catch (Exception e) {
-			// Caso haja uma exceção, desfaz qualquer transação realizada
-			// com o
-			// banco de dados...
 			this.simpleEntityManager.rollBack();
-			// Imprime no console o stack da exceção...
 			e.printStackTrace();
-			// gera um response de erro interno
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
-			// Método close é chamado obrigatoriamente no final do tratamento
-			// try/catch
 			this.simpleEntityManager.close();
 		}
 		return responseBuilder.build();
@@ -123,13 +152,15 @@ public class StudentRestService {
 			Student student = new Student();
 			student.setName(name);
 			student.setEmail(email);
-			student.setPassword(password);
+			student.setPassword(StringUtil.SHA1(password));
 			student.setUserSince(MyDateGenerator.getCurrentDate());
 			student.setStatus(Constants.ACTIVE_ENTITY);
 
 			if (!this.studentDAO.emailExists(student)) {
 
-				if (student.validateEmptyFields() && student.passwordsMatch(student.getPassword(), confirmPassword)) {
+				if (student.validateEmptyFields()
+						&& student.passwordsMatch(student.getPassword(), StringUtil.SHA1(confirmPassword))
+						&& StringUtil.validEmail(student.getEmail())) {
 					this.studentDAO.save(student);
 					this.simpleEntityManager.commit();
 
@@ -195,24 +226,35 @@ public class StudentRestService {
 	@PUT
 	@Path("/{id}")
 	@PermitAll
-	public Response update(@PathParam("id") Long id, @FormParam("name") String name, @FormParam("email") String email) {
+	public Response update(@PathParam("id") Long id, @FormParam("name") String name, @FormParam("email") String email,
+			@FormParam("password") String password, @FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-
+		List<Student> studentList = this.studentDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
 
 		try {
 
 			Student student = this.studentDAO.getById(id);
 
+			for (Student studentL : studentList) {
+				if (studentL.getEmail().equals(email)) {
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+					System.out.println("nome Igual no  banco ----------------------------------------------------");
+					return responseBuilder.build();
+				}
+			}
+
 			if (student != null) {
 				student.setEmail(email);
 				student.setName(name);
+				student.setPassword(StringUtil.SHA1(password));
 
-				if (student.validateEmptyFields()) {
-					this.studentDAO.update(student);
+				if (student.validateEmptyFields()
+						&& student.passwordsMatch(student.getPassword(), StringUtil.SHA1(confirmPassword))) {
+
 					this.simpleEntityManager.commit();
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);

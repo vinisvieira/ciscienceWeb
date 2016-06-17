@@ -83,8 +83,13 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", text=" + text + ", score=" + score + ", alternatives=" + alternatives
-				+ ", contest=" + contest + ", level=" + level + ", status=" + status + "]";
+		return "Question [id=" + id + ", text=" + text + ", score=" + score
+				+ ", alternatives=" + alternatives + ", contest=" + contest
+				+ ", level=" + level + ", status=" + status + "]";
+	}
+
+	public boolean validateFields() {
+		return (getText() == null || getText().trim().equals(""));
 	}
 
 }

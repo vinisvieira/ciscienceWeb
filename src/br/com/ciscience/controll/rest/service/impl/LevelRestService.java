@@ -46,18 +46,24 @@ public class LevelRestService {
 
 		try {
 
-			Level level = new Level();
-			level.setName(name);
-			level.setTime(Integer.parseInt(time));
-			level.setStatus(Constants.ACTIVE_ENTITY);
+			if (!levelDAO.levelExist(name)) {
 
-			if (level != null && level.getTime() > 0) {
+				Level level = new Level();
+				level.setName(name);
+				level.setTime(Integer.parseInt(time));
+				level.setStatus(Constants.ACTIVE_ENTITY);
 
-				this.levelDAO.save(level);
-				this.simpleEntityManager.commit();
+				if (!level.validateFields() && level.getTime() > 0) {
 
-				responseBuilder = ResponseBuilderGenerator
-						.createOKResponseTextPlain(responseBuilder);
+					this.levelDAO.save(level);
+					this.simpleEntityManager.commit();
+
+					responseBuilder = ResponseBuilderGenerator
+							.createOKResponseTextPlain(responseBuilder);
+				} else {
+					responseBuilder = ResponseBuilderGenerator
+							.createErrorResponse(responseBuilder);
+				}
 			} else {
 				responseBuilder = ResponseBuilderGenerator
 						.createErrorResponse(responseBuilder);
@@ -90,18 +96,24 @@ public class LevelRestService {
 		try {
 
 			Level level = this.levelDAO.getById(Long.parseLong(id));
+
 			if (level != null) {
+				if (!levelDAO.levelExist(name)) {
 
-				level.setName(name);
-				level.setTime(Integer.parseInt(time));
+					level.setName(name);
+					level.setTime(Integer.parseInt(time));
 
-				if (level.getTime() > 0) {
-					this.levelDAO.save(level);
-					this.simpleEntityManager.commit();
+					if (level.getTime() > 0 && !level.validateFields()) {
+						
+						this.levelDAO.save(level);
+						this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseTextPlain(responseBuilder);
-
+						responseBuilder = ResponseBuilderGenerator
+								.createOKResponseTextPlain(responseBuilder);
+					} else {
+						responseBuilder = ResponseBuilderGenerator
+								.createErrorResponse(responseBuilder);
+					}
 				} else {
 					responseBuilder = ResponseBuilderGenerator
 							.createErrorResponse(responseBuilder);
