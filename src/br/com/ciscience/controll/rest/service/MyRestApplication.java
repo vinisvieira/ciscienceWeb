@@ -19,12 +19,11 @@ public class MyRestApplication extends Application {
 
 		// Serviços REST
 		singletons.add(new AdministratorRestService());
-		singletons.add(new StudentRestService() );
+		singletons.add(new StudentRestService());
 		singletons.add(new QuestionRestService());
 		singletons.add(new AlternativeRestService());
 		singletons.add(new LevelRestService());
 		singletons.add(new ContestRestService());
-
 
 	}
 

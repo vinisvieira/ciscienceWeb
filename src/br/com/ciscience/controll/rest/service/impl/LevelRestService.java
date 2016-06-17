@@ -161,7 +161,7 @@ public class LevelRestService {
 
 	@GET
 	@PermitAll
-	public Response listlevel() {
+	public Response listLevel() {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.levelDAO = new LevelDAO(simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
@@ -171,7 +171,7 @@ public class LevelRestService {
 		try {
 
 			List<Level> listLevel = this.levelDAO.findAll();
-			List<Level> listLevelToJson = new ArrayList();
+			List<Level> listLevelToJson = new ArrayList<Level>();
 
 			for (Level level : listLevel) {
 
