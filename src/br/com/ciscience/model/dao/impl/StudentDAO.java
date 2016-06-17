@@ -19,5 +19,13 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 		query.setParameter("email", student.getEmail());
 		return (query.getResultList().size() > 0);
 	}
+	
+	public boolean studentExists(Student student) {
+		EntityManager entityManager = super.getEntityManager();
+
+		Query query = entityManager.createQuery("SELECT u FROM Student u WHERE u.id = :id");
+		query.setParameter("id", student.getId());
+		return (query.getResultList().size() > 0);
+	}
 
 }

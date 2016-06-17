@@ -49,7 +49,12 @@ public class Level {
 
 	@Override
 	public String toString() {
-		return "Level [id=" + id + ", name=" + name + ", time=" + time + ", status=" + status + "]";
+		return "Level [id=" + id + ", name=" + name + ", time=" + time
+				+ ", status=" + status + "]";
+	}
+
+	public boolean validateFields() {
+		return (getName() == null || getName().trim().equals(""));
 	}
 
 }

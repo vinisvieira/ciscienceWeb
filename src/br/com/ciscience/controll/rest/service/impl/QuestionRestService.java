@@ -71,13 +71,18 @@ public class QuestionRestService {
 				question.setLevel(level);
 				question.setContest(contest);
 
-				if (question != null) {
+				if (!question.validateFields()) {
 
 					this.mQuestionDAO.save(question);
 					this.mSimpleEntityManager.commit();
 
 					responseBuilder = ResponseBuilderGenerator
 							.createOKResponseTextPlain(responseBuilder);
+				} else {
+
+					responseBuilder = ResponseBuilderGenerator
+							.createErrorResponse(responseBuilder);
+
 				}
 			} else {
 
@@ -118,8 +123,7 @@ public class QuestionRestService {
 
 		try {
 
-			Question question = this.mQuestionDAO.getById(Long
-					.parseLong(id));
+			Question question = this.mQuestionDAO.getById(Long.parseLong(id));
 
 			if (question != null) {
 
@@ -134,11 +138,17 @@ public class QuestionRestService {
 					question.setLevel(level);
 					question.setContest(contest);
 
-					this.mQuestionDAO.save(question);
-					this.mSimpleEntityManager.commit();
+					if (!question.validateFields()) {
 
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseTextPlain(responseBuilder);
+						this.mQuestionDAO.save(question);
+						this.mSimpleEntityManager.commit();
+
+						responseBuilder = ResponseBuilderGenerator
+								.createOKResponseTextPlain(responseBuilder);
+					} else {
+						responseBuilder = ResponseBuilderGenerator
+								.createErrorResponse(responseBuilder);
+					}
 				} else {
 					responseBuilder = ResponseBuilderGenerator
 							.createErrorResponse(responseBuilder);
