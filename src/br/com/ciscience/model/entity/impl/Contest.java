@@ -5,8 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import br.com.ciscience.model.entity.IEntity;
+
 @Entity
-public class Contest {
+public class Contest implements IEntity{
 
 	private Long id;
 	private String name;
@@ -41,6 +43,14 @@ public class Contest {
 	@Override
 	public String toString() {
 		return "Contest [id=" + id + ", name=" + name + ", status=" + status + "]";
+	}
+
+	@Override
+	public boolean validateEmptyFields() {
+		if (getName() == null || getName().trim().equals("")) {
+			return false;
+		}
+		return true;
 	}
 
 }

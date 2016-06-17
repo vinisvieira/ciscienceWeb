@@ -1,5 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -31,21 +32,29 @@ public class AlternativeRestService {
 	private HttpServletRequest servletRequest;
 	
 	@GET
+	@Path("/active")
 	@PermitAll
-	public Response list() {
+	public Response listActive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.alternativeDAO = new AlternativeDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
+		List<Alternative> alternativeToJson = new ArrayList<>();
 
 		try {
 
 			this.simpleEntityManager.beginTransaction();
 
-			List<Alternative> alternative = this.alternativeDAO.findAll();
+			List<Alternative> alternatives = this.alternativeDAO.findAll();
+			
+			for (Alternative alternative : alternatives) {
+				if(alternative.getStatus()){
+					alternativeToJson.add(alternative);
+				}
+			}
 
 			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-					JSONUtil.objectToJSON(alternative));
+					JSONUtil.objectToJSON(alternativeToJson));
 
 		} catch (Exception e) {
 			
@@ -62,7 +71,46 @@ public class AlternativeRestService {
 		return responseBuilder.build();
 
 	}
+	@GET
+	@Path("/inactive")
+	@PermitAll
+	public Response listInactive() {
 
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.alternativeDAO = new AlternativeDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+		List<Alternative> alternativeToJson = new ArrayList<>();
+
+		try {
+
+			this.simpleEntityManager.beginTransaction();
+
+			List<Alternative> alternatives = this.alternativeDAO.findAll();
+			
+			for (Alternative alternative : alternatives) {
+				if(!alternative.getStatus()){
+					alternativeToJson.add(alternative);
+				}
+			}
+
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(alternativeToJson));
+
+		} catch (Exception e) {
+			
+			this.simpleEntityManager.rollBack();
+			
+			e.printStackTrace();
+			
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+			
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+
+	}
 	@GET
 	@Path("/{id}")
 	@PermitAll
@@ -118,7 +166,7 @@ public class AlternativeRestService {
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				} else {
-					System.out.println("erro na validasão dos campos");
+					System.out.println("erro na validasao dos campos");
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 

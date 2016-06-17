@@ -12,6 +12,7 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 		super(entityManager);
 		// TODO Auto-generated constructor stub
 	}
+	
 	public boolean emailExists(Student student) {
 		EntityManager entityManager = super.getEntityManager();
 
