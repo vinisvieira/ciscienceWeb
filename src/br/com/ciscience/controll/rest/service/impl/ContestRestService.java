@@ -1,5 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
@@ -25,36 +26,81 @@ public class ContestRestService {
 
 	private JPAUtil simpleEntityManager;
 	private ContestDAO contestDAO;
-	
+
 	@Context
 	private HttpServletRequest servletRequest;
-	
+
 	@GET
+	@Path("/active")
 	@PermitAll
-	public Response list() {
+	public Response listActive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-
+		List<Contest> contestToJson = new ArrayList<>();
 		try {
 
 			this.simpleEntityManager.beginTransaction();
 
-			List<Contest> contest = this.contestDAO.findAll();
+			List<Contest> contests = this.contestDAO.findAll();
 
+			for (Contest contest : contests) {
+				if (contest.getStatus()) {
+					contestToJson.add(contest);
+				}
+			}
 			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-					JSONUtil.objectToJSON(contest));
+					JSONUtil.objectToJSON(contestToJson));
 
 		} catch (Exception e) {
-			
+
 			this.simpleEntityManager.rollBack();
-			
+
 			e.printStackTrace();
-			
+
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
-			
+
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+
+	}
+
+	@GET
+	@Path("/inactive")
+	@PermitAll
+	public Response listInactive() {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+		List<Contest> contestToJson = new ArrayList<>();
+		try {
+
+			this.simpleEntityManager.beginTransaction();
+
+			List<Contest> contests = this.contestDAO.findAll();
+
+			for (Contest contest : contests) {
+				if (!contest.getStatus()) {
+					contestToJson.add(contest);
+				}
+			}
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(contestToJson));
+
+		} catch (Exception e) {
+
+			this.simpleEntityManager.rollBack();
+
+			e.printStackTrace();
+
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+
 			this.simpleEntityManager.close();
 		}
 
@@ -79,14 +125,14 @@ public class ContestRestService {
 					JSONUtil.objectToJSON(this.contestDAO.getById(Long.parseLong(id))));
 
 		} catch (Exception e) {
-			
+
 			this.simpleEntityManager.rollBack();
-			
+
 			e.printStackTrace();
-			
+
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
-		
+
 			this.simpleEntityManager.close();
 		}
 		return responseBuilder.build();
@@ -99,27 +145,31 @@ public class ContestRestService {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-
+		List<Contest> contestList = this.contestDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
 
 		try {
-			
-			Contest contest = new Contest();
-			
-			contest.setName(name);
-			contest.setStatus(Constants.ACTIVE_ENTITY);
-			
-				if (contest != null) {
-					this.contestDAO.save(contest);
-					this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
-				} else {
-					System.out.println("erro na validasão dos campos");
+			Contest contestNew = new Contest();
+
+			contestNew.setName(name);
+			contestNew.setStatus(Constants.ACTIVE_ENTITY);
+
+			for (Contest contest : contestList) {
+				if (contest.getName().equals(contestNew.getName())) {
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+					return responseBuilder.build();
 				}
+			}
+			if (contestNew.validateEmptyFields()) {
+				this.contestDAO.save(contestNew);
+				this.simpleEntityManager.commit();
 
-			
+				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+			} else {
+				System.out.println("erro na validasao dos campos");
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
@@ -150,7 +200,7 @@ public class ContestRestService {
 			if (contest != null) {
 
 				contest.setStatus(!contest.getStatus());
-				
+
 				this.simpleEntityManager.commit();
 
 				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
@@ -178,29 +228,41 @@ public class ContestRestService {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-
+		List<Contest> contestList = this.contestDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
 
 		try {
 
-			Contest contest = this.contestDAO.getById(id);
+			Contest contestOld = this.contestDAO.getById(id);
+			for (Contest contest : contestList) {
+				if (contest.getName().equals(name)) {
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+					System.out.println("nome Igual ao do banco ----------------------------------------------------");
+					return responseBuilder.build();
+				}
+			}
 
-			if (contest != null) {
-				contest.setName(name);
+			if (contestOld != null) {
+				contestOld.setName(name);
+			
+				if (contestOld.validateEmptyFields()) {
 
-				
-					this.contestDAO.update(contest);
+					this.contestDAO.update(contestOld);
 					this.simpleEntityManager.commit();
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+				} else {
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				}
 
-				
 			} else {
+				System.out.println("contesteOLD ------------------------------------------------ Null");
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
+			System.out.println("--------------------------------------------------------------------------Cath");
 			e.printStackTrace();
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
@@ -210,5 +272,5 @@ public class ContestRestService {
 		return responseBuilder.build();
 
 	}
-	
+
 }
