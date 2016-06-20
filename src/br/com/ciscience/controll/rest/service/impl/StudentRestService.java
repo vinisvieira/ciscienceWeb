@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import br.com.ciscience.model.dao.impl.StudentDAO;
+import br.com.ciscience.model.entity.impl.Quiz;
 import br.com.ciscience.model.entity.impl.Student;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
@@ -53,6 +54,13 @@ public class StudentRestService {
 			for (int i = 0; i < students.size(); i++) {
 				if (students.get(i).getStatus()) {
 					students.get(i).setPassword(null);
+					students.get(i).setQuiz(students.get(i).getQuiz());
+
+					for (Quiz quiz : students.get(i).getQuiz()) {
+						quiz.setQuestionAnswers(null);
+						quiz.setStudent(null);
+					}
+
 					studentsToJson.add(students.get(i));
 				}
 			}
