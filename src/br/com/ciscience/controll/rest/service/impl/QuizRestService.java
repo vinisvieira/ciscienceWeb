@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.google.gson.Gson;
 
+import br.com.ciscience.model.dao.impl.QuestionAnswerDAO;
 import br.com.ciscience.model.dao.impl.QuizDAO;
 import br.com.ciscience.model.dao.impl.StudentDAO;
 import br.com.ciscience.model.entity.impl.QuestionAnswer;
@@ -29,6 +30,7 @@ public class QuizRestService {
 
 	private QuizDAO quizDAO;
 	private StudentDAO studentDAO;
+	private QuestionAnswerDAO questionAnswerDAO;
 	private JPAUtil simpleEntityManager;
 
 	@Context
@@ -36,10 +38,12 @@ public class QuizRestService {
 
 	@POST
 	@PermitAll
-	public Response create(@FormParam("quiz") String quiz) {
+	public Response create(@FormParam("quiz") String quizJson) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizDAO = new QuizDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.questionAnswerDAO = new QuestionAnswerDAO(this.simpleEntityManager.getEntityManager());
 
 		ResponseBuilder responseBuilder = Response.noContent();
 
@@ -47,33 +51,43 @@ public class QuizRestService {
 
 		try {
 
-			Quiz quizJson = new Gson().fromJson(quiz, Quiz.class);
+			Quiz quiz = new Gson().fromJson(quizJson, Quiz.class);
 
-			if (quizJson.getScore() < 0) {
-				if (quizJson.getQuestionAnswers() != null && quizJson.getQuestionAnswers().size() == 12) {
-					if (this.studentDAO.studentExists(quizJson.getStudent())) {
-						if (!this.quizDAO.dateVerification(quizJson)) {
+			System.out.println("Student -> " + quiz.getStudent().getId());
 
-							this.quizDAO.save(quizJson);
+			if (quiz.getScore() >= 0) {
+				if (quiz.getQuestionAnswers() != null && quiz.getQuestionAnswers().size() == 12) {
+					if (this.studentDAO.studentExists(quiz.getStudent())) {
+						if (!this.quizDAO.dateVerification(quiz)) {
+
+							for (QuestionAnswer questionAnswer : quiz.getQuestionAnswers()) {
+								questionAnswer.setStudent(quiz.getStudent());
+								this.questionAnswerDAO.save(questionAnswer);
+							}
+
+							this.quizDAO.save(quiz);
 							this.simpleEntityManager.commit();
 
 							responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 						} else {
-
+							System.out.println("Já respondeu, fion!");
 							responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 
 						}
 
 					} else {
+						System.out.println("Estudante não existe");
 						responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 					}
 
 				} else {
+					System.out.println("Holi xit!");
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 
 			} else {
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				System.out.println("Score menor que zero");
 			}
 
 		} catch (Exception e) {
