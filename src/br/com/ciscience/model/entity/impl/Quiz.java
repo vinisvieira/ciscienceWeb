@@ -7,18 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Quiz {
 
 	private Long id;
-	private Student student;
-	private List<QuestionAnswer> questionAnswers;
+	private String name;
+	private List<Question> questions;
 	private Date date;
-	private int score;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,23 +27,21 @@ public class Quiz {
 		this.id = id;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "id_student")
-	public Student getStudent() {
-		return student;
+	public String getName() {
+		return name;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@OneToMany
-	public List<QuestionAnswer> getQuestionAnswers() {
-		return questionAnswers;
+	public List<Question> getQuestions() {
+		return questions;
 	}
 
-	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
-		this.questionAnswers = questionAnswers;
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 
 	public Date getDate() {
@@ -57,18 +52,9 @@ public class Quiz {
 		this.date = date;
 	}
 
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", student=" + student + ", questionAnswers=" + questionAnswers + ", date=" + date
-				+ ", score=" + score + "]";
+		return "Quiz [id=" + id + ", name=" + name + ", questions=" + questions + ", date=" + date + "]";
 	}
 
 }

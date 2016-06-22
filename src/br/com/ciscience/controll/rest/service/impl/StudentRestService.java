@@ -57,8 +57,7 @@ public class StudentRestService {
 					students.get(i).setQuiz(students.get(i).getQuiz());
 
 					for (Quiz quiz : students.get(i).getQuiz()) {
-						quiz.setQuestionAnswers(null);
-						quiz.setStudent(null);
+						quiz.setQuestions(null);
 					}
 
 					studentsToJson.add(students.get(i));

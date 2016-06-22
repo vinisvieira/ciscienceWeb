@@ -3,14 +3,15 @@ package br.com.ciscience.model.entity.impl;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Student extends User {
 
 	private List<Quiz> quiz;
-	
-	@OneToMany
+	private Long score;
+
+	@ManyToMany
 	public List<Quiz> getQuiz() {
 		return quiz;
 	}
@@ -19,9 +20,17 @@ public class Student extends User {
 		this.quiz = quiz;
 	}
 
+	public Long getScore() {
+		return score;
+	}
+
+	public void setScore(Long score) {
+		this.score = score;
+	}
+
 	@Override
 	public String toString() {
-		return "Student [quiz=" + quiz + "]";
+		return "Student [quiz=" + quiz + ", score=" + score + "]";
 	}
 
 }

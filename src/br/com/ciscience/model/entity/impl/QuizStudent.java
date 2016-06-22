@@ -4,16 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class QuestionAnswer {
+public class QuizStudent {
 
 	private Long id;
 	private Student student;
-	private Question question;
-	private boolean answer;
+	private Quiz quiz;
+	private int totalScore;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +25,6 @@ public class QuestionAnswer {
 	}
 
 	@OneToOne
-	@JoinColumn(name = "id_user")
 	public Student getStudent() {
 		return student;
 	}
@@ -35,26 +33,21 @@ public class QuestionAnswer {
 		this.student = student;
 	}
 
-	public boolean isAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(boolean answer) {
-		this.answer = answer;
-	}
-
 	@OneToOne
-	public Question getQuestion() {
-		return question;
+	public Quiz getQuiz() {
+		return quiz;
 	}
 
-	public void setQuestion(Question question) {
-		this.question = question;
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 
-	@Override
-	public String toString() {
-		return "QuestionAnswer [id=" + id + ", student=" + student + ", question=" + question + ", answer=" + answer + "]";
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
 	}
 
 }
