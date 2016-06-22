@@ -56,5 +56,4 @@ public class Level {
 	public boolean validateFields() {
 		return (getName() == null || getName().trim().equals(""));
 	}
-
 }

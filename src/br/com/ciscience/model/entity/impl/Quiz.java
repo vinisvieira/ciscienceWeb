@@ -54,7 +54,12 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", name=" + name + ", questions=" + questions + ", date=" + date + "]";
+		return "Quiz [id=" + id + ", name=" + name + ", questions=" + questions
+				+ ", date=" + date + "]";
+	}
+
+	public boolean validateFields() {
+		return (getName() == null || getName().trim().equals(""));
 	}
 
 }

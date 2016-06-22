@@ -46,7 +46,7 @@ public class LevelRestService {
 
 		try {
 
-			if (!levelDAO.levelExist(name)) {
+			if (!levelDAO.levelExist(name) && !time.equals(null) && !time.trim().equals("")) {
 
 				Level level = new Level();
 				level.setName(name);
@@ -104,7 +104,7 @@ public class LevelRestService {
 					level.setTime(Integer.parseInt(time));
 
 					if (level.getTime() > 0 && !level.validateFields()) {
-						
+
 						this.levelDAO.save(level);
 						this.simpleEntityManager.commit();
 
