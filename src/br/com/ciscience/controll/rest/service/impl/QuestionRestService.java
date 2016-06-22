@@ -221,6 +221,63 @@ public class QuestionRestService {
 		return responseBuilder.build();
 
 	}
+	@GET
+	@Path("/filter/{contest}/{level}")
+	@PermitAll
+	public Response listFilter(@PathParam("contest") Long idContest,@PathParam("level") Long idLevel) {
+
+		this.mSimpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.mQuestionDAO = new QuestionDAO(this.mSimpleEntityManager.getEntityManager());
+		this.mLevelDAO = new LevelDAO(this.mSimpleEntityManager.getEntityManager());
+		this.mContestDAO = new ContestDAO(this.mSimpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.mSimpleEntityManager.beginTransaction();
+
+		try {
+			
+			
+			List<Question> questions = this.mQuestionDAO.findAll();
+			List<Question> questionsToJson = new ArrayList<Question>();
+
+			for (Question question : questions) {
+
+				if (question.getStatus() == true) {
+					
+					//populando lista com contest true e level false
+					if(question.getContest().equals(mContestDAO.getById(idContest)) && idLevel == 0){
+						 questionsToJson.add(question);
+					}
+					//populando lista com level true e contest false
+					if(question.getLevel().equals(mLevelDAO.getById(idLevel)) && idContest == 0){
+						 questionsToJson.add(question);
+					}
+					//populando lista com level true e contest true
+					if(question.getLevel().equals(mLevelDAO.getById(idLevel))&& question.getContest().equals(mContestDAO.getById(idContest))){
+						 questionsToJson.add(question);
+					}
+					
+
+				}
+
+			}
+
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(questionsToJson));
+		} catch (Exception e) {
+
+			this.mSimpleEntityManager.rollBack();
+
+			e.printStackTrace();
+
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+
+			this.mSimpleEntityManager.close();
+		}
+		return responseBuilder.build();
+
+	}
 
 	@GET
 	@PermitAll

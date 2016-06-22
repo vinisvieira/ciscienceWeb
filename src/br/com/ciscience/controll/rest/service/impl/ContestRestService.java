@@ -147,7 +147,6 @@ public class ContestRestService {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-		List<Contest> contestList = this.contestDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
 
 		try {
@@ -157,12 +156,12 @@ public class ContestRestService {
 			contestNew.setName(name);
 			contestNew.setStatus(Constants.ACTIVE_ENTITY);
 
-			for (Contest contest : contestList) {
-				if (contest.getName().equals(contestNew.getName())) {
+			
+				if (contestDAO.nameExists(contestNew.getName())) {
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 					return responseBuilder.build();
 				}
-			}
+			
 			if (contestNew.validateEmptyFields()) {
 				this.contestDAO.save(contestNew);
 				this.simpleEntityManager.commit();
@@ -230,34 +229,34 @@ public class ContestRestService {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-		List<Contest> contestList = this.contestDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
 
 		try {
 
-			Contest contestOld = this.contestDAO.getById(id);
-			for (Contest contest : contestList) {
-				if (contest.getName().equals(name)) {
-					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
-					System.out.println("nome Igual ao do banco ----------------------------------------------------");
-					return responseBuilder.build();
-				}
+			Contest contest = this.contestDAO.getById(id);
+			if (contestDAO.nameExists(name)) {
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				System.out.println("ja existe");
+				return responseBuilder.build();
 			}
 
-			if (contestOld != null) {
-				contestOld.setName(name);
+			if (contest != null) {
+				contest.setName(name);
 
-				if (contestOld.validateEmptyFields()) {
-					this.contestDAO.update(contestOld);
+				if (contest.validateEmptyFields()) {
+					
+					
+					this.contestDAO.update(contest);
 					this.simpleEntityManager.commit();
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				} else {
+					System.out.println("campos n validos");
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 
 			} else {
-				System.out.println("contesteOLD ------------------------------------------------ Null");
+				System.out.println("conteste ------------------------------------------------ Null");
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 

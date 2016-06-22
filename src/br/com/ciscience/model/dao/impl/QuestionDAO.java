@@ -13,4 +13,5 @@ public class QuestionDAO extends GenericDAO<Long, Question> {
 		super(entityManager);
 		// TODO Auto-generated constructor stub
 	}
+	
 }
