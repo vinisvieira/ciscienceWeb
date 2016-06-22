@@ -19,7 +19,7 @@
 
 		<properties>
 			<!-- String Conexao com o banco de dados -->
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/ciscience" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/cisciece" />
 
 			<!-- Dialeto entendido pelo banco -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
