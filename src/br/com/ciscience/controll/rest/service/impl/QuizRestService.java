@@ -1,6 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -14,7 +14,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import br.com.ciscience.model.dao.impl.QuestionDAO;
 import br.com.ciscience.model.dao.impl.QuizDAO;
 import br.com.ciscience.model.entity.impl.Question;
 import br.com.ciscience.model.entity.impl.Quiz;
@@ -29,7 +28,6 @@ import com.google.gson.Gson;
 public class QuizRestService {
 
 	private QuizDAO quizDAO;
-	private QuestionDAO questionDAO;
 	private JPAUtil simpleEntityManager;
 
 	@Context
@@ -41,10 +39,8 @@ public class QuizRestService {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizDAO = new QuizDAO(this.simpleEntityManager.getEntityManager());
-		this.questionDAO = new QuestionDAO(
-				this.simpleEntityManager.getEntityManager());
+
 		ResponseBuilder responseBuilder = Response.noContent();
-		List<Question> questions = new ArrayList<>();
 
 		this.simpleEntityManager.beginTransaction();
 
@@ -53,14 +49,10 @@ public class QuizRestService {
 
 			if (quiz.getQuestions().size() >= 10) {
 				if (!quiz.validateFields()) {
-					questions = quiz.getQuestions();
-					quiz.setQuestions(null);
 
 					this.quizDAO.save(quiz);
-					quiz.setQuestions(questions);
-					
 					this.simpleEntityManager.commit();
-					
+
 					responseBuilder = ResponseBuilderGenerator
 							.createOKResponseTextPlain(responseBuilder);
 				} else {

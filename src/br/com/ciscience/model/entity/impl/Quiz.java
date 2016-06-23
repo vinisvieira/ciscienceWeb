@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
 public class Quiz {
@@ -35,7 +38,7 @@ public class Quiz {
 		this.name = name;
 	}
 
-	@OneToMany
+	@ManyToMany
 	public List<Question> getQuestions() {
 		return questions;
 	}
