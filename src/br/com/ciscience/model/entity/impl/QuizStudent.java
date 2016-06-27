@@ -6,8 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import br.com.ciscience.model.entity.IEntity;
+
 @Entity
-public class QuizStudent {
+public class QuizStudent implements IEntity {
 
 	private Long id;
 	private Student student;
@@ -48,6 +50,15 @@ public class QuizStudent {
 
 	public void setTotalScore(int totalScore) {
 		this.totalScore = totalScore;
+	}
+
+	@Override
+	public boolean validateEmptyFields() {
+		if(getTotalScore() < 0){
+			return false;
+		}
+		return true;
+
 	}
 
 }
