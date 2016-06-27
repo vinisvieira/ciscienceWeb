@@ -1,6 +1,5 @@
 package br.com.ciscience.controll.rest.service.impl;
 
-
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -20,6 +19,7 @@ import br.com.ciscience.model.entity.impl.Quiz;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
 import br.com.ciscience.util.JSONUtil;
+import br.com.ciscience.util.MyDateGenerator;
 import br.com.ciscience.util.ResponseBuilderGenerator;
 
 import com.google.gson.Gson;
@@ -49,7 +49,7 @@ public class QuizRestService {
 
 			if (quiz.getQuestions().size() >= 10) {
 				if (!quiz.validateFields()) {
-
+					quiz.setDate(MyDateGenerator.getCurrentDate());
 					this.quizDAO.save(quiz);
 					this.simpleEntityManager.commit();
 
@@ -155,4 +155,43 @@ public class QuizRestService {
 		return responseBuilder.build();
 	}
 
+	@GET
+	@Path("/current")
+	@PermitAll
+	public Response readByDate() {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.quizDAO = new QuizDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+			List<Quiz> quiz = this.quizDAO.getByDate(MyDateGenerator
+					.getCurrentDate());
+
+			if (quiz != null) {
+
+				responseBuilder = ResponseBuilderGenerator
+						.createOKResponseJSON(responseBuilder,
+								JSONUtil.objectToJSON(quiz));
+
+			} else {
+				System.out.println("Quiz não existe");
+				responseBuilder = ResponseBuilderGenerator
+						.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
+			e.printStackTrace();
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+
+	}
 }
