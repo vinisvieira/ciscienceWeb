@@ -1,0 +1,19 @@
+div#snackbar{
+	position: fixed;
+	bottom: -50px;
+	z-index: 100000;
+	background: #323232;
+	width: 300px;
+	margin-left: -150px;
+	left: 50%;
+	color: white;
+	padding: 14px;
+	border-radius: 3px;
+	max-height: 50px;
+	overflow: hidden;
+	transition: bottom 0.5s;
+}
+
+div#snackbar.active{
+	bottom: 0;
+}

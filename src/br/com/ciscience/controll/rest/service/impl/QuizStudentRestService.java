@@ -121,7 +121,7 @@ public class QuizStudentRestService {
 
 	@POST
 	@PermitAll
-	public Response create(@FormParam("quizstudent") String quizStudentJSON) {
+	public Response create(@FormParam("quizStudent") String quizStudentJSON) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizStudentDAO = new QuizStudentDAO(this.simpleEntityManager.getEntityManager());
@@ -136,13 +136,27 @@ public class QuizStudentRestService {
 
 		try {
 
-			if (quizStudent.validateEmptyFields()) {
-				this.quizStudentDAO.save(quizStudent);
-				this.simpleEntityManager.commit();
+			if (student != null) {
 
-				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+				if (quiz != null) {
+
+					if (quizStudent.validateEmptyFields()) {
+						this.quizStudentDAO.save(quizStudent);
+						this.simpleEntityManager.commit();
+
+						responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+					} else {
+						System.out.println("Erro na validação dos campos");
+						responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+					}
+
+				} else {
+					System.out.println("Quiz inexistente");
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				}
+
 			} else {
-				System.out.println("erro na validação dos campos");
+				System.out.println("Aluno inexistente");
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 

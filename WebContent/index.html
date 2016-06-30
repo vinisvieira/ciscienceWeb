@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-cloak ng-controller="AppCtrl as appCtrl">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="Fafica">
+    <meta name="author" content="Fafica">
+
+    <title> FAFICA | Minha Reserva </title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="src/assets/img/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="src/assets/img/ios-desktop.png">
+
+	<!-- FONT -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=pt-br">
+
+    <!-- Fa Icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	
+	<!-- JQuery UI -->
+	<link href="src/assets/libs/jquery/jquery-ui.css" rel="stylesheet">
+
+	<!-- Bootstrap CSS -->
+	<link href="src/assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- My CSS -->
+    <link href="src/assets/css/style.css" rel="stylesheet">
+    <link href="src/assets/css/login.css" rel="stylesheet">
+    <link href="src/assets/css/spiner.css" rel="stylesheet">
+    <link href="src/assets/css/snackbar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+	<!-- Topo -->
+	<nav ng-include="'src/app/shared/template/topo.html'" class="navbar navbar-inverse navbar-fixed-top"></nav>
+	<!-- ./Topo -->
+
+	<div class="container-fluid" role="main" ng-cloak>
+		<div ng-view onload="onLoadHtmlFileInNgView()" ng-cloak></div>
+		<div ng-include="'src/app/shared/template/rodape.html'" ng-cloak></div>
+		<!-- NG INCLUDE -->
+	</div>
+
+	<!-- Spiner -->
+	<div id="loadContentSpninner">
+		<div class="spinner">
+	  		<div class="double-bounce1"></div>
+	  		<div class="double-bounce2"></div>
+		</div>
+	</div>
+	<!-- ./Spiner -->
+
+	<!-- SNACKBAR -->
+	<div id="snackbar"></div>
+	<!-- ./SNACKBAR -->
+
+	<!-- Libs -->
+	<script src="src/assets/libs/angularjs/angular.min.js"></script>
+	<script src="src/assets/libs/angularjs/angular-touch.js"></script>
+	<script src="src/assets/libs/angularjs/angular-route.js"></script>
+	<script src="src/assets/libs/jquery/jquery-2.1.4.min.js"></script>
+	<script src="src/assets/libs/jquery/jquery-ui.js"></script>
+	<script src="src/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+	<script src="src/assets/libs/bootbox/bootbox.min.js"></script>
+	<script src="src/assets/libs/mascara/mascara.js"></script>
+	<!-- ./Libs -->
+	
+	<!-- Application JS -->
+	<script src="src/app/app.module.js"></script>
+	<script src="src/app/app.directives.js"></script>
+	<script src="src/app/app.service.js"></script>
+	<script src="src/app/app.filter.js"></script>
+	<script src="src/app/app.config.route.provider.js"></script>
+	<script src="src/app/app.run.js"></script>
+	<script src="src/app/app.controller.js"></script>
+	<script src="src/app/app.config.route.provider.js"></script>
+	
+	<!-- Controllers -->
+	<script src="src/app/components/login/login.controller.js"></script>
+	<script src="src/app/components/home/home.controller.js"></script>
+	<script src="src/app/components/equipamento/listar-equipamentos/listar.equipamentos.controll.js"></script>
+ 	<script src="src/app/components/equipamento/inserir-equipamento/inserir.equipamento.controll.js"></script>
+ 	<script src="src/app/components/curso/inserir-curso/inserir.curso.controll.js"></script>
+ 	<script src="src/app/components/curso/editar-curso/editar.curso.controll.js"></script>
+  	<script src="src/app/components/curso/listar-curso/listar.curso.controll.js"></script>
+  	<script src="src/app/components/grupo/inserir-grupo/inserir.grupo.controll.js"></script>
+   	<script src="src/app/components/grupo/editar-grupo/editar.grupo.controll.js"></script>
+	<script src="src/app/components/grupo/listar-grupo/listar.grupo.controll.js"></script>
+ 
+ 	
+ 	
+</body>
+</html>

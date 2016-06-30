@@ -160,6 +160,7 @@ public class StudentRestService {
 			student.setName(name);
 			student.setEmail(email);
 			student.setPassword(StringUtil.SHA1(password));
+			student.setScore(0L);
 			student.setUserSince(MyDateGenerator.getCurrentDate());
 			student.setStatus(Constants.ACTIVE_ENTITY);
 

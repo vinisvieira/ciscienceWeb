@@ -34,12 +34,10 @@ public class LevelRestService {
 
 	@POST
 	@PermitAll
-	public Response create(@FormParam("name") String name,
-			@FormParam("time") String time) {
+	public Response create(@FormParam("name") String name, @FormParam("time") String time) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.levelDAO = new LevelDAO(
-				this.simpleEntityManager.getEntityManager());
+		this.levelDAO = new LevelDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.simpleEntityManager.beginTransaction();
@@ -58,21 +56,17 @@ public class LevelRestService {
 					this.levelDAO.save(level);
 					this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseTextPlain(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				} else {
-					responseBuilder = ResponseBuilderGenerator
-							.createErrorResponse(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 			} else {
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -83,12 +77,10 @@ public class LevelRestService {
 	@PUT
 	@PermitAll
 	@Path("/{id}")
-	public Response update(@PathParam("id") String id,
-			@FormParam("name") String name, @FormParam("time") String time) {
+	public Response update(@PathParam("id") String id, @FormParam("name") String name, @FormParam("time") String time) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.levelDAO = new LevelDAO(
-				this.simpleEntityManager.getEntityManager());
+		this.levelDAO = new LevelDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.simpleEntityManager.beginTransaction();
@@ -98,7 +90,7 @@ public class LevelRestService {
 			Level level = this.levelDAO.getById(Long.parseLong(id));
 
 			if (level != null) {
-				if (!levelDAO.levelExist(name)) {
+				if (!levelDAO.levelExist(name) && !time.equals(null) && !time.trim().equals("")) {
 
 					level.setName(name);
 					level.setTime(Integer.parseInt(time));
@@ -108,25 +100,20 @@ public class LevelRestService {
 						this.levelDAO.save(level);
 						this.simpleEntityManager.commit();
 
-						responseBuilder = ResponseBuilderGenerator
-								.createOKResponseTextPlain(responseBuilder);
+						responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 					} else {
-						responseBuilder = ResponseBuilderGenerator
-								.createErrorResponse(responseBuilder);
+						responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 					}
 				} else {
-					responseBuilder = ResponseBuilderGenerator
-							.createErrorResponse(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 			} else {
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -152,18 +139,15 @@ public class LevelRestService {
 				level.setStatus(level.isStatus() == false);
 				this.simpleEntityManager.commit();
 
-				responseBuilder = ResponseBuilderGenerator
-						.createOKResponseTextPlain(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 			} else {
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -193,8 +177,8 @@ public class LevelRestService {
 
 				}
 			}
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
-					responseBuilder, JSONUtil.objectToJSON(listLevelToJson));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(listLevelToJson));
 
 		} catch (Exception e) {
 
@@ -202,8 +186,7 @@ public class LevelRestService {
 
 			e.printStackTrace();
 
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 
 			this.simpleEntityManager.close();
@@ -226,8 +209,8 @@ public class LevelRestService {
 
 			Level level = this.levelDAO.getById(Long.parseLong(id));
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
-					responseBuilder, JSONUtil.objectToJSON(level));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(level));
 
 		} catch (Exception e) {
 
@@ -235,8 +218,7 @@ public class LevelRestService {
 
 			e.printStackTrace();
 
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 
 			this.simpleEntityManager.close();
