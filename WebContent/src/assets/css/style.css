@@ -211,7 +211,13 @@ ol#breadcrumb li a:hover{
 	}
 }
 /* ./NavBar*/
-
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 1px 1px;
+    font-size: 18px;
+    line-height: 20px;
+}
 .user-wrapper{
 	position: relative;
 	float: right;

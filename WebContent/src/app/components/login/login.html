@@ -7,14 +7,8 @@
 		</div>
 
 		<form id="loginForm" ng-submit="loginCtrl.login();">
-			<select ng-model="loginCtrl.obj.perfil" required>
-				<option value="">Selecione seu Perfil :.</option>
-				<option value="professor">Professor</option>
-				<option value="aluno">Aluno</option>
-				<option value="operador">Operador</option>
-				<option value="administrador">Administrador</option>
-			</select>
-			<input type="text" required ng-model="loginCtrl.obj.login" placeholder="Sua Matrícula">
+			
+			<input type="text" required ng-model="loginCtrl.obj.login" placeholder="Seu Email">
 			<input type="password" required ng-model="loginCtrl.obj.password" placeholder="Sua Senha">
 			<input type="submit" value="Acessar">
 		</form>
@@ -26,8 +20,8 @@
 	</div>
 
 	<div class="loginFooter">
-		© 2016 - Desenvolvido pelo Núcleo de Práticas em Tecnologia e Inovação FAFICA <br>
-		Associação Diocesana de Ensino e Cultura de Caruaru.
+		© 2016 - Desenvolvido TwoDev  <br>
+		
 	</div>
 
 </section>
