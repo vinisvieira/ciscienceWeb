@@ -52,12 +52,12 @@ section#login #loginForm input[type=submit]{
 	padding: 9px;
 	border: none;
 	margin: 0 0 0 0;
-	background: #2a80b9;
+	background: #ce6031;
 	transition: background 0.5s;
 	color: white;
 }
 section#login #loginForm input[type=submit]:hover{
-	background: #054e7e;
+	background: #e3a624;
 }
 section#login .content_extra_links a{
 	color: white;
