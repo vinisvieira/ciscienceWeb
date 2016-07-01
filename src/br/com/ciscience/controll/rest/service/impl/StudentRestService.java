@@ -1,6 +1,7 @@
 package br.com.ciscience.controll.rest.service.impl;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -284,5 +286,40 @@ public class StudentRestService {
 
 		return responseBuilder.build();
 
+	}
+	
+	@GET
+	@Path("/by-email")
+	@PermitAll
+	public Response searchByName(@HeaderParam("student") String student) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+			
+			List<Student> students = this.studentDAO.listarPorEmail(student);
+
+			if (students != null) {
+				
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(students));
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
 	}
 }
