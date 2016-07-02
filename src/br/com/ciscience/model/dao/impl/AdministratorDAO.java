@@ -4,16 +4,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import br.com.ciscience.model.dao.GenericDAO;
-import br.com.ciscience.model.entity.impl.Administrator;
+import br.com.ciscience.model.entity.impl.Administrador;
 
-public class AdministratorDAO extends GenericDAO<Long, Administrator> {
+public class AdministratorDAO extends GenericDAO<Long, Administrador> {
 
 	public AdministratorDAO(EntityManager entityManager) {
 		super(entityManager);
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean emailExists(Administrator administrator) {
+	public boolean emailExists(Administrador administrator) {
 		EntityManager entityManager = super.getEntityManager();
 
 		Query query = entityManager.createQuery("SELECT u FROM Administrator u WHERE u.email = :email");

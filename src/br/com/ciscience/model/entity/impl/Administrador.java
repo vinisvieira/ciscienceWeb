@@ -9,24 +9,24 @@ import javax.persistence.Entity;
  * 
  */
 @Entity
-public class Administrator extends User {
+public class Administrador extends User {
 
-	public Administrator() {
+	public Administrador() {
 
 	}
 
-	public Administrator(Long id) {
+	public Administrador(Long id) {
 		setId(id);
 	}
 
-	public Administrator(Long id, String name, String email, boolean status) {
+	public Administrador(Long id, String name, String email, boolean status) {
 		setId(id);
 		setName(name);
 		setEmail(email);
 		setStatus(status);
 	}
 
-	public Administrator(Long id, String name, String email, String password, boolean status) {
+	public Administrador(Long id, String name, String email, String password, boolean status) {
 		setId(id);
 		setName(name);
 		setEmail(email);
@@ -34,7 +34,7 @@ public class Administrator extends User {
 		setStatus(status);
 	}
 
-	public Administrator(String name, String email, String password, boolean status) {
+	public Administrador(String name, String email, String password, boolean status) {
 		setName(name);
 		setEmail(email);
 		setPassword(password);

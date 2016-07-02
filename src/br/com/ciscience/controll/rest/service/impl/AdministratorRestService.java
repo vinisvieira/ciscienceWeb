@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import br.com.ciscience.model.dao.impl.AdministratorDAO;
-import br.com.ciscience.model.entity.impl.Administrator;
+import br.com.ciscience.model.entity.impl.Administrador;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
 import br.com.ciscience.util.JSONUtil;
@@ -44,7 +44,7 @@ public class AdministratorRestService {
 
 			this.simpleEntityManager.beginTransaction();
 
-			List<Administrator> administrators = this.administratorDAO.findAll();
+			List<Administrador> administrators = this.administratorDAO.findAll();
 
 			for (int i = 0; i < administrators.size(); i++) {
 				if (administrators.get(i).getStatus()) {
@@ -118,7 +118,7 @@ public class AdministratorRestService {
 
 		try {
 
-			Administrator admin = new Administrator();
+			Administrador admin = new Administrador();
 			admin.setEmail(email);
 			admin.setPassword(password);
 			admin.setUserSince(MyDateGenerator.getCurrentDate());
@@ -162,7 +162,7 @@ public class AdministratorRestService {
 
 		try {
 
-			Administrator administrator = this.administratorDAO.getById(id);
+			Administrador administrator = this.administratorDAO.getById(id);
 
 			if (administrator != null) {
 
@@ -198,7 +198,7 @@ public class AdministratorRestService {
 
 		try {
 
-			Administrator administrator = this.administratorDAO.getById(id);
+			Administrador administrator = this.administratorDAO.getById(id);
 
 			if (administrator != null) {
 				administrator.setEmail(email);
