@@ -26,12 +26,18 @@ public class User implements IEntity, IUser {
 
 	private Long id;
 	private String name;
+	private String cpf;
 	private String email;
 	private String password;
+	private Date birthday;
 	private Date userSince;
 	private boolean status;
 	private String profile;
 
+	public String getCpf() {
+		return cpf;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
@@ -51,6 +57,10 @@ public class User implements IEntity, IUser {
 		this.name = name;
 	}
 
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
 	@Column(unique = true, nullable = false)
 	public String getEmail() {
 		return email;
@@ -66,6 +76,14 @@ public class User implements IEntity, IUser {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -96,8 +114,10 @@ public class User implements IEntity, IUser {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", userSince="
-				+ userSince + ", status=" + status + ", profile=" + profile + "]";
+		return "User [id=" + id + ", name=" + name + ", cpf=" + cpf
+				+ ", email=" + email + ", password=" + password + ", birthday="
+				+ birthday + ", userSince=" + userSince + ", status=" + status
+				+ ", profile=" + profile + "]";
 	}
 
 	@Override
