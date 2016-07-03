@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -31,7 +33,42 @@ public class ContestRestService {
 
 	@Context
 	private HttpServletRequest servletRequest;
+	
+	@GET
+	@Path("/by-name")
+	@PermitAll
+	public Response search(@HeaderParam("name") String name) {
 
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.contestDAO = new ContestDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+		List<Contest> contests;
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+			contests = this.contestDAO.listForName(name);
+
+			if (contests != null) {
+
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(contests));
+
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+	}
 	@GET
 	@Path("/active")
 	@PermitAll

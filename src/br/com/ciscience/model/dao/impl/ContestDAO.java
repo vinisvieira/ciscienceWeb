@@ -1,5 +1,7 @@
 package br.com.ciscience.model.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -18,6 +20,13 @@ public class ContestDAO extends GenericDAO<Long, Contest>{
 		Query query = entityManager.createQuery("SELECT u FROM Contest u WHERE u.name = :name");
 		query.setParameter("name", name);
 		return (query.getResultList().size() > 0);
+	}
+	public List<Contest> listForName(String name) {
+		EntityManager entityManager = super.getEntityManager();
+		Query query = entityManager.createQuery("SELECT u FROM Contest u WHERE u.name LIKE :name");
+		query.setParameter("name", "%" + name + "%");
+
+		return (List<Contest>) query.getResultList();
 	}
 
 }
