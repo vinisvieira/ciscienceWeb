@@ -11,8 +11,6 @@ app.config(function($routeProvider) {
 	$routeProvider.when('/new-student', {
 		templateUrl : 'src/app/components/student/new-student/new-student.html',
 		controller : 'InserirStudentCtrl as inserirStudentCtrl'
-	}).otherwise({
-		redirectTo : 'home'
 	})
 	$routeProvider.when('/list-contest', {
 		templateUrl : 'src/app/components/contest/list-contest/list-contest.html',

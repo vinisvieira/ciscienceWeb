@@ -43,7 +43,8 @@ public class StudentRestService {
 	public Response listActive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		try {
@@ -66,13 +67,14 @@ public class StudentRestService {
 				}
 			}
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-					JSONUtil.objectToJSON(studentsToJson));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
+					responseBuilder, JSONUtil.objectToJSON(studentsToJson));
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -87,7 +89,8 @@ public class StudentRestService {
 	public Response listInactive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		try {
@@ -104,13 +107,14 @@ public class StudentRestService {
 				}
 			}
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-					JSONUtil.objectToJSON(studentsToJson));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
+					responseBuilder, JSONUtil.objectToJSON(studentsToJson));
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -125,20 +129,23 @@ public class StudentRestService {
 	public Response getByID(@PathParam("id") String id) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		try {
 
 			this.simpleEntityManager.beginTransaction();
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-					JSONUtil.objectToJSON(this.studentDAO.getById(Long.parseLong(id))));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
+					responseBuilder, JSONUtil.objectToJSON(this.studentDAO
+							.getById(Long.parseLong(id))));
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -147,11 +154,16 @@ public class StudentRestService {
 
 	@POST
 	@PermitAll
-	public Response create(@FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("password") String password, @FormParam("confirmPassword") String confirmPassword) {
+	public Response create(@FormParam("name") String name,
+						   @FormParam("cpf") String cpf,
+						   @FormParam("email") String email,
+						   @FormParam("birthday") String birthday,
+						   @FormParam("password") String password,
+						   @FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.simpleEntityManager.beginTransaction();
@@ -160,7 +172,9 @@ public class StudentRestService {
 
 			Student student = new Student();
 			student.setName(name);
+			student.setCpf(StringUtil.setCpfUnformatted(cpf));
 			student.setEmail(email);
+			student.setBirthday(MyDateGenerator.dateStringToSql(birthday));
 			student.setPassword(StringUtil.SHA1(password));
 			student.setScore(0L);
 			student.setUserSince(MyDateGenerator.getCurrentDate());
@@ -169,26 +183,31 @@ public class StudentRestService {
 			if (!this.studentDAO.emailExists(student)) {
 
 				if (student.validateEmptyFields()
-						&& student.passwordsMatch(student.getPassword(), StringUtil.SHA1(confirmPassword))
+						&& student.passwordsMatch(student.getPassword(),
+								StringUtil.SHA1(confirmPassword))
 						&& StringUtil.validEmail(student.getEmail())) {
 					this.studentDAO.save(student);
 					this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator
+							.createOKResponseTextPlain(responseBuilder);
 				} else {
 					System.out.println("erro na validação dos campos");
-					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator
+							.createErrorResponse(responseBuilder);
 				}
 
 			} else {
 				System.out.println("erro no estudante existe");
-				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator
+						.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -202,7 +221,8 @@ public class StudentRestService {
 	public Response delete(@PathParam("id") Long id) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.simpleEntityManager.beginTransaction();
@@ -216,15 +236,18 @@ public class StudentRestService {
 				student.setStatus(student.getStatus() == false);
 				this.simpleEntityManager.commit();
 
-				responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator
+						.createOKResponseTextPlain(responseBuilder);
 			} else {
-				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator
+						.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -236,11 +259,17 @@ public class StudentRestService {
 	@PUT
 	@Path("/{id}")
 	@PermitAll
-	public Response update(@PathParam("id") Long id, @FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("password") String password, @FormParam("confirmPassword") String confirmPassword) {
+	public Response update(@PathParam("id") Long id,
+						   @FormParam("name") String name, 
+						   @FormParam("cpf") String cpf,
+						   @FormParam("email") String email,
+						   @FormParam("birthday") String birthday,
+						   @FormParam("password") String password,
+						   @FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 		List<Student> studentList = this.studentDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
@@ -251,8 +280,10 @@ public class StudentRestService {
 
 			for (Student studentL : studentList) {
 				if (studentL.getEmail().equals(email)) {
-					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
-					System.out.println("nome Igual no  banco ----------------------------------------------------");
+					responseBuilder = ResponseBuilderGenerator
+							.createErrorResponse(responseBuilder);
+					System.out
+							.println("nome Igual no  banco ----------------------------------------------------");
 					return responseBuilder.build();
 				}
 			}
@@ -260,26 +291,33 @@ public class StudentRestService {
 			if (student != null) {
 				student.setEmail(email);
 				student.setName(name);
+				student.setCpf(StringUtil.setCpfUnformatted(cpf));
+				student.setBirthday(MyDateGenerator.dateStringToSql(birthday));
 				student.setPassword(StringUtil.SHA1(password));
 
 				if (student.validateEmptyFields()
-						&& student.passwordsMatch(student.getPassword(), StringUtil.SHA1(confirmPassword))) {
+						&& student.passwordsMatch(student.getPassword(),
+								StringUtil.SHA1(confirmPassword))) {
 
 					this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator
+							.createOKResponseTextPlain(responseBuilder);
 
 				} else {
-					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator
+							.createErrorResponse(responseBuilder);
 				}
 			} else {
-				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator
+						.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -287,34 +325,38 @@ public class StudentRestService {
 		return responseBuilder.build();
 
 	}
-	
+
 	@GET
 	@Path("/by-email")
 	@PermitAll
 	public Response searchByName(@HeaderParam("student") String student) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
 		this.simpleEntityManager.beginTransaction();
 
 		try {
-			
+
 			List<Student> students = this.studentDAO.listarPorEmail(student);
 
 			if (students != null) {
-				
-				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-						JSONUtil.objectToJSON(students));
+
+				responseBuilder = ResponseBuilderGenerator
+						.createOKResponseJSON(responseBuilder,
+								JSONUtil.objectToJSON(students));
 			} else {
-				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator
+						.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
 
 		} finally {
 			this.simpleEntityManager.close();

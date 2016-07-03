@@ -28,16 +28,12 @@ public class User implements IEntity, IUser {
 	private String name;
 	private String cpf;
 	private String email;
-	private String password;
 	private Date birthday;
+	private String password;
 	private Date userSince;
 	private boolean status;
 	private String profile;
 
-	public String getCpf() {
-		return cpf;
-	}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
@@ -57,6 +53,11 @@ public class User implements IEntity, IUser {
 		this.name = name;
 	}
 
+	@Column(unique = true, nullable = false)
+	public String getCpf() {
+		return cpf;
+	}
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
@@ -70,20 +71,21 @@ public class User implements IEntity, IUser {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	@Temporal(TemporalType.DATE)
 	public Date getBirthday() {
 		return birthday;
 	}
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Temporal(TemporalType.DATE)
