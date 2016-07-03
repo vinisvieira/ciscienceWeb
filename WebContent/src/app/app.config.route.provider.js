@@ -14,4 +14,16 @@ app.config(function($routeProvider) {
 	}).otherwise({
 		redirectTo : 'home'
 	})
+	$routeProvider.when('/list-contest', {
+		templateUrl : 'src/app/components/contest/list-contest/list-contest.html',
+		controller : 'ContestListCtrl as contestListCtrl'
+	}).otherwise({
+		redirectTo : 'home'
+	})
+	$routeProvider.when('/new-contest', {
+		templateUrl : 'src/app/components/contest/new-contest/new-contest.html',
+		controller : 'NewContestCtrl as newContestCtrl'
+	}).otherwise({
+		redirectTo : 'home'
+	})
 });

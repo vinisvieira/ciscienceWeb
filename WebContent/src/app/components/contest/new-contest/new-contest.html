@@ -1,0 +1,49 @@
+<div class="row">
+	<ol id="breadcrumb">
+		<li> <a href="#home"> <i class="fa fa-home"></i> Pagina Inicial </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> <a href="#list-contest"> Concurso </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> Novo Concurso </li>
+	</ol>
+	<h1 id="topTitle">
+		Nova Concurso.
+	</h1>
+</div>
+
+<!-- Include Nav Menu -->
+<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'" class="row"></div>
+
+<!-- ROW -->
+<div class="row">
+	
+	<div class="col-md-8">
+
+		<h2>
+			Informe corretamente os dados abaixo.
+		</h2>
+
+		<p>
+			<i> * Campos obrigatorio </i>
+		</p>
+		
+		<form name="formularioDeConcurso" method="post" ng-submit="newContestCtrl.createContest()">
+	
+			
+			<div class="form-group">
+				<label>Nome do Concurso: *</label>
+				<input id ="newContestName" type="text" ng-model="newContestCtrl.contest.name" class="form-control" required>
+			</div>
+			
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Criar</button>
+			</div>
+
+		</form>
+
+		<br><br><br><br><br><br><br><br><br><br>
+
+	</div>
+	
+</div>
