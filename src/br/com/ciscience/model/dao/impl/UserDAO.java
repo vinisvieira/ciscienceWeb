@@ -58,7 +58,7 @@ public class UserDAO extends GenericDAO<Long, User> {
 		EntityManager entityManagger = super.getEntityManager();
 
 		String emailReceived = user.getEmail();
-
+		System.out.println("Email received -> " + emailReceived);
 		// Lista que será retornada no metódo
 		List<User> returnListForMethod = new ArrayList<User>();
 
@@ -69,24 +69,6 @@ public class UserDAO extends GenericDAO<Long, User> {
 
 		if (!resultListAdministrator.isEmpty()) {
 			returnListForMethod.addAll(resultListAdministrator);
-		}
-
-		// Recepcionista
-		Query query2 = entityManagger.createQuery("SELECT u FROM Recepcionista u WHERE u.email = :email");
-		query2.setParameter("email", emailReceived);
-		List<User> resultListReceptionist = (List<User>) query2.getResultList();
-
-		if (!resultListReceptionist.isEmpty()) {
-			returnListForMethod.addAll(resultListReceptionist);
-		}
-
-		// Recepcionista
-		Query query3 = entityManagger.createQuery("SELECT u FROM Fiscal u WHERE u.email = :email");
-		query3.setParameter("email", emailReceived);
-		List<User> resultListInspector = (List<User>) query3.getResultList();
-
-		if (!resultListInspector.isEmpty()) {
-			returnListForMethod.addAll(resultListInspector);
 		}
 
 		return returnListForMethod;
