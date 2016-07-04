@@ -20,6 +20,10 @@ app.config(function($routeProvider) {
 		templateUrl : 'src/app/components/student/update-student/update-student.html',
 		controller : 'UpdateStudentCtrl as updateStudentCtrl'
 	})
+	$routeProvider.when('/update-contest/:idContest', {
+		templateUrl : 'src/app/components/contest/update-contest/update-contest.html',
+		controller : 'UpdateContestCtrl as updateContestCtrl'
+	})
 	$routeProvider.when('/list-contest', {
 		templateUrl : 'src/app/components/contest/list-contest/list-contest.html',
 		controller : 'ContestListCtrl as contestListCtrl'

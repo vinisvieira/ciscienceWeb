@@ -57,7 +57,7 @@ app.controller('UpdateContestCtrl', ['$http', '$location', '$scope', '$routePara
 				}
 	};
 		
-		$http.put($scope.applicationUrl + "api/contest", $.param({ id: self.contest.id, name: self.contest.name}), config).then(function (response) {
+		$http.put($scope.applicationUrl + "api/contest/"+ idContest, $.param({name: self.contest.name}), config).then(function (response) {
 			
 			appCtrl.loadSpiner(false);
 			appCtrl.loadSnackbar("Concurso <span style='color:#00ff18;'>Editar</span> com sucesso.");
