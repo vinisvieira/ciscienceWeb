@@ -155,11 +155,10 @@ public class StudentRestService {
 	@POST
 	@PermitAll
 	public Response create(@FormParam("name") String name,
-						   @FormParam("cpf") String cpf,
-						   @FormParam("email") String email,
-						   @FormParam("birthday") String birthday,
-						   @FormParam("password") String password,
-						   @FormParam("confirmPassword") String confirmPassword) {
+			@FormParam("cpf") String cpf, @FormParam("email") String email,
+			@FormParam("birthday") String birthday,
+			@FormParam("password") String password,
+			@FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.studentDAO = new StudentDAO(
@@ -260,33 +259,21 @@ public class StudentRestService {
 	@Path("/{id}")
 	@PermitAll
 	public Response update(@PathParam("id") Long id,
-						   @FormParam("name") String name, 
-						   @FormParam("cpf") String cpf,
-						   @FormParam("email") String email,
-						   @FormParam("birthday") String birthday,
-						   @FormParam("password") String password,
-						   @FormParam("confirmPassword") String confirmPassword) {
+			@FormParam("name") String name, @FormParam("cpf") String cpf,
+			@FormParam("email") String email,
+			@FormParam("birthday") String birthday,
+			@FormParam("password") String password,
+			@FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.studentDAO = new StudentDAO(
 				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-		List<Student> studentList = this.studentDAO.findAll();
 		this.simpleEntityManager.beginTransaction();
 
 		try {
 
 			Student student = this.studentDAO.getById(id);
-
-			for (Student studentL : studentList) {
-				if (studentL.getEmail().equals(email)) {
-					responseBuilder = ResponseBuilderGenerator
-							.createErrorResponse(responseBuilder);
-					System.out
-							.println("nome Igual no  banco ----------------------------------------------------");
-					return responseBuilder.build();
-				}
-			}
 
 			if (student != null) {
 				student.setEmail(email);

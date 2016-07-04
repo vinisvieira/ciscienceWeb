@@ -12,39 +12,6 @@ app.controller('UpdateStudentCtrl', ['$http', '$location', '$scope', '$routePara
 		self.carregarStudentPorId();
 	}
 	
-	// Verificar Existencia
-	self.verificarExistencia = function() {
-		
-		appCtrl.loadSpiner(true);
-		
-		var studentObj = self.student;
-		
-		var req = {
-			method: 'GET',
-			url: $scope.applicationUrl + "api/student/by-email"+"?radom="+Math.random(),
-			headers: {
-				'email': studentObj.email
-			}
-		}
-		$http(req).then(function(response){
-			
-			if( response.data.length == 0 ){
-				//Chamar função para inserir
-				self.updateStudent();
-			}else{
-				
-				appCtrl.loadSpiner(false);
-				appCtrl.loadSnackbar("Já existe um Aluno com o Email informado");
-			}
-
-		}, function(response){
-			//ERRO
-			console.log("ERRO");
-		});
-
-	}
-	// ./Verificar Existencia
-	
 	// editar Local
 	self.updateStudent = function (){
 		
@@ -56,7 +23,12 @@ app.controller('UpdateStudentCtrl', ['$http', '$location', '$scope', '$routePara
 				}
 	};
 		
-		$http.put($scope.applicationUrl + "api/student", $.param({ id: self.student.id, name: self.student.name}), config).then(function (response) {
+		$http.put($scope.applicationUrl + "api/student/" + idStudent, $.param({name: self.student.name,
+																   cpf: self.student.cpf,
+																   email: self.student.email,
+																   birthday: self.student.birthday,
+																   password: self.student.password,
+																   confirmPassword: self.student.confirmPassword}), config).then(function (response) {
 			
 			appCtrl.loadSpiner(false);
 			appCtrl.loadSnackbar("Aluno <span style='color:#00ff18;'>Atualizado</span> com sucesso.");
