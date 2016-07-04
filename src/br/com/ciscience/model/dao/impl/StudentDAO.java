@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import br.com.ciscience.model.dao.GenericDAO;
 import br.com.ciscience.model.entity.impl.Student;
 
+
 public class StudentDAO extends GenericDAO<Long, Student> {
 
 	public StudentDAO(EntityManager entityManager) {
@@ -43,5 +44,4 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 
 		return query.getResultList();
 	}
-
 }

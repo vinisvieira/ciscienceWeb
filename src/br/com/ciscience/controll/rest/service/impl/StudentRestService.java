@@ -329,7 +329,7 @@ public class StudentRestService {
 	@GET
 	@Path("/by-email")
 	@PermitAll
-	public Response searchByName(@HeaderParam("student") String student) {
+	public Response searchByEmail(@HeaderParam("email") String email) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.studentDAO = new StudentDAO(
@@ -340,7 +340,7 @@ public class StudentRestService {
 
 		try {
 
-			List<Student> students = this.studentDAO.listarPorEmail(student);
+			List<Student> students = this.studentDAO.listarPorEmail(email);
 
 			if (students != null) {
 

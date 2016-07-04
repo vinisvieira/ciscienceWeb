@@ -1,10 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<div class="row">
+	<ol id="breadcrumb">
+		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> <a href="#list-student"> Alunos </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> Novo Aluno </li>
+	</ol>
+	<h1 id="topTitle">
+		Atualize as informações do Aluno 
+	</h1>
+</div>
 
-</body>
-</html>
+<!-- Include Nav Menu -->
+<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'" class="row"></div>
+
+<!-- ROW -->
+<div class="row">
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+	<div class="col-md-8">
+
+		<h2>
+			Informe corretamente os dados abaixo.
+		</h2>
+
+		<p>
+			<i> * Campos obrigatórios </i>
+		</p>
+		
+		<form name="formularioDeProposta" method="post" ng-submit="updateStudentCtrl.verificarExistencia()">
+	
+			<div class="form-group">
+				<label>Nome: *</label>
+				<input type="text" ng-model="updateStudentCtrl.student.name" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label>CPF: *</label>
+				<input id ="cpf" my-input-cpf ng-model="updateStudentCtrl.student.cpf" required> 
+			</div>
+			<div class="form-group">
+				<label>Email: *</label>
+				<input type="email" ng-model="updateStudentCtrl.student.email" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label>Data de Nascimento: *</label>
+				<input id ="birthday" my-input-date ng-model="updateStudentCtrl.student.birthday" class="form-control" required> 
+			</div>
+			<div class="form-group">
+				<label>Senha: *</label>
+				<input type="password" ng-model="updateStudentCtrl.student.password" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label>Confirmar Senha: *</label>
+				<input type="password" ng-model="updateStudentCtrl.student.confirmPassword" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Atualizar Aluno</button>
+			</div>
+
+		</form>
+
+		<br><br><br><br><br><br><br><br><br><br>
+
+	</div>
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+</div>
