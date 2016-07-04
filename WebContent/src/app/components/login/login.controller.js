@@ -24,7 +24,7 @@ app.controller('LoginCtrl', ['$http', '$location', '$scope', function($http, $lo
 			
 			console.log(loginObj);
 
-			var loginUrl = $scope.applicationUrl + "api/login/" + perfil;
+			var loginUrl = $scope.applicationUrl + "api/login/administrator";
 
 			$.post( loginUrl, loginObj ).done( function(returnOfRequest) {
 			

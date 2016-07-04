@@ -18,11 +18,10 @@ import com.google.gson.Gson;
 
 import br.com.ciscience.controll.rest.service.MyHttpSessionManager;
 import br.com.ciscience.model.dao.impl.UserDAO;
-import br.com.ciscience.model.entity.impl.Administrador;
+import br.com.ciscience.model.entity.impl.Administrator;
 import br.com.ciscience.model.entity.impl.User;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
-
 
 @Path("/login")
 public class LoginRestService {
@@ -62,7 +61,7 @@ public class LoginRestService {
 		} else {
 
 			User userToJson = new User();
-			
+
 			userToJson.setName(userLoged.getName());
 			userToJson.setEmail(userLoged.getEmail());
 			userToJson.setProfile(userLoged.getClass().getSimpleName().toString());
@@ -100,16 +99,17 @@ public class LoginRestService {
 	}
 
 	@POST
-	@Path("/administrador")
+	@Path("/administrator")
 	@PermitAll
-	public Response onPostRequestAdministrador(@FormParam("email") String email, @FormParam("password") String password) {
-		
+	public Response onPostRequestAdministrador(@FormParam("email") String email,
+			@FormParam("password") String password) {
+
 		System.out.println("email -> " + email);
 		System.out.println("password -> " + password);
 
-		Administrador administrador = new Administrador();
-		administrador.setEmail(email);
-		administrador.setPassword(password);
+		Administrator administrator = new Administrator();
+		administrator.setEmail(email);
+		administrator.setPassword(password);
 
 		// Verificar existencia
 		this.jpaUtil = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -121,18 +121,14 @@ public class LoginRestService {
 		try {
 
 			this.jpaUtil.beginTransaction();
-		
-			List<User> resultList = this.userDao.getByEmail(administrador);
-		
+
+			List<User> resultList = this.userDao.getByEmailAndPassword(administrator);
+
 			if (resultList.isEmpty()) {
-				System.out.println("cheguei aqui");
 				MyHttpSessionManager.getInstance().destoySessionUserLogged(session);
 				rb = rb.header(Constants.ACCESS_CONTROL_ALLOW_ORIGIN, Constants.ACCESS_CONTROL_ALLOW_ORIGIN_EXTRA);
 				rb = rb.status(Response.Status.UNAUTHORIZED);
-
 			} else {
-				System.out.println("usuario n existe");
-
 				User userLoged = resultList.get(0);
 				userLoged.setPassword(null);
 				MyHttpSessionManager.getInstance().setSessionUserLogged(session, userLoged);
@@ -143,7 +139,6 @@ public class LoginRestService {
 		} catch (Exception e) {
 
 			this.jpaUtil.rollBack();
-			System.out.println("execao");
 			MyHttpSessionManager.getInstance().destoySessionUserLogged(session);
 
 			rb = rb.header(Constants.ACCESS_CONTROL_ALLOW_ORIGIN, Constants.ACCESS_CONTROL_ALLOW_ORIGIN_EXTRA);
