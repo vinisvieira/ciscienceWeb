@@ -1,0 +1,100 @@
+<div class="row">
+	<ol id="breadcrumb">
+		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> <a href="#list-quiz"> Quiz </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> Novo Quiz </li>
+	</ol>
+	<h1 id="topTitle">
+		Nova Quiz
+	</h1>
+</div>
+
+<!-- Include Nav Menu -->
+<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'" class="row"></div>
+
+<!-- ROW -->
+<div class="row">
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+	<div class="col-md-8">
+
+		<h2>
+			Informe corretamente os dados abaixo.
+		</h2>
+
+		<p>
+			<i> * Campos obrigatórios </i>
+		</p>
+		<form name="formularioDeQuiz" method="post" ng-submit="newQuizCtrl.createQuiz()">
+		<div ng-show="newQuizCtrl.etapa == 1">
+		
+			
+			<div class="form-group">
+				<label>Nome: *</label>
+				<input type="text" ng-model="newQuizCtrl.quiz.name" class="form-control" required>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Concurso: *</label> <select
+							ng-model="newQuizCtrl.quiz.contest"
+							ng-options="contest.name for contest in newQuizCtrl.contest"
+							required>
+							<option value="">Selecione Concurso</option>
+						</select>
+					</div>
+				</div>
+			</div>	
+			
+			<div class="form-group">
+				<label>Data: *</label>
+				<input id ="dataQuiz" my-input-date ng-model="inewQuizCtrl.quiz.datequiz" class="form-control" required> 
+			</div>
+		
+			<div class="form-group">
+				<button type="button"  ng-click="newQuizCtrl.etapaOnclickAvanca()" class="btn btn-success">Avançar</button>
+			</div>
+			</div>
+			<div  ng-show="newQuizCtrl.etapa == 2">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Concurso: *</label> <select
+								ng-model="newQuizCtrl.quiz.contest"
+								ng-options="contest.name for contest in newQuizCtrl.contest"
+								required>
+							<option value="">Selecione Concurso</option>
+						</select>
+							
+					</div>
+				</div>
+			</div>	
+			
+			<div class="form-group">
+				<label>Data: *</label>
+				<input id ="dataQuiz" my-input-date ng-model="inewQuizCtrl.quiz.datequiz" class="form-control" required> 
+			</div>
+		
+			<div class="form-group">
+				<button type="button" class="btn btn-success"  ng-click="newQuizCtrl.etapaOnclickVoltar()" >voltar</button>
+				<button type="submit" class="btn btn-success">Avançar</button>
+			</div>
+			
+		
+			
+			
+			
+			</div>
+
+		</form>
+
+		<br><br><br><br><br><br><br><br><br><br>
+
+	</div>
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+</div>
