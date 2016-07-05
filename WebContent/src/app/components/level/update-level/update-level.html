@@ -1,0 +1,54 @@
+<div class="row">
+	<ol id="breadcrumb">
+		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> <a href="#list-level"> Level </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> Editar Level </li>
+	</ol>
+	<h1 id="topTitle">
+		Editar Level
+	</h1>
+</div>
+
+<!-- Include Nav Menu -->
+<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'" class="row"></div>
+
+<!-- ROW -->
+<div class="row">
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+	<div class="col-md-8">
+
+		<h2>
+			Informe corretamente os dados abaixo.
+		</h2>
+
+		<p>
+			<i> * Campos obrigatórios </i>
+		</p>
+		
+		<form name="formularioUpdateLevel" method="post" ng-submit="updateLevelCtrl.updateLevel()">
+
+			<div class="form-group">
+				<label>Nome do Level: *</label>
+				<input type="text" ng-model="updateLevelCtrl.level.name" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label>Tempo para Resposta: *</label>
+				<input type="text" ng-model="updateLevelCtrl.level.time" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Editar Level</button>
+			</div>
+
+		</form>
+
+		<br><br><br><br><br><br><br><br><br><br>
+
+	</div>
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+</div>

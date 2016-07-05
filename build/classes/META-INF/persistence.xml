@@ -29,7 +29,7 @@
 			
 			<property name="hibernate.connection.username" value="root" />
 			
-			<property name="hibernate.connection.password" value="root" />
+			<property name="hibernate.connection.password" value="" />
 
 			<!-- c3p0 -->
 			<property name="hibernate.c3p0.min_size" value="5" />

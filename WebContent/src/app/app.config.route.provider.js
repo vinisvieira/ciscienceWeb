@@ -20,19 +20,29 @@ app.config(function($routeProvider) {
 		templateUrl : 'src/app/components/student/update-student/update-student.html',
 		controller : 'UpdateStudentCtrl as updateStudentCtrl'
 	})
-	$routeProvider.when('/update-contest/:idContest', {
-		templateUrl : 'src/app/components/contest/update-contest/update-contest.html',
-		controller : 'UpdateContestCtrl as updateContestCtrl'
+	$routeProvider.when('/new-contest', {
+		templateUrl : 'src/app/components/contest/new-contest/new-contest.html',
+		controller : 'NewContestCtrl as newContestCtrl'
 	})
 	$routeProvider.when('/list-contest', {
 		templateUrl : 'src/app/components/contest/list-contest/list-contest.html',
 		controller : 'ContestListCtrl as contestListCtrl'
-	}).otherwise({
-		redirectTo : 'home'
 	})
-	$routeProvider.when('/new-contest', {
-		templateUrl : 'src/app/components/contest/new-contest/new-contest.html',
-		controller : 'NewContestCtrl as newContestCtrl'
+	$routeProvider.when('/update-contest/:idContest', {
+		templateUrl : 'src/app/components/contest/update-contest/update-contest.html',
+		controller : 'UpdateContestCtrl as updateContestCtrl'
+	})
+	$routeProvider.when('/new-level', {
+		templateUrl : 'src/app/components/level/new-level/new-level.html',
+		controller : 'NewLevelCtrl as newLevelCtrl'
+	})
+	$routeProvider.when('/list-level', {
+		templateUrl : 'src/app/components/level/list-level/list-level.html',
+		controller : 'ListLevelCtrl as listLevelCtrl'
+	})
+	$routeProvider.when('/update-level/:idLevel', {
+		templateUrl : 'src/app/components/level/update-level/update-level.html',
+		controller : 'UpdateLevelCtrl as updateLevelCtrl'
 	}).otherwise({
 		redirectTo : 'home'
 	})

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -16,7 +17,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import br.com.ciscience.model.dao.impl.ContestDAO;
 import br.com.ciscience.model.dao.impl.LevelDAO;
+import br.com.ciscience.model.entity.impl.Contest;
 import br.com.ciscience.model.entity.impl.Level;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
@@ -90,7 +93,7 @@ public class LevelRestService {
 			Level level = this.levelDAO.getById(Long.parseLong(id));
 
 			if (level != null) {
-				if (!levelDAO.levelExist(name) && !time.equals(null) && !time.trim().equals("")) {
+				if (!time.equals(null) && !time.trim().equals("")) {
 
 					level.setName(name);
 					level.setTime(Integer.parseInt(time));
@@ -223,6 +226,42 @@ public class LevelRestService {
 
 			this.simpleEntityManager.close();
 		}
+		return responseBuilder.build();
+	}
+	
+	@GET
+	@Path("/by-name")
+	@PermitAll
+	public Response search(@HeaderParam("name") String name) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.levelDAO = new LevelDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+		List<Level> levels;
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+			levels = this.levelDAO.listForName(name);
+
+			if (levels != null) {
+
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(levels));
+
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
 		return responseBuilder.build();
 	}
 }
