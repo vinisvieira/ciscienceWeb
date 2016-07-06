@@ -1,0 +1,80 @@
+<div class="row">
+	<ol id="breadcrumb">
+		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> <a href="#list-question"> Questões </a> </li>
+		<li> <i class="fa fa-angle-right"></i> </li>
+		<li> Nova Questão </li>
+	</ol>
+	<h1 id="topTitle">
+		Cadastre Nova Questão 
+	</h1>
+</div>
+
+<!-- Include Nav Menu -->
+<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'" class="row"></div>
+
+<!-- ROW -->
+<div class="row">
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+	<div class="col-md-8">
+
+		<h2>
+			Informe corretamente os dados abaixo.
+		</h2>
+
+		<p>
+			<i> * Campos obrigatórios </i>
+		</p>
+		
+		<form name="formularioEnvioQuestao" method="post" ng-submit="newQuestionCtrl.verificarExistencia()">
+	
+			<div class="form-group">
+				<label>Enunciado: *</label>
+				<input type="text" ng-model="newQuestionCtrl.question.text" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label>Valor da Questão: *</label>
+				<input type="number" ng-model="newQuestionCtrl.question.score" min="1" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label>Level: *</label> <select
+				ng-model="newQuestionCtrl.level"
+				ng-options="level.name for level in newQuestionCtrl.levels"
+				required>
+				<option value="">Selecione um Level</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>Concurso: *</label> <select
+				ng-model="newQuestionCtrl.contest"
+				ng-options="contest.name for contest in newQuestionCtrl.contests"
+				required>
+				<option value="">Selecione um Concurso</option>
+				</select>
+			</div>
+			<label>Alternativas: </label>
+			<div class="form-group" data-ng-repeat="choice in choices">
+	    		<input type="text" ng-model="choice.name" name="" placeholder="Digite a Alternativa">
+	    		<input type="checkbox" ng-click="newQuestionCtrl.questionTrue(question.id)">
+	    		<button ng-show="showAddChoice(choice)" ng-click="addNewChoice()">Add Outra Alternativa</button>
+			</div>
+			<div class="form-group">
+				<label>Imagens Para Questão: </label>
+				<input type="file" name="pic" accept="image/*">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Inserir Aluno</button>
+			</div>
+
+		</form>
+
+		<br><br><br><br><br><br><br><br><br><br>
+
+	</div>
+	
+	<div id="rowForNav" class="col-md-2"></div>
+
+</div>
