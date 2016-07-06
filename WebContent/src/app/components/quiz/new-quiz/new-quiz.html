@@ -59,34 +59,55 @@
 			</div>
 			</div>
 			<div  ng-show="newQuizCtrl.etapa == 2">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-							<label>Concurso: *</label> <select
-								ng-model="newQuizCtrl.quiz.contest"
-								ng-options="contest.name for contest in newQuizCtrl.contest"
-								required>
-							<option value="">Selecione Concurso</option>
-						</select>
-							
-					</div>
-				</div>
-			</div>	
-			
-			<div class="form-group">
-				<label>Data: *</label>
-				<input id ="dataQuiz" my-input-date ng-model="inewQuizCtrl.quiz.datequiz" class="form-control" required> 
+			<div class='row row-filter-list'>
+			<div class='col-xs-4 col-md-4'>
+				<label>Itens por página:</label>
+				<select class="form-control" ng-model="pageSizeOfGenericList">
+					<option value="5" ng-selected="selected">Exibir 5 por página</option>
+					<option value="10">Exibir 10 por página</option>
+					<option value="15">Exibir 15 por página</option>
+					<option value="20">Exibir 20 por página</option>
+				</select>
 			</div>
-		
+			<div class='col-xs-4 col-md-4'></div>
+			<div class='col-xs-4 col-md-4'>
+				<label>Procurar Pergunta:</label>
+				<input 
+					type="text" 
+					class="form-control" 
+					ng-keyup="filterList()"
+					ng-model='filterListInput'>
+			</div>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Enunciado</th>
+					<th>Selecione</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="question in dataOfGenericList | 
+					   startFrom:currentPageOfGenericList*pageSizeOfGenericList | 
+					   limitTo:pageSizeOfGenericList">
+					<td>{{question.id}}</td>
+					<td>{{question.text}}</td>
+					<td> <label>
+					<input type="checkbox" ng-click="newQuizCtrl.addQuestion(question)" />
+  					 </label></td>
+					
+				</tr>
+			</tbody>
+		</table>
+			
+					
 			<div class="form-group">
 				<button type="button" class="btn btn-success"  ng-click="newQuizCtrl.etapaOnclickVoltar()" >voltar</button>
 				<button type="submit" class="btn btn-success">Avançar</button>
 			</div>
-			
-		
-			
-			
-			
 			</div>
 
 		</form>

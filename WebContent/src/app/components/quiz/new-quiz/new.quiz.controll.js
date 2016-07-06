@@ -3,51 +3,22 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 
 	var self = this;
 	var appCtrl = $scope.appCtrl;
-	self.etapa =1;
+	self.etapa = 1;
 	
-	console.log(self.etapa);
+	self.questions = [];
+	
+	self.quiz;
 		
 
 	$scope.page = 'new-quiz';
 		
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listcontest();
-		
+		self.listQuestion();
 	}
+
 	
-//	// Verificar Existencia
-//	self.verificarExistencia = function() {
-//		
-//		appCtrl.loadSpiner(true);
-//		
-//		var studentObj = self.student;
-//		
-//		var req = {
-//			method: 'GET',
-//			url: $scope.applicationUrl + "api/student/by-email"+"?radom="+Math.random(),
-//			headers: {
-//				'email': studentObj.email
-//			}
-//		}
-//		$http(req).then(function(response){
-//			
-//			if( response.data.length == 0 ){
-//				//Chamar função para inserir
-//				self.inserirStudent();
-//			}else{
-//				appCtrl.loadSpiner(false);
-//				appCtrl.loadSnackbar("Já existe um Aluno com o email informado");
-//			}
-//
-//		}, function(response){
-//			//ERRO
-//			console.log("ERRO");
-//		});
-//
-//	}
-//	// ./Verificar Existencia
-	
-	// Inserir Local
+	// Inserir quiz
 	self.createQuiz = function (){
 
 		appCtrl.loadSpiner(true);
@@ -100,4 +71,59 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		
 		
 	}
+	// listar quest
+	self.listQuestion = function () {
+
+		appCtrl.loadSpiner(true);
+
+		$http.get( $scope.applicationUrl + "api/question"+"?radom="+Math.random() ).then(function(response) {
+
+			appCtrl.loadSpiner(false);
+
+			var arrayForNgRepeat = response.data;
+
+			//Ordenar Por Name -- INICIO
+			arrayForNgRepeat.sort(function(a,b) {
+			    if(a.name < b.name) return -1;
+			    if(a.name > b.name) return 1;
+			    return 0;
+			});
+			//Ordenar Por Name -- TÉRMINO
+
+			$scope.dataOfGenericList = arrayForNgRepeat;
+			$scope.initialDataOfGenericList = arrayForNgRepeat;
+
+		}, function(response) {
+			//ERRO
+			appCtrl.loadSpiner(false);
+			alert("Foi Erroo");
+			window.location.href = "#home";
+		});
+
+	}
+    self.addQuestion = function(question){
+    	
+    	var exists = false;
+    	
+    	if (self.questions.length == 0) {
+    		self.questions.push(question);
+    	} else {
+    		for (var i = 0; i < self.questions.length; i++) {
+    			if (self.questions[i].id == question.id) {
+    				self.questions.splice(i, 1);
+    				exists = true;
+    				break;
+    			}
+    		}
+    		
+    		if (!exists) {
+    			self.questions.push(question);
+    		}
+    		
+    	}
+    	
+    	console.log(self.questions);
+    	
+    };
+    	
 }]);
