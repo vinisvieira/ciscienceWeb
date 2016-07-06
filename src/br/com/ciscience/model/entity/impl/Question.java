@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -18,6 +19,7 @@ public class Question {
 	private List<Alternative> alternatives;
 	private Contest contest;
 	private Level level;
+	private MyFile myFile;
 	private boolean status;
 
 	@Id
@@ -73,6 +75,16 @@ public class Question {
 		this.level = level;
 	}
 
+	@OneToOne
+	@JoinColumn(name = "id_file")
+	public MyFile getMyFile() {
+		return myFile;
+	}
+
+	public void setMyFile(MyFile myFile) {
+		this.myFile = myFile;
+	}
+
 	public boolean getStatus() {
 		return status;
 	}
@@ -83,9 +95,8 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", text=" + text + ", score=" + score
-				+ ", alternatives=" + alternatives + ", contest=" + contest
-				+ ", level=" + level + ", status=" + status + "]";
+		return "Question [id=" + id + ", text=" + text + ", score=" + score + ", alternatives=" + alternatives
+				+ ", contest=" + contest + ", level=" + level + ", myFile=" + myFile + ", status=" + status + "]";
 	}
 
 	public boolean validateFields() {
