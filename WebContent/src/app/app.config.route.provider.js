@@ -50,4 +50,11 @@ app.config(function($routeProvider) {
 	}).otherwise({
 		redirectTo : 'home'
 	})
+	$routeProvider.when('/new-quiz', {
+		templateUrl : 'src/app/components/quiz/new-quiz/new-quiz.html',
+		controller : 'NewQuizCtrl as newQuizCtrl'
+	}).otherwise({
+		redirectTo : 'home'
+	})
+	
 });

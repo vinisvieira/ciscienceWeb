@@ -56,7 +56,8 @@
 			<thead>
 				<tr>
 					<th>Nome</th>
-					<th>#</th>
+					<th></th>
+					
 				</tr>
 			</thead>
 			<tbody> 
@@ -64,8 +65,10 @@
 					   startFrom:currentPageOfGenericList*pageSizeOfGenericList | 
 					   limitTo:pageSizeOfGenericList">
 					<td>{{contestList.name}}</td>
-					<td> 
 					
+					
+					<td> 
+						<a class="btn btn-primary" href="#update-contest/{{contestList.id}}"  >Editar</a>
 						<a class="btn btn-primary" ng-click= "contestListCtrl.inativaContestList(contestList.id)" >Cancelar Concurso</a>
 					
   					   <br/>
