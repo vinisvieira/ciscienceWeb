@@ -43,6 +43,10 @@ app.config(function($routeProvider) {
 	$routeProvider.when('/update-level/:idLevel', {
 		templateUrl : 'src/app/components/level/update-level/update-level.html',
 		controller : 'UpdateLevelCtrl as updateLevelCtrl'
+	})
+	$routeProvider.when('/new-question', {
+		templateUrl : 'src/app/components/question/new-question/new-question.html',
+		controller : 'NewQuestionCtrl as newQuestionCtrl'
 	}).otherwise({
 		redirectTo : 'home'
 	})
