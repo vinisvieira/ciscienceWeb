@@ -32,12 +32,15 @@ public class Constants {
 	public static final int PENDING = 1;
 	public static final int ACTIVE = 2;
 	
+	// Media Type
+	public static final String MEDIA_JPG = ".jpg";
+	
 	// Header's
 	public static final String ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
 	public static final String ACCESS_CONTROL_ALLOW_ORIGIN_EXTRA = "*";
 	
 	// File's URL
 	public static final String CATALINA_BASE = "catalina.base";
-	public static final String UPLOAD_PATH = "/webapps/data/bancodeperfis/";
+	public static final String UPLOAD_PATH = "/webapps/data/ciscience/";
 
 }
