@@ -68,7 +68,7 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		$http.get( $scope.applicationUrl + "api/level"+"?radom="+Math.random() ).then(function(response) {
 
 			appCtrl.loadSpiner(false);
-			self.level = response.data;
+			self.levels = response.data;
 			console.log(response.data);
 		}, function(response) {
 			//ERRO
@@ -79,7 +79,7 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 	}
 	self.etapaOnclickAvanca = function(){
 		
-		if(self.quiz.contest == null || self.quiz.name == null || self.quiz.date == null){
+		if(self.quiz.contest == null || self.quiz.name == null || self.quiz.date == null ){
 			appCtrl.loadSnackbar("<span style='color:#FFFD7C;'> Preencha Todos os Campos obrigatórios.</span> ");
 		}else{
 			self.listQuestion(); 
@@ -135,17 +135,23 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
     	var exists = false;
     	
     	if (self.questions.length == 0) {
+			var index = $scope.dataOfGenericList.indexOf(question);
+			$scope.dataOfGenericList[index].checked = true;
     		self.questions.push(question);
     	} else {
     		for (var i = 0; i < self.questions.length; i++) {
     			if (self.questions[i].id == question.id) {
     				self.questions.splice(i, 1);
+    				var index = $scope.dataOfGenericList.indexOf(question);
+    				$scope.dataOfGenericList[index].checked = false;
     				exists = true;
     				break;
     			}
     		}
     		
     		if (!exists) {
+				var index = $scope.dataOfGenericList.indexOf(question);
+				$scope.dataOfGenericList[index].checked = true;
     			self.questions.push(question);
     		}
     		
@@ -154,5 +160,28 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
     	console.log(self.questions);
     	
     };
+    self.selectionLevel = function(idLevel){
+    	var idContest = self.quiz.contest.id
+		
+		console.log(idContest);
+
+		var arrayForNgRepeat = $scope.dataOfGenericList;
+
+		//Ordenar Por Name -- INICIO
+		arrayForNgRepeat.sort(function(a,b) {
+		    if(a.name < b.name) return -1;
+		    if(a.name > b.name) return 1;
+		    return 0;
+		});
+		//Ordenar Por Name -- TÉRMINO
+		
+		//for
+
+		$scope.dataOfGenericList = arrayForNgRepeat;
+		
+		$scope.initialDataOfGenericList = arrayForNgRepeat;
+
+    	
+    }
     	
 }]);

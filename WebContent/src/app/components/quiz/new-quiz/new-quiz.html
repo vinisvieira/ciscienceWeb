@@ -79,7 +79,8 @@
 						<div class="form-group">
 							<label>Nivel: </label> <select class="form-control"
 								ng-model="newQuizCtrl.quiz.level"
-								ng-options="level.name for level in newQuizCtrl.level"
+								ng-options="level.name for level in newQuizCtrl.levels"
+								ng-change="newQuizCtrl.selectionLevel(newQuizCtrl.quiz.level.id)"	
 								>
 								<option value="">Selecione Nivel</option>
 							</select> 
@@ -110,7 +111,7 @@
 							<td>{{question.id}}</td>
 							<td>{{question.text}}</td>
 							<td><label> <input type="checkbox"
-									ng-click="newQuizCtrl.addQuestion(question)" />
+									ng-click="newQuizCtrl.addQuestion(question)" ng-checked={{question.checked}} />
 							</label></td>
 
 						</tr>
