@@ -69,3 +69,64 @@ app.directive('myInputInteger', function() {
 	}
 
 });
+app.directive('myNewInputDate', function() {
+	
+	return {
+	    require: 'ngModel',
+	    link: function(scope, el, attr, ngModel) {
+	      
+	      $(el).attr("maxlength","10");
+	      $(el).attr("autocomplete","off");
+	      $(el).attr("placeholder"," / /");
+	      $(el).attr("onkeyup","mascara(this, mdata)");
+	      $(el).focusout(function () {
+	    	  $(el).val( $(el).val() );
+	    	  var str = mdata( $(this).val() );;
+	    	  if(str.length<10){
+	    		  $(el).val('');
+	    	  }
+	      });
+	      if( $(el).attr("data-minimal-date-today") == "true" ){
+	    	  
+	    	  var today = new Date();
+	    	  var dd = today.getDate();
+	    	  var mm = today.getMonth(); //January is 0!
+	    	  var yyyy = today.getFullYear();
+	    	  
+	    	  $(el).datepicker({
+		    	  dateFormat: 'dd/mm/yy',
+		    	  dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+		    	  dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+		    	  dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+		    	  monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+		    	  monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+		    	  nextText: 'Próximo',
+		    	  prevText: 'Anterior',
+		    	  minDate: new Date(yyyy, mm, dd),
+		    	  onSelect: function(dateText) {
+		    		  scope.$apply(function() {
+		    			  ngModel.$setViewValue(dateText);
+		    		  });
+		    	  }
+		      });
+	      }else{
+	    	  $(el).datepicker({
+		    	  dateFormat: 'dd/mm/yy',
+		    	  dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+		    	  dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+		    	  dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+		    	  monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+		    	  monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+		    	  nextText: 'Próximo',
+		    	  prevText: 'Anterior',
+		    	  onSelect: function(dateText) {
+		    		  scope.$apply(function() {
+		    			  ngModel.$setViewValue(dateText);
+		    		  });
+		    	  }
+		      });
+	      }
+	    }
+	  };
+
+});

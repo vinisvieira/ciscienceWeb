@@ -77,7 +77,7 @@ public class QuestionRestService {
 					responseBuilder = ResponseBuilderGenerator
 							.createOKResponseTextPlain(responseBuilder);
 				} else {
-
+					
 					responseBuilder = ResponseBuilderGenerator
 							.createErrorResponse(responseBuilder);
 				}

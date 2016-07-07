@@ -4,9 +4,7 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 	var self = this;
 	var appCtrl = $scope.appCtrl;
 	self.etapa = 1;
-	
 	self.questions = [];
-	
 	self.quiz;
 		
 
@@ -14,13 +12,15 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listcontest();
-		self.listQuestion();
+		
 	}
 
 	
 	// Inserir quiz
 	self.createQuiz = function (){
-
+		self.quiz.question = self.questions;
+		console.log(self.quiz);
+		
 		appCtrl.loadSpiner(true);
 
 		$.post( $scope.applicationUrl + "api/quiz", self.quiz ).done( function(returnOfRequest) {
@@ -59,9 +59,35 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		});
 		
 	}
+	
+	// Listar level
+	self.listLevel = function (){
+
+		appCtrl.loadSpiner(true);
+		
+		$http.get( $scope.applicationUrl + "api/level"+"?radom="+Math.random() ).then(function(response) {
+
+			appCtrl.loadSpiner(false);
+			self.level = response.data;
+			console.log(response.data);
+		}, function(response) {
+			//ERRO
+			appCtrl.loadSpiner(false);
+			//window.location.href = "#home";
+		});
+		
+	}
 	self.etapaOnclickAvanca = function(){
 		
-		self.etapa= self.etapa+1;
+		if(self.quiz.contest == null || self.quiz.name == null || self.quiz.date == null){
+			appCtrl.loadSnackbar("<span style='color:#FFFD7C;'> Preencha Todos os Campos obrigatórios.</span> ");
+		}else{
+			self.listQuestion(); 
+			self.listLevel();
+			self.etapa= self.etapa+1;
+		}
+		
+		
 		
 		
 	}
@@ -73,10 +99,13 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 	}
 	// listar quest
 	self.listQuestion = function () {
-
+		var idContest = self.quiz.contest.id
+		
+		console.log(idContest);
+		
 		appCtrl.loadSpiner(true);
 
-		$http.get( $scope.applicationUrl + "api/question"+"?radom="+Math.random() ).then(function(response) {
+		$http.get( $scope.applicationUrl + "api/question/filter/"+idContest+"/0"+"?radom="+Math.random() ).then(function(response) {
 
 			appCtrl.loadSpiner(false);
 
