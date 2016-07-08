@@ -161,27 +161,43 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
     	
     };
     self.selectionLevel = function(idLevel){
-    	var idContest = self.quiz.contest.id
-		
-		console.log(idContest);
-
-		var arrayForNgRepeat = $scope.dataOfGenericList;
-
-		//Ordenar Por Name -- INICIO
-		arrayForNgRepeat.sort(function(a,b) {
-		    if(a.name < b.name) return -1;
-		    if(a.name > b.name) return 1;
-		    return 0;
-		});
-		//Ordenar Por Name -- TÉRMINO
-		
-		//for
-
-		$scope.dataOfGenericList = arrayForNgRepeat;
-		
-		$scope.initialDataOfGenericList = arrayForNgRepeat;
-
-    	
+    	console.log(idLevel);
+    	var arrayFilter = [];
+    	for (var int = 0; int < $scope.initialDataOfGenericList.length; int++) {
+    		
+    			if($scope.initialDataOfGenericList[int].level.id == idLevel){
+    				
+    				arrayFilter.push( $scope.initialDataOfGenericList[int] );
+    				
+    			}else if(idLevel == null){
+    				arrayFilter.push( $scope.initialDataOfGenericList[int] );
+    			}
+    			
+    		}
+    	$scope.currentPageOfList = 0;
+    	$scope.dataOfGenericList = arrayFilter;
+		    	
     }
+    
+   
+    
+    
+ // ----- Filter List
+    $scope.filterList = function () {
+    	var arrayFilter = [];
+    	for (var int = 0; int < $scope.initialDataOfGenericList.length; int++) {
+    		var sInput = $scope.filterListInput;
+    			sInput = sInput.toLowerCase();
+			var sComparative = "";
+			sComparative = $scope.initialDataOfGenericList[int].text;
+			sComparative = sComparative.toLowerCase();
+			if( sComparative.indexOf(sInput) != -1 ){
+	    		arrayFilter.push( $scope.initialDataOfGenericList[int] );
+			}
+		}
+    	$scope.currentPageOfList = 0;
+    	$scope.dataOfGenericList = arrayFilter;
+    }
+	// ----- ./Filter List
     	
 }]);
