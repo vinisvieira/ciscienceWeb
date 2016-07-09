@@ -12,19 +12,31 @@ app.controller('NewQuestionCtrl', ['$http', '$location', '$scope','$routeParams'
 		
 	}
 	
-	console.log("yes");
+	self.sendQuestion = function (){
+		
+		appCtrl.loadSpiner(true);
+		
+		var formData = new FormData();
+		self.question.level = self.level;
+		self.question.contest = self.contest;
+		self.question.alternatives = $scope.alternativas;
+		self.question.status = true;
+		console.log(JSON.stringify(self.question));
+			
+		formData.append("question",JSON.stringify(self.question));
+		formData.append("media", $("#inputFileImageQuestion")[0].files[0] );
 
-	$scope.choices = [{id: 'choice1'}];
-
-	$scope.addNewChoice = function() {
-	    var newItemNo = $scope.choices.length+1;
-	    $scope.choices.push({'id':'choice' +newItemNo});
-	};
-
-	$scope.showAddChoice = function(choice) {
-	   return choice.id === $scope.choices[$scope.choices.length-1].id;
-	   
-	};
+		var request = new XMLHttpRequest();
+		request.open("POST", "api/question");
+		//request.setRequestHeader('Content-type', 'charset=UTF-8')
+		request.onload = function () {
+			appCtrl.loadSpiner(false);
+			appCtrl.loadSnackbar("Questao <span style='color:#00ff18;'>Enviada</span> com sucesso.");
+			window.location.href = "#list-question";
+		};
+		request.send(formData);
+		
+	}
 	
 	// List Level
 	self.listLevel = function (){
@@ -64,4 +76,16 @@ app.controller('NewQuestionCtrl', ['$http', '$location', '$scope','$routeParams'
 		
 	}
 	// ./List Contest
+	
+	$scope.alternativas = [{"status":true, "answer":false}];
+
+	$scope.addNewAlternativa = function() {
+	    var newItemNo = $scope.alternativas.length+1;
+	    $scope.alternativas.push({"status":true, "answer":false});
+	};
+
+	$scope.showAddAlternativa = function (alternativa) {
+	   return alternativa.id === $scope.alternativas[$scope.alternativas.length-1].id;
+	};
+	
 }]);

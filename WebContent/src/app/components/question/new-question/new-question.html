@@ -29,7 +29,7 @@
 			<i> * Campos obrigatórios </i>
 		</p>
 		
-		<form name="formularioEnvioQuestao" method="post" ng-submit="newQuestionCtrl.verificarExistencia()">
+		<form name="formularioEnvioQuestao" method="post" ng-submit="newQuestionCtrl.sendQuestion()">
 	
 			<div class="form-group">
 				<label>Enunciado: *</label>
@@ -56,14 +56,14 @@
 				</select>
 			</div>
 			<label>Alternativas: </label>
-			<div class="form-group" data-ng-repeat="choice in choices">
-	    		<input type="text" ng-model="choice.name" name="" placeholder="Digite a Alternativa">
-	    		<input type="checkbox" ng-click="newQuestionCtrl.questionTrue(question.id)">
-	    		<button ng-show="showAddChoice(choice)" ng-click="addNewChoice()">Add Outra Alternativa</button>
+			<div class="form-group" data-ng-repeat="alternativa in alternativas">
+				<input type="radio" ng-model="alternativa.answer" name="alternativa" value="true">
+	   			<input type="text" ng-model="alternativa.text" placeholder="Digite alternativa">
+	    		<button type="button" ng-show="showAddAlternativa(alternativa)" class="btn btn-success" ng-click="addNewAlternativa()">Add outra Alternativa</button>
 			</div>
 			<div class="form-group">
 				<label>Imagens Para Questão: </label>
-				<input type="file" name="pic" accept="image/*">
+				<input type="file" id="inputFileImageQuestion" name="pic" accept="image/*">
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-success">Inserir Aluno</button>
