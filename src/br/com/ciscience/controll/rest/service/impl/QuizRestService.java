@@ -50,8 +50,11 @@ public class QuizRestService {
 			if (quiz.getQuestions().size() >= 10) {
 				if (!quiz.validateFields()) {
 					quiz.setDate(MyDateGenerator.getCurrentDate());
-					this.quizDAO.save(quiz);
-					this.simpleEntityManager.commit();
+					
+					System.out.println(quiz.toString());
+					
+//					this.quizDAO.save(quiz);
+//					this.simpleEntityManager.commit();
 
 					responseBuilder = ResponseBuilderGenerator
 							.createOKResponseTextPlain(responseBuilder);

@@ -14,16 +14,32 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		self.listcontest();
 		
 	}
+	self.dateFormatJson = function(){
+		
+		var dateJson = self.quiz.date;
+		var from = dateJson.split("/");
+		dateJson = from[2]+"-"+from[1]+"-"+from[0]+"T00:00:00Z";
+		self.quiz.date=dateJson;
+		
+		
+	}
 
 	
 	// Inserir quiz
 	self.createQuiz = function (){
-		self.quiz.question = self.questions;
-		console.log(self.quiz);
+		
+		self.quiz.questions = self.questions;
+		console.log(self.quiz.date);
+		console.log(JSON.stringify(self.quiz));
+		
+		
+		var ObjectQuiz = new Object();
+		ObjectQuiz.quiz = JSON.stringify(self.quiz);
 		
 		appCtrl.loadSpiner(true);
+		
 
-		$.post( $scope.applicationUrl + "api/quiz", self.quiz ).done( function(returnOfRequest) {
+		$.post( $scope.applicationUrl + "api/quiz", ObjectQuiz).done( function(returnOfRequest) {
 		//On Finish
 		}).done(function(returnOfRequest) {
 
@@ -84,6 +100,7 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		}else{
 			self.listQuestion(); 
 			self.listLevel();
+			self.dateFormatJson();
 			self.etapa= self.etapa+1;
 		}
 		
@@ -132,12 +149,13 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 	}
     self.addQuestion = function(question){
     	
+    	
     	var exists = false;
     	
     	if (self.questions.length == 0) {
 			var index = $scope.dataOfGenericList.indexOf(question);
 			$scope.dataOfGenericList[index].checked = true;
-    		self.questions.push(question);
+    		self.questions.push( "{id:"+question.id+"}");
     	} else {
     		for (var i = 0; i < self.questions.length; i++) {
     			if (self.questions[i].id == question.id) {
@@ -152,10 +170,15 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
     		if (!exists) {
 				var index = $scope.dataOfGenericList.indexOf(question);
 				$scope.dataOfGenericList[index].checked = true;
-    			self.questions.push(question);
+    			var objToPush = new Object()
+				self.questions.push("{id:"+question.id+"}");
     		}
     		
     	}
+    	
+    	
+    		
+    	
     	
     	console.log(self.questions);
     	
