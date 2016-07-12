@@ -29,44 +29,43 @@
 			<i> * Campos obrigatórios </i>
 		</p>
 		
-		<form name="formularioEnvioQuestao" method="post" ng-submit="newQuestionCtrl.verificarExistencia()">
+		<form name="formularioEnvioQuestao" method="post" ng-submit="newQuestionCtrl.sendQuestion()">
 	
 			<div class="form-group">
-				<label>Enunciado: *</label>
-				<input type="text" ng-model="newQuestionCtrl.question.text" class="form-control" required>
+				<textarea placeholder="Enunciado*" rows="4" cols="30" ng-model="newQuestionCtrl.question.text" class="form-control" required></textarea>
 			</div>
 			<div class="form-group">
-				<label>Valor da Questão: *</label>
-				<input type="number" ng-model="newQuestionCtrl.question.score" min="1" class="form-control" required>
+				<input type="number" placeholder="Valor da Questão*" ng-model="newQuestionCtrl.question.score" min="1" class="form-control" required>
 			</div>
 			<div class="form-group">
-				<label>Level: *</label> <select
-				ng-model="newQuestionCtrl.level"
-				ng-options="level.name for level in newQuestionCtrl.levels"
-				required>
-				<option value="">Selecione um Level</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label>Concurso: *</label> <select
+				<label>Concurso</label><br><select
 				ng-model="newQuestionCtrl.contest"
 				ng-options="contest.name for contest in newQuestionCtrl.contests"
 				required>
 				<option value="">Selecione um Concurso</option>
 				</select>
 			</div>
-			<label>Alternativas: </label>
-			<div class="form-group" data-ng-repeat="choice in choices">
-	    		<input type="text" ng-model="choice.name" name="" placeholder="Digite a Alternativa">
-	    		<input type="checkbox" ng-click="newQuestionCtrl.questionTrue(question.id)">
-	    		<button ng-show="showAddChoice(choice)" ng-click="addNewChoice()">Add Outra Alternativa</button>
+			<br>
+			<div class="form-group">
+				<label>Level</label><br><select
+				ng-model="newQuestionCtrl.level"
+				ng-options="level.name for level in newQuestionCtrl.levels"
+				required>
+				<option value="">Selecione um Level</option>
+				</select>
+			</div>
+			<br>
+			<div class="form-group" data-ng-repeat="alternativa in alternativas">
+				<input type="radio" ng-model="alternativa.answer" name="alternativa" value="true">
+	   			<input type="text" ng-model="alternativa.text" placeholder="Digite alternativa" size="60">
+	    		<button type="button" ng-show="showAddAlternativa(alternativa)" class="btn btn-success" ng-click="addNewAlternativa()">Add outra Alternativa</button>
 			</div>
 			<div class="form-group">
 				<label>Imagens Para Questão: </label>
-				<input type="file" name="pic" accept="image/*">
+				<input type="file" id="inputFileImageQuestion" name="pic" accept="image/*">
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-success">Inserir Aluno</button>
+				<button type="submit" class="btn btn-success">Inserir Questão</button>
 			</div>
 
 		</form>
