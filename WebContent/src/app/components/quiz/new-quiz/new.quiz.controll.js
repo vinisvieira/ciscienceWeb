@@ -155,10 +155,12 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
     	if (self.questions.length == 0) {
 			var index = $scope.dataOfGenericList.indexOf(question);
 			$scope.dataOfGenericList[index].checked = true;
-    		self.questions.push( "{id:"+question.id+"}");
+			var obj = new Object();
+			obj.id = question.id;
+    		self.questions.push(obj);
     	} else {
     		for (var i = 0; i < self.questions.length; i++) {
-    			if (self.questions[i].id == question.id) {
+    			if (self.questions == question.id) {
     				self.questions.splice(i, 1);
     				var index = $scope.dataOfGenericList.indexOf(question);
     				$scope.dataOfGenericList[index].checked = false;
@@ -170,8 +172,9 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
     		if (!exists) {
 				var index = $scope.dataOfGenericList.indexOf(question);
 				$scope.dataOfGenericList[index].checked = true;
-    			var objToPush = new Object()
-				self.questions.push("{id:"+question.id+"}");
+				var obj = new Object();
+				obj.id = question.id;
+	    		self.questions.push(obj);
     		}
     		
     	}

@@ -53,8 +53,8 @@ public class QuizRestService {
 					
 					System.out.println(quiz.toString());
 					
-//					this.quizDAO.save(quiz);
-//					this.simpleEntityManager.commit();
+					this.quizDAO.save(quiz);
+					this.simpleEntityManager.commit();
 
 					responseBuilder = ResponseBuilderGenerator
 							.createOKResponseTextPlain(responseBuilder);
@@ -63,6 +63,7 @@ public class QuizRestService {
 							.createErrorResponse(responseBuilder);
 				}
 			} else {
+				System.out.println("Menos de 10 Questões");
 				responseBuilder = ResponseBuilderGenerator
 						.createErrorResponse(responseBuilder);
 			}
