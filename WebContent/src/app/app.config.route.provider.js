@@ -47,8 +47,10 @@ app.config(function($routeProvider) {
 	$routeProvider.when('/new-question', {
 		templateUrl : 'src/app/components/question/new-question/new-question.html',
 		controller : 'NewQuestionCtrl as newQuestionCtrl'
-	}).otherwise({
-		redirectTo : 'home'
+	})
+	$routeProvider.when('/list-question', {
+		templateUrl : 'src/app/components/question/list-question/list-question.html',
+		controller : 'ListQuestionCtrl as listQuestionCtrl'
 	})
 	$routeProvider.when('/new-quiz', {
 		templateUrl : 'src/app/components/quiz/new-quiz/new-quiz.html',
