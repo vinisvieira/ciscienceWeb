@@ -41,7 +41,7 @@
 			margin: 0 0 0 17px;
 		}
 		.navbar-inverse{
-			background: #455a64!important;
+			background: #080808!important;
 			border: none;
 			color: white;
 		}
@@ -117,7 +117,7 @@ h1#topTitle.onScroll{
 
 /* Breadcrumb AND topTitle*/
 h1#topTitle{
-	background: #607d8b!important;
+	background: #333!important;
 	margin: 0;
 	padding: 0;
 	color: white;
@@ -133,7 +133,7 @@ ol#breadcrumb{
 	clear: both;
 	white-space: nowrap;
 	color: white;
-	background: #607d8b!important;
+	background: #333!important;
 }
 ol#breadcrumb li{
 	display: inline-block;
@@ -165,7 +165,7 @@ ol#breadcrumb li a:hover{
 /*NavBar*/
 #navbar{
 	text-transform: uppercase;
-	background: #607d8b!important;
+	background: #333!important;
 }
 #navbar a{
 	color: white;
@@ -327,4 +327,25 @@ footer .row{
 footer .mega-footer{
 	background: #616161;	
 	font-size: 12px;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #ce6031;
+    border-color: #ce6031;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #e3a624!important;
+    border-color: #e3a624!important;
+}
+.btn-success {
+    color: #fff;
+    background-color: #ce6031;
+    border-color: #ce6031;
+}
+
+.btn-success:hover{
+    color: #fff;
+    background-color: #e3a624!important;
+    border-color: #e3a624!important;
 }
