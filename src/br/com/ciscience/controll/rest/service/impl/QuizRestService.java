@@ -49,7 +49,6 @@ public class QuizRestService {
 
 			if (quiz.getQuestions().size() >= 10) {
 				if (!quiz.validateFields()) {
-					quiz.setDate(MyDateGenerator.getCurrentDate());
 					
 					System.out.println(quiz.toString());
 					
@@ -101,6 +100,7 @@ public class QuizRestService {
 					question.setAlternatives(question.getAlternatives());
 					question.setContest(question.getContest());
 					question.setLevel(question.getLevel());
+					question.setMyFile(null);
 				}
 
 			}
@@ -109,6 +109,7 @@ public class QuizRestService {
 					responseBuilder, JSONUtil.objectToJSON(quizs));
 
 		} catch (Exception e) {
+			System.out.println("Exception");
 			this.simpleEntityManager.rollBack();
 			responseBuilder = ResponseBuilderGenerator
 					.createErrorResponse(responseBuilder);

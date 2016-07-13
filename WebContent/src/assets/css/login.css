@@ -6,7 +6,7 @@ section#login{
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-image: url('../img/bg-login.jpg');
+	background-image: url('../img/bg-login.png');
 	background-position: center;
 	background-size: 100%;
 	z-index: 10000;

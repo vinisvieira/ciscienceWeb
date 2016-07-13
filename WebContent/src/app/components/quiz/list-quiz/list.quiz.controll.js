@@ -38,6 +38,7 @@ app.controller('QuizListCtrl', ['$http', '$location', '$scope','$routeParams', f
 			appCtrl.loadSpiner(false);
 
 			var arrayForNgRepeat = response.data;
+			console.log("ok no response data")
 			
 			//Ordenar Por Name -- INICIO
 			arrayForNgRepeat.sort(function(a,b) {

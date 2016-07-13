@@ -58,5 +58,11 @@ app.config(function($routeProvider) {
 	}).otherwise({
 		redirectTo : 'home'
 	})
+	$routeProvider.when('/list-quiz', {
+		templateUrl : 'src/app/components/quiz/list-quiz/list-quiz.html',
+		controller : 'QuizListCtrl as quizListCtrl'
+	}).otherwise({
+		redirectTo : 'home'
+	})
 	
 });

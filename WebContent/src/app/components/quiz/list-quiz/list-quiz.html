@@ -2,7 +2,7 @@
 	<ol id="breadcrumb">
 		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
 		<li> <i class="fa fa-angle-right"></i> </li>
-		<li> Concurso </li>
+		<li> Quiz </li>
 	</ol>
 	<h1 id="topTitle">
 		Quiz
@@ -14,7 +14,7 @@
 
 <!-- ROW -->
 <div class="row">
-
+home
 	<div id="rowForNav" class="col-md-2"></div>
 
 	<div class="col-md-8">
@@ -25,7 +25,7 @@
 
 		<div class='row row-buttons-list'>
 			<div class='col-xs-12 col-md-12'>
-				<a href="#new-contest" class="btn btn-primary">
+				<a href="#new-quiz" class="btn btn-primary">
 					<i class="fa fa-plus"></i> Nova Quiz 
 				</a>
 			</div>
@@ -55,7 +55,9 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th>Id</th>
 					<th>Nome</th>
+					<th>Data</th>
 					<th></th>
 					
 				</tr>
@@ -64,7 +66,9 @@
 				<tr ng-repeat="quizList in dataOfGenericList | 
 					   startFrom:currentPageOfGenericList*pageSizeOfGenericList | 
 					   limitTo:pageSizeOfGenericList">
+					<td>{{quizList.id}}</td>
 					<td>{{quizList.name}}</td>
+					<td>{{quizList.date}}</td>
 					
 					
 					<td> 
