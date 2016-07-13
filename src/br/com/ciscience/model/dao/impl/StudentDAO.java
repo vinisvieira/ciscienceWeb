@@ -44,4 +44,11 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 
 		return query.getResultList();
 	}
+	public List<Student> listarRanking() {
+		EntityManager entityManager = super.getEntityManager();
+		
+		TypedQuery<Student> query = entityManager
+				.createQuery("SELECT u FROM Student u WHERE u.status = true ORDER BY u.score DESC ",Student.class);
+		return query.getResultList();
+	}
 }

@@ -18,7 +18,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import br.com.ciscience.model.dao.impl.ContestDAO;
 import br.com.ciscience.model.dao.impl.StudentDAO;
+import br.com.ciscience.model.entity.impl.Contest;
 import br.com.ciscience.model.entity.impl.Quiz;
 import br.com.ciscience.model.entity.impl.Student;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
@@ -33,6 +35,7 @@ public class StudentRestService {
 
 	private JPAUtil simpleEntityManager;
 	private StudentDAO studentDAO;
+	private ContestDAO contestDAO;
 
 	@Context
 	private HttpServletRequest servletRequest;
@@ -155,24 +158,29 @@ public class StudentRestService {
 	@POST
 	@PermitAll
 	public Response create(@FormParam("name") String name,
-			@FormParam("cpf") String cpf, @FormParam("email") String email,
-			@FormParam("birthday") String birthday,
-			@FormParam("password") String password,
-			@FormParam("confirmPassword") String confirmPassword) {
+						   @FormParam("cpf") String cpf, 
+						   @FormParam("email") String email,
+						   @FormParam("concurso") String idContest,
+						   @FormParam("birthday") String birthday,
+						   @FormParam("password") String password,
+						   @FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(
-				this.simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		this.contestDAO = new ContestDAO(simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-
+		
 		this.simpleEntityManager.beginTransaction();
 
 		try {
 
+			Contest contest = this.contestDAO.getById(Long.parseLong(idContest));
+			
 			Student student = new Student();
 			student.setName(name);
 			student.setCpf(StringUtil.setCpfUnformatted(cpf));
 			student.setEmail(email);
+			student.setContest(contest);
 			student.setBirthday(MyDateGenerator.dateStringToSql(birthday));
 			student.setPassword(StringUtil.SHA1(password));
 			student.setScore(0L);
@@ -328,6 +336,44 @@ public class StudentRestService {
 		try {
 
 			List<Student> students = this.studentDAO.listarPorEmail(email);
+
+			if (students != null) {
+
+				responseBuilder = ResponseBuilderGenerator
+						.createOKResponseJSON(responseBuilder,
+								JSONUtil.objectToJSON(students));
+			} else {
+				responseBuilder = ResponseBuilderGenerator
+						.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator
+					.createErrorResponse(responseBuilder);
+
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+	}
+	@GET
+	@Path("/ranking")
+	@PermitAll
+	public Response listByRanking() {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+
+			List<Student> students = this.studentDAO.listarRanking();
 
 			if (students != null) {
 
