@@ -36,7 +36,7 @@ public class ContestRestService {
 	
 	@GET
 	@Path("/by-name")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response search(@HeaderParam("name") String name) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -71,7 +71,7 @@ public class ContestRestService {
 	}
 	@GET
 	@Path("/active")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listActive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -110,7 +110,7 @@ public class ContestRestService {
 
 	@GET
 	@Path("/inactive")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listInactive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -149,7 +149,7 @@ public class ContestRestService {
 
 	@GET
 	@Path("/{id}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response getByID(@PathParam("id") String id) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -178,7 +178,7 @@ public class ContestRestService {
 	}
 
 	@POST
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response create(@FormParam("name") String name) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -222,7 +222,7 @@ public class ContestRestService {
 
 	@DELETE
 	@Path("/{idcontest}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response delete(@PathParam("idcontest") Long idcontest) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -260,7 +260,7 @@ public class ContestRestService {
 
 	@PUT
 	@Path("/{id}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response update(@PathParam("id") Long id, @FormParam("name") String name) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);

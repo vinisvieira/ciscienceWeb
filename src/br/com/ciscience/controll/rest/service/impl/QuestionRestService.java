@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -57,7 +58,7 @@ public class QuestionRestService {
 	private HttpServletResponse servletResponse;
 
 	@POST
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response create(@Context HttpServletRequest request) {
 		ResponseBuilder responseBuilder = Response.noContent();
 
@@ -172,7 +173,7 @@ public class QuestionRestService {
 	}
 
 	/*@POST
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response create(@FormParam("question") String questionJson) {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.mQuestionDAO = new QuestionDAO(
@@ -333,7 +334,7 @@ public class QuestionRestService {
 	}
 */
 	@GET
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listQuestion() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -378,7 +379,7 @@ public class QuestionRestService {
 
 	@GET
 	@Path("/filter/{contest}/{level}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listFilter(@PathParam("contest") Long idContest,
 			@PathParam("level") Long idLevel) {
 
@@ -443,7 +444,7 @@ public class QuestionRestService {
 	}
 
 	@GET
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
 

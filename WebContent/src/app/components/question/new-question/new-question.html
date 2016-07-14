@@ -43,7 +43,7 @@
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
-						<label>Concurso</label><br> <select
+						<label>Concurso</label><br> <select class="form-control"
 							ng-model="newQuestionCtrl.contest"
 							ng-options="contest.name for contest in newQuestionCtrl.contests"
 							required>
@@ -52,7 +52,7 @@
 					</div>
 					<br>
 					<div class="form-group">
-						<label>Level</label><br> <select
+						<label>Level</label><br> <select class="form-control"
 							ng-model="newQuestionCtrl.level"
 							ng-options="level.name for level in newQuestionCtrl.levels"
 							required>

@@ -2,10 +2,10 @@
 	<ol id="breadcrumb">
 		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
 		<li> <i class="fa fa-angle-right"></i> </li>
-		<li> Levels </li>
+		<li> Nivel </li>
 	</ol>
 	<h1 id="topTitle">
-		Levels
+		Nivel
 	</h1>
 </div>
 
@@ -20,13 +20,13 @@
 	<div class="col-md-8">
 
 		<h2>
-			Administre os Levels das Questões.
+			Administre os nivel das Questões.
 		</h2>
 
 		<div class='row row-buttons-list'>
 			<div class='col-xs-12 col-md-12'>
 				<a href="#new-level" class="btn btn-primary">
-					<i class="fa fa-plus"></i> Novo Level 
+					<i class="fa fa-plus"></i> Novo Nivel 
 				</a>
 			</div>
 		</div>
@@ -68,10 +68,9 @@
 					<td>{{level.name}}</td>
 					<td>{{level.time}}</td>
 					<td> 
-						<a class="btn btn-primary" href="#update-level/{{level.id}}" >Atualizar/Detalhe</a>
-					 <label>Ativo:
-    					  	<input type="checkbox" ng-click="listLevelCtrl.inativaLevel(level.id)" ng-checked="{{level.status}}">
-  					 </label><br/>
+						<a class="btn btn-primary" href="#update-level/{{level.id}}" >Editar</a>
+						<a class="btn btn-primary" ng-click= "listLevelCtrl.inativaLevel(level.id)" >Cancelar</a>
+					
 					
 					</td>
 				</tr>

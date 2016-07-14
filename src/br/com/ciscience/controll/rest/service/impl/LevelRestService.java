@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -36,7 +37,7 @@ public class LevelRestService {
 	private HttpServletRequest servletRequest;
 
 	@POST
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response create(@FormParam("name") String name, @FormParam("time") String time) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -78,8 +79,8 @@ public class LevelRestService {
 	}
 
 	@PUT
-	@PermitAll
 	@Path("/{id}")
+	@RolesAllowed({ "Administrator" })
 	public Response update(@PathParam("id") String id, @FormParam("name") String name, @FormParam("time") String time) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -124,8 +125,8 @@ public class LevelRestService {
 	}
 
 	@DELETE
-	@PermitAll
 	@Path("/{id}")
+	@RolesAllowed({ "Administrator" })
 	public Response delete(@PathParam("id") String id) {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.levelDAO = new LevelDAO(simpleEntityManager.getEntityManager());
@@ -159,7 +160,7 @@ public class LevelRestService {
 	}
 
 	@GET
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listLevel() {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.levelDAO = new LevelDAO(simpleEntityManager.getEntityManager());
@@ -198,8 +199,8 @@ public class LevelRestService {
 	}
 
 	@GET
-	@PermitAll
 	@Path("/{id}")
+	@RolesAllowed({ "Administrator" })
 	public Response getById(@PathParam("id") String id) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -231,7 +232,7 @@ public class LevelRestService {
 	
 	@GET
 	@Path("/by-name")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response search(@HeaderParam("name") String name) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
