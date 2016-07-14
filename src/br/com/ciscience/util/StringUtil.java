@@ -17,20 +17,16 @@ public class StringUtil {
 	 */
 	public static boolean validEmail(String s) {
 		String regExpn = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
-				+ "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-				+ "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-				+ "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-				+ "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+				+ "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?" + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+				+ "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?" + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
 				+ "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
 
-		return Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE).matcher(s)
-				.matches();
+		return Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE).matcher(s).matches();
 	}
 
 	public static boolean validPassword(String password, String confirmPassword)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		return StringUtil.SHA1(password).equals(
-				StringUtil.SHA1(confirmPassword));
+		return StringUtil.SHA1(password).equals(StringUtil.SHA1(confirmPassword));
 	}
 
 	public static int search(List<String> pathsAdministradorForGet, String str) {
@@ -64,8 +60,7 @@ public class StringUtil {
 	 * @throws NoSuchAlgorithmException
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String SHA1(String text) throws NoSuchAlgorithmException,
-			UnsupportedEncodingException {
+	public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md;
 		md = MessageDigest.getInstance("SHA-1");
 		byte[] sha1hash = new byte[40];
@@ -80,8 +75,19 @@ public class StringUtil {
 
 	public static String getCpfFormatted(String cpf) {
 
-		return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.'
-				+ cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
+		return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
+	}
+
+	public static String generateRandomicPassword(String firstObj, String secondObj)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		String oldValue = secondObj + firstObj;
+		
+		MessageDigest md;
+		md = MessageDigest.getInstance("SHA-1");
+		byte[] sha1hash = new byte[40];
+		md.update(oldValue.getBytes("iso-8859-1"), 0, oldValue.length());
+		sha1hash = md.digest();
+		return convertToHex(sha1hash);
 	}
 
 }

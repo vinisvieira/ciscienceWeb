@@ -17,7 +17,7 @@ public class Constants {
 	public static String SESSION_USER_LOGED_TYPE = "userLogedType";
 	
 	public static final String ROBO_MAIL = "email";
-	public static final String ROBO_MAIL_PASS = "senha";
+	public static final String ROBO_MAIL_PASS = "password";
 
 	// Entity Status
 	public static final boolean ACTIVE_ENTITY = true;

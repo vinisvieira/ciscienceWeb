@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import br.com.ciscience.model.entity.impl.MyMail;
 
 public class MyMailService {
+
 	private static final String HOST = "smtp.gmail.com";
 	private static final int PORT = 465;
 	private static final boolean AUTH = true;

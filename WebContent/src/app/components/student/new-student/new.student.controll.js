@@ -7,7 +7,7 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 	$scope.page = 'new-student';
 		
 	$scope.onLoadHtmlFileInNgView = function () {
-		self.listcontest();
+		self.listContest();
 	}
 	
 	// Verificar Existencia
@@ -65,4 +65,23 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 		});
 	}
 	// ./Inserir Local
+	
+	// List Contest
+	self.listContest = function (){
+
+		appCtrl.loadSpiner(true);
+		
+		$http.get( $scope.applicationUrl + "api/contest/active"+"?radom="+Math.random() ).then(function(response) {
+
+			appCtrl.loadSpiner(false);
+			self.contests = response.data;
+
+		}, function(response) {
+			//ERRO
+			appCtrl.loadSpiner(false);
+			window.location.href = "#home";
+		});
+		
+	}
+	// ./List Contest
 }]);
