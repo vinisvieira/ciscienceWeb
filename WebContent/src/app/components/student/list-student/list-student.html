@@ -73,11 +73,9 @@
 					<td>{{student.birthday}}</td>
 					<td>{{student.score}}</td>
 					<td> 
-						<a class="btn btn-primary" href="#update-student/{{student.id}}" >Atualizar/Detalhe</a>
-					
-  					    <label>Ativo:
-    					  	<input type="checkbox" ng-click="listStudentCtrl.inativaStudent(student.id)" ng-checked="{{student.status}}">
-  					   </label><br/>
+						<a class="btn btn-primary" href="#update-student/{{student.id}}" >Editar</a>
+						<a class="btn btn-primary" ng-click= "listStudentCtrl.inativaStudent(student.id)" >Desativar</a>
+  					  
   					  
 					</td>
 				 </tr>

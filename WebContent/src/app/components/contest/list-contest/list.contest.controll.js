@@ -17,7 +17,7 @@ app.controller('ContestListCtrl', ['$http', '$location', '$scope','$routeParams'
     		var sInput = $scope.filterListInput;
     			sInput = sInput.toLowerCase();
 			var sComparative = "";
-			sComparative = $scope.initialDataOfGenericList[int].contestList.name;
+			sComparative = $scope.initialDataOfGenericList[int].name;
 			sComparative = sComparative.toLowerCase();
 			if( sComparative.indexOf(sInput) != -1 ){
 	    		arrayFilter.push( $scope.initialDataOfGenericList[int] );

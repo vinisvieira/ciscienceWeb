@@ -70,10 +70,9 @@
 					<td>{{question.contest.name}}</td>
 					<td>{{question.level.name}}</td>
 					<td> 
-						<a class="btn btn-primary" href="#update-question/{{question.id}}" disabled >Atualizar/Detalhe</a>
-					 <label>Ativo:
-    					  	<input type="checkbox" ng-click="listQuestionCtrl.inativaQuestion(question.id)" ng-checked="{{question.status}}" disabled >
-  					 </label><br/>
+						<a class="btn btn-primary" href="#update-question/{{question.id}}" disabled >Editar</a>
+						<a class="btn btn-primary" ng-click= "listQuestionCtrl.inativaQuestion(question.id)" >Cancelar</a>
+					
 					
 					</td>
 				</tr>
