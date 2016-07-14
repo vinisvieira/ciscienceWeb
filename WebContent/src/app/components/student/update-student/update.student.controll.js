@@ -10,6 +10,7 @@ app.controller('UpdateStudentCtrl', ['$http', '$location', '$scope', '$routePara
 		
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.carregarStudentPorId();
+		self.listcontest();
 	}
 	
 	// editar Local
@@ -26,6 +27,7 @@ app.controller('UpdateStudentCtrl', ['$http', '$location', '$scope', '$routePara
 		$http.put($scope.applicationUrl + "api/student/" + idStudent, $.param({name: self.student.name,
 																   cpf: self.student.cpf,
 																   email: self.student.email,
+																   contest: self.student.contest,
 																   birthday: self.student.birthday,
 																   password: self.student.password,
 																   confirmPassword: self.student.confirmPassword}), config).then(function (response) {
@@ -65,5 +67,4 @@ app.controller('UpdateStudentCtrl', ['$http', '$location', '$scope', '$routePara
 		});
 		
 	}
-	
 }]);

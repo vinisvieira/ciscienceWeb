@@ -158,29 +158,25 @@ public class StudentRestService {
 	@POST
 	@PermitAll
 	public Response create(@FormParam("name") String name,
-						   @FormParam("cpf") String cpf, 
-						   @FormParam("email") String email,
-						   @FormParam("concurso") String idContest,
-						   @FormParam("birthday") String birthday,
-						   @FormParam("password") String password,
-						   @FormParam("confirmPassword") String confirmPassword) {
+			@FormParam("cpf") String cpf, @FormParam("email") String email,
+			@FormParam("birthday") String birthday,
+			@FormParam("password") String password,
+			@FormParam("confirmPassword") String confirmPassword) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
-		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
-		this.contestDAO = new ContestDAO(simpleEntityManager.getEntityManager());
+		this.studentDAO = new StudentDAO(
+				this.simpleEntityManager.getEntityManager());
+
 		ResponseBuilder responseBuilder = Response.noContent();
-		
+
 		this.simpleEntityManager.beginTransaction();
 
 		try {
 
-			Contest contest = this.contestDAO.getById(Long.parseLong(idContest));
-			
 			Student student = new Student();
 			student.setName(name);
 			student.setCpf(StringUtil.setCpfUnformatted(cpf));
 			student.setEmail(email);
-			student.setContest(contest);
 			student.setBirthday(MyDateGenerator.dateStringToSql(birthday));
 			student.setPassword(StringUtil.SHA1(password));
 			student.setScore(0L);
@@ -203,9 +199,8 @@ public class StudentRestService {
 					responseBuilder = ResponseBuilderGenerator
 							.createErrorResponse(responseBuilder);
 				}
-
 			} else {
-				System.out.println("erro no estudante existe");
+				System.out.println("erro estudante existe");
 				responseBuilder = ResponseBuilderGenerator
 						.createErrorResponse(responseBuilder);
 			}
@@ -277,6 +272,7 @@ public class StudentRestService {
 		this.studentDAO = new StudentDAO(
 				this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
+
 		this.simpleEntityManager.beginTransaction();
 
 		try {
@@ -359,6 +355,7 @@ public class StudentRestService {
 
 		return responseBuilder.build();
 	}
+
 	@GET
 	@Path("/ranking")
 	@PermitAll

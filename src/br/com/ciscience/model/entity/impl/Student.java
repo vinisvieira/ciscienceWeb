@@ -11,7 +11,6 @@ public class Student extends User {
 
 	private List<Quiz> quiz;
 	private Long score;
-	private Contest contest;
 
 	@ManyToMany
 	public List<Quiz> getQuiz() {
@@ -29,20 +28,10 @@ public class Student extends User {
 	public void setScore(Long score) {
 		this.score = score;
 	}
-	
-	@OneToOne
-	public Contest getContest() {
-		return contest;
-	}
-
-	public void setContest(Contest contest) {
-		this.contest = contest;
-	}
 
 	@Override
 	public String toString() {
-		return "Student [quiz=" + quiz + ", score=" + score + ", contest="
-				+ contest + "]";
+		return "Student [quiz=" + quiz + ", score=" + score + "]";
 	}
-	
+
 }

@@ -7,8 +7,7 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 	$scope.page = 'new-student';
 		
 	$scope.onLoadHtmlFileInNgView = function () {
-	
-		
+		self.listcontest();
 	}
 	
 	// Verificar Existencia
@@ -29,7 +28,7 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 			
 			if( response.data.length == 0 ){
 				//Chamar função para inserir
-				self.inserirStudent();
+				self.insertStudent();
 			}else{
 				appCtrl.loadSpiner(false);
 				appCtrl.loadSnackbar("Já existe um Aluno com o email informado");
@@ -44,11 +43,14 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 	// ./Verificar Existencia
 	
 	// Inserir Local
-	self.inserirStudent = function (){
-
+	self.insertStudent = function (){
+		
+		self.student.contest = self.contests;
+		console.log(self.student);
+		console.log(self.student.contest);
 		appCtrl.loadSpiner(true);
-
-		$.post( $scope.applicationUrl + "api/student", self.student ).done( function(returnOfRequest) {
+	
+		$.post( $scope.applicationUrl + "api/student", self.student).done( function(returnOfRequest) {
 		//On Finish
 		}).done(function(returnOfRequest) {
 
@@ -59,7 +61,7 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 		}).fail(function() {
 
 			appCtrl.loadSpiner(false);
-			appCtrl.loadSnackbar("<span style='color:#ff0000;'>FALHA.</span> Entre em contato com o Administrador do Sistema");
+			appCtrl.loadSnackbar("<span style='color:#ff0000;'>FALHA.</span> Entre em contato com TwoDev");
 			window.location.href = "#home";
 		
 		}).always(function() {
