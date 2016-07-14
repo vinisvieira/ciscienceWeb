@@ -1,79 +1,91 @@
 <div class="row">
 	<ol id="breadcrumb">
-		<li> <a href="#home"> <i class="fa fa-home"></i> Página Inicial </a> </li>
-		<li> <i class="fa fa-angle-right"></i> </li>
-		<li> <a href="#list-question"> Questões </a> </li>
-		<li> <i class="fa fa-angle-right"></i> </li>
-		<li> Nova Questão </li>
+		<li><a href="#home"> <i class="fa fa-home"></i> Página
+				Inicial
+		</a></li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li><a href="#list-question"> Questões </a></li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li>Nova Questão</li>
 	</ol>
-	<h1 id="topTitle">
-		Cadastre Nova Questão 
-	</h1>
+	<h1 id="topTitle">Cadastre Nova Questão</h1>
 </div>
 
 <!-- Include Nav Menu -->
-<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'" class="row"></div>
+<div id="rowForNav" ng-include="'src/app/shared/template/nav-menu.html'"
+	class="row"></div>
 
 <!-- ROW -->
 <div class="row">
-	
+
 	<div id="rowForNav" class="col-md-2"></div>
 
 	<div class="col-md-8">
 
-		<h2>
-			Informe corretamente os dados abaixo.
-		</h2>
+		<h2>Informe corretamente os dados abaixo.</h2>
 
 		<p>
 			<i> * Campos obrigatórios </i>
 		</p>
-		
-		<form name="formularioEnvioQuestao" method="post" ng-submit="newQuestionCtrl.sendQuestion()">
-	
+
+		<form name="formularioEnvioQuestao" method="post"
+			ng-submit="newQuestionCtrl.sendQuestion()">
 			<div class="form-group">
-				<textarea placeholder="Enunciado*" rows="4" cols="30" ng-model="newQuestionCtrl.question.text" class="form-control" required></textarea>
+				<textarea placeholder="Enunciado*" rows="4" cols="30"
+					ng-model="newQuestionCtrl.question.text" class="form-control"
+					required></textarea>
 			</div>
 			<div class="form-group">
-				<input type="number" placeholder="Valor da Questão*" ng-model="newQuestionCtrl.question.score" min="1" class="form-control" required>
+				<input type="number" placeholder="Valor da Questão*"
+					ng-model="newQuestionCtrl.question.score" min="1"
+					class="form-control" required>
 			</div>
-			<div class="form-group">
-				<label>Concurso</label><br><select
-				ng-model="newQuestionCtrl.contest"
-				ng-options="contest.name for contest in newQuestionCtrl.contests"
-				required>
-				<option value="">Selecione um Concurso</option>
-				</select>
-			</div>
-			<br>
-			<div class="form-group">
-				<label>Level</label><br><select
-				ng-model="newQuestionCtrl.level"
-				ng-options="level.name for level in newQuestionCtrl.levels"
-				required>
-				<option value="">Selecione um Level</option>
-				</select>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Concurso</label><br> <select
+							ng-model="newQuestionCtrl.contest"
+							ng-options="contest.name for contest in newQuestionCtrl.contests"
+							required>
+							<option value="">Selecione um Concurso</option>
+						</select>
+					</div>
+					<br>
+					<div class="form-group">
+						<label>Level</label><br> <select
+							ng-model="newQuestionCtrl.level"
+							ng-options="level.name for level in newQuestionCtrl.levels"
+							required>
+							<option value="">Selecione um Level</option>
+						</select>
+					</div>
+				</div>
 			</div>
 			<br>
 			<div class="form-group" data-ng-repeat="alternativa in alternativas">
-				<input type="radio" ng-model="alternativa.answer" name="alternativa" value="true">
-	   			<input type="text" ng-model="alternativa.text" placeholder="Digite alternativa" size="60">
-	    		<button type="button" ng-show="showAddAlternativa(alternativa)" class="btn btn-success" ng-click="addNewAlternativa()">Add outra Alternativa</button>
+				<input type="radio" ng-model="alternativa.answer" name="alternativa"
+					value="true"> <input type="text"
+					ng-model="alternativa.text" placeholder="Digite alternativa"
+					size="60">
+				<button type="button" ng-show="showAddAlternativa(alternativa)"
+					class="btn btn-success" ng-click="addNewAlternativa()">Add
+					outra Alternativa</button>
 			</div>
 			<div class="form-group">
-				<label>Imagens Para Questão: </label>
-				<input type="file" id="inputFileImageQuestion" name="pic" accept="image/*">
+				<label>Imagens Para Questão: </label> <input type="file"
+					id="inputFileImageQuestion" name="pic" accept="image/*">
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-success">Inserir Questão</button>
+				<button type="submit" class="btn btn-success">Inserir
+					Questão</button>
 			</div>
-
 		</form>
 
-		<br><br><br><br><br><br><br><br><br><br>
+		<br> <br> <br> <br> <br> <br> <br>
+		<br> <br> <br>
 
 	</div>
-	
+
 	<div id="rowForNav" class="col-md-2"></div>
 
 </div>

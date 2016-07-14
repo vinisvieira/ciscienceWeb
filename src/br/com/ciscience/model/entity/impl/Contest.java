@@ -1,14 +1,13 @@
 package br.com.ciscience.model.entity.impl;
 
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import br.com.ciscience.model.entity.IEntity;
-
 @Entity
-public class Contest implements IEntity{
+public class Contest {
 
 	private Long id;
 	private String name;
@@ -45,7 +44,6 @@ public class Contest implements IEntity{
 		return "Contest [id=" + id + ", name=" + name + ", status=" + status + "]";
 	}
 
-	@Override
 	public boolean validateEmptyFields() {
 		if (getName() == null || getName().trim().equals("")) {
 			return false;
