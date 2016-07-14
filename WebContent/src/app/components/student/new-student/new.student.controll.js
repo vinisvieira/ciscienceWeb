@@ -45,11 +45,7 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 	// Inserir Local
 	self.insertStudent = function (){
 		
-		self.student.contest = self.contests;
-		console.log(self.student);
-		console.log(self.student.contest);
-		appCtrl.loadSpiner(true);
-	
+		
 		$.post( $scope.applicationUrl + "api/student", self.student).done( function(returnOfRequest) {
 		//On Finish
 		}).done(function(returnOfRequest) {

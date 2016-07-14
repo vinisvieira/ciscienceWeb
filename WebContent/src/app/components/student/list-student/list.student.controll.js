@@ -42,8 +42,6 @@ app.controller('ListStudentCtrl', ['$http', '$location', '$scope','$routeParams'
 
 			var arrayForNgRepeat = response.data;
 			
-			console.log(arrayForNgRepeat);
-
 			//Ordenar Por Name -- INICIO
 			arrayForNgRepeat.sort(function(a,b) {
 			    if(a.name < b.name) return -1;
@@ -55,8 +53,6 @@ app.controller('ListStudentCtrl', ['$http', '$location', '$scope','$routeParams'
 			$scope.dataOfGenericList = arrayForNgRepeat;
 			$scope.initialDataOfGenericList = arrayForNgRepeat;
 			
-			console.log($scope.dataOfGenericList[0].status);
-
 		}, function(response) {
 			//ERRO
 			appCtrl.loadSpiner(false);
@@ -69,7 +65,6 @@ app.controller('ListStudentCtrl', ['$http', '$location', '$scope','$routeParams'
 	//-------/Inativar student
 	self.inativaStudent = function (idStudent) {
 		
-    	console.log(idStudent);
     	
     	var req = {
     			method: 'DELETE',
