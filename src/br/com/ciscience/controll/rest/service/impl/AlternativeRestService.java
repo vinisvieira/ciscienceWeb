@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -33,7 +34,7 @@ public class AlternativeRestService {
 	
 	@GET
 	@Path("/active")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listActive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -73,7 +74,7 @@ public class AlternativeRestService {
 	}
 	@GET
 	@Path("/inactive")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response listInactive() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -113,7 +114,7 @@ public class AlternativeRestService {
 	}
 	@GET
 	@Path("/{id}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response getByID(@PathParam("id") String id) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -142,7 +143,7 @@ public class AlternativeRestService {
 	}
 
 	@POST
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response create(@FormParam("text") String text, @FormParam("answer") boolean answer) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -185,7 +186,7 @@ public class AlternativeRestService {
 
 	@DELETE
 	@Path("/{idAlternative}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response delete(@PathParam("idAlternative") Long idAlternative) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -223,7 +224,7 @@ public class AlternativeRestService {
 
 	@PUT
 	@Path("/{id}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response update(@PathParam("id") Long id, @FormParam("text") String text, @FormParam("answer") boolean answer) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);

@@ -3,6 +3,7 @@ package br.com.ciscience.controll.rest.service.impl;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -34,7 +35,7 @@ public class QuizRestService {
 	private HttpServletRequest servletRequest;
 
 	@POST
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response create(@FormParam("quiz") String quizJson) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -80,7 +81,7 @@ public class QuizRestService {
 	}
 
 	@GET
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response read() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
@@ -124,7 +125,7 @@ public class QuizRestService {
 
 	@GET
 	@Path("/{idQuiz}")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response readByID(@PathParam("idQuiz") Long idQuiz) {
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizDAO = new QuizDAO(this.simpleEntityManager.getEntityManager());
@@ -162,7 +163,7 @@ public class QuizRestService {
 
 	@GET
 	@Path("/current")
-	@PermitAll
+	@RolesAllowed({ "Administrator" })
 	public Response readByDate() {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
