@@ -73,7 +73,7 @@ app.controller('ContestListCtrl', ['$http', '$location', '$scope','$routeParams'
 		$http(req).then(function (response) {
 			
 			appCtrl.loadSpiner(false);
-			appCtrl.loadSnackbar("Concurso <span style='color:#00ff18;'>CANCELADA</span> com sucesso.");
+			appCtrl.loadSnackbar("Concurso <span style='color:#00ff18;'>CANCELADO</span> com sucesso.");
 			window.location.href = "#list-contest";
 			
 		}, function (error) {

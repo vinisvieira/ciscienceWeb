@@ -35,6 +35,17 @@
 					<option value="20">Exibir 20 por página</option>
 				</select>
 			</div>
+				<div class='col-xs-4 col-md-4'>
+						<div class="form-group">
+							<label>Concurso: </label> <select class="form-control"
+								ng-model="listRankingCtrl.student.contest"
+								ng-options="contest.name for contest in listRankingCtrl.contests"
+								ng-change="listRankingCtrl.selectionContest(listRankingCtrl.student.contest.id)"	
+								>
+								<option value="">Selecione Concurso</option>
+							</select> 
+						</div>
+					</div>
 			<div class='col-xs-4 col-md-4'></div>
 			<div class='col-xs-4 col-md-4'>
 				<label>Localizar:</label>

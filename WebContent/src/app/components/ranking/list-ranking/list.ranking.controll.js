@@ -8,6 +8,7 @@ app.controller('ListRankingCtrl', ['$http', '$location', '$scope', function($htt
 	
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listRanking();
+		self.listContest();
 	}
 
 	// ----- Filter List
@@ -49,4 +50,39 @@ app.controller('ListRankingCtrl', ['$http', '$location', '$scope', function($htt
 		});
 
 	}	
+	self.listContest = function (){
+
+		appCtrl.loadSpiner(true);
+		
+		$http.get( $scope.applicationUrl + "api/contest/active"+"?radom="+Math.random() ).then(function(response) {
+
+			appCtrl.loadSpiner(false);
+			self.contests = response.data;
+
+		}, function(response) {
+			//ERRO
+			appCtrl.loadSpiner(false);
+			window.location.href = "#home";
+		});
+		
+	}
+	
+	 self.selectionContest = function(idContest){
+	    	console.log(idContest);
+	    	var arrayFilter = [];
+	    	for (var int = 0; int < $scope.initialDataOfGenericList.length; int++) {
+	    		
+	    			if($scope.initialDataOfGenericList[int].contest.id == idContest){
+	    				
+	    				arrayFilter.push( $scope.initialDataOfGenericList[int] );
+	    				
+	    			}else if(idContest == null){
+	    				arrayFilter.push( $scope.initialDataOfGenericList[int] );
+	    			}
+	    			
+	    		}
+	    	$scope.currentPageOfList = 0;
+	    	$scope.dataOfGenericList = arrayFilter;
+			    	
+	    }
 }]);
