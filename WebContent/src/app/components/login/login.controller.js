@@ -45,5 +45,6 @@ app.controller('LoginCtrl', ['$http', '$location', '$scope', function($http, $lo
 			});
 
 	}
+	
 
 }]);

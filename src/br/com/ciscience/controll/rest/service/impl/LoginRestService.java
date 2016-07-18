@@ -49,7 +49,7 @@ public class LoginRestService {
 		 * Se não existir nenhum usuário na session, abortar todas as requests
 		 */
 		if (userLoged == null) {
-
+			System.out.println("usuario loged null");
 			rb.status(Response.Status.UNAUTHORIZED);
 			rb.header(Constants.ACCESS_CONTROL_ALLOW_ORIGIN, Constants.ACCESS_CONTROL_ALLOW_ORIGIN_EXTRA);
 
@@ -61,7 +61,7 @@ public class LoginRestService {
 		} else {
 
 			User userToJson = new User();
-
+			System.out.println("nome----------------->"+userLoged.getName());
 			userToJson.setName(userLoged.getName());
 			userToJson.setEmail(userLoged.getEmail());
 			userToJson.setProfile(userLoged.getClass().getSimpleName().toString());

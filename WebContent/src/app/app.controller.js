@@ -5,7 +5,50 @@ app.controller('AppCtrl', ['$http', '$location', '$scope', function($http, $loca
 	$scope.applicationUrl = "http://localhost:8080/ciscience/";
 
 	var self = this;
+	
+	self.loginOut = function () {
+		console.log("cheguei aqui loginout");
+		
+		var loginUrl = $scope.applicationUrl + "api/login/logout";
 
+		$.post( loginUrl ).done( function(returnOfRequest) {
+		
+		}).done(function(returnOfRequest) {
+
+			self.loadSpiner(false);
+			
+			window.location.href = '#home';
+
+		}).fail(function(returnOfRequest) {
+			
+			self.loadSpiner(false);
+
+			console.log(returnOfRequest);
+
+		}).always(function() {
+		
+		});
+		
+	}
+	
+	self.getNameUser = function(){
+		
+
+		$http.get( $scope.applicationUrl + "api/login/get-user-loged"+"?radom="+Math.random() ).then(function(response){
+
+			$scope.user = response.data;
+			
+
+		}, function(response) {
+			//ERRO
+			self.loadSpiner(false);
+			alert("Foi Erroo");
+			window.location.href = "#home";
+		});
+	}
+	
+	self.getNameUser();
+	
 	/*
 	 * SPINER
 	 * 

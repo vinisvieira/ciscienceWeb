@@ -15,11 +15,11 @@
 
 	<div class="user-wrapper">
 		<div class="user-links-wrapper">
-			<div class="devsite-user-links-row">
-				Nome do Usuário
+			<div class="devsite-user-links-row" ng-model="appCtrl.user" >
+				{{user.name}}
 			</div>
 			<div class="devsite-user-links-row">
-				<a>
+				<a ng-click="appCtrl.loginOut()">
    					Sair
 				</a>
 			</div>
