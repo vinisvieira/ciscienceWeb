@@ -150,14 +150,14 @@ public class QuestionRestService {
 								.createOKResponseTextPlain(mResponseBuilder);
 
 					} else {
-						responseBuilder = ResponseBuilderGenerator
-								.createErrorResponse(mResponseBuilder);
-						System.out.println("Erro na Validação");
+					
+						responseBuilder = ResponseBuilderGenerator.createErrorResponseJSON(responseBuilder,
+								JSONUtil.objectToJSON("Enunciado Não Válido"));
 					}
 				} else {
-					responseBuilder = ResponseBuilderGenerator
-							.createErrorResponse(mResponseBuilder);
-					System.out.println("level ou contest nulo");
+				
+					responseBuilder = ResponseBuilderGenerator.createErrorResponseJSON(responseBuilder,
+							JSONUtil.objectToJSON("FALHA. Entre em contato com o TwoDev"));
 				}
 			}
 		} catch (Exception e) {

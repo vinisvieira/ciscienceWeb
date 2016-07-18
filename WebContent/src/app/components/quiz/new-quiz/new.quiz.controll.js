@@ -47,11 +47,10 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 			appCtrl.loadSnackbar("Quiz <span style='color:#00ff18;'>INSERIDO</span> com sucesso.");
 			window.location.href = "#list-quiz";
 
-		}).fail(function() {
+		}).fail(function(response) {
 
 			appCtrl.loadSpiner(false);
-			appCtrl.loadSnackbar("<span style='color:#ff0000;'>FALHA.</span> Entre em contato com o TWODEV");
-			window.location.href = "#home";
+			appCtrl.loadSnackbar(response.responseText);
 		
 		}).always(function() {
 		

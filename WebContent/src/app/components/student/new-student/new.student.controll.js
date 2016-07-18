@@ -54,11 +54,11 @@ app.controller('InserirStudentCtrl', ['$http', '$location', '$scope', function($
 			appCtrl.loadSnackbar("Aluno <span style='color:#00ff18;'>INSERIDO</span> com sucesso.");
 			window.location.href = "#list-student";
 
-		}).fail(function() {
+		}).fail(function(response) {
 
 			appCtrl.loadSpiner(false);
-			appCtrl.loadSnackbar("<span style='color:#ff0000;'>FALHA.</span> Entre em contato com TwoDev");
-			window.location.href = "#home";
+			appCtrl.loadSnackbar(response.responseText);
+			
 		
 		}).always(function() {
 		

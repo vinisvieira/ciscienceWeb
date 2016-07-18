@@ -59,13 +59,14 @@ public class QuizRestService {
 					responseBuilder = ResponseBuilderGenerator
 							.createOKResponseTextPlain(responseBuilder);
 				} else {
-					responseBuilder = ResponseBuilderGenerator
-							.createErrorResponse(responseBuilder);
+					
+					responseBuilder = ResponseBuilderGenerator.createErrorResponseJSON(responseBuilder,
+							JSONUtil.objectToJSON("Nome Invalido"));
 				}
 			} else {
-				System.out.println("Menos de 10 Questões");
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+
+				responseBuilder = ResponseBuilderGenerator.createErrorResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON("Selecione no minimo 10 Questões"));
 			}
 
 		} catch (Exception e) {
