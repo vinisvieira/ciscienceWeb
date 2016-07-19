@@ -1,8 +1,10 @@
 package br.com.ciscience.util;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -81,13 +83,17 @@ public class StringUtil {
 	public static String generateRandomicPassword(String firstObj, String secondObj)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		String oldValue = secondObj + firstObj;
-		
+
 		MessageDigest md;
 		md = MessageDigest.getInstance("SHA-1");
 		byte[] sha1hash = new byte[40];
 		md.update(oldValue.getBytes("iso-8859-1"), 0, oldValue.length());
 		sha1hash = md.digest();
 		return convertToHex(sha1hash);
+	}
+
+	public static String generateRandomToken() {
+		return new BigInteger(130, new SecureRandom()).toString(32);
 	}
 
 }

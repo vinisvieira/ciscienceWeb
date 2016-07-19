@@ -51,6 +51,20 @@ public class ResponseBuilderGenerator {
 		responseBuilder = responseBuilder.status(Status.INTERNAL_SERVER_ERROR);
 		return responseBuilder;
 	}
+	
+	/**
+	 * Este método retorna um {@link ResponseBuilder} de unauthorized do tipo TEXT_PLAIN
+	 * 
+	 * @param responseBuilder
+	 * @return {@link ResponseBuilder}
+	 */
+	public static ResponseBuilder createUnauthorizedResponse(ResponseBuilder responseBuilder) {
+		responseBuilder = responseBuilder.header(Constants.ACCESS_CONTROL_ALLOW_ORIGIN,
+				Constants.ACCESS_CONTROL_ALLOW_ORIGIN_EXTRA);
+		responseBuilder = responseBuilder.type(MediaType.TEXT_PLAIN);
+		responseBuilder = responseBuilder.status(Status.UNAUTHORIZED);
+		return responseBuilder;
+	}
 
 	public static ResponseBuilder createErrorResponseJSON(ResponseBuilder responseBuilder, String jsonElement) {
 		responseBuilder = responseBuilder.header(Constants.ACCESS_CONTROL_ALLOW_ORIGIN,

@@ -1,14 +1,16 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=ecfa1f6d1dda0fad0170e35807b900386c972273
 eclipse.preferences.version=1
 encoding//WebContent/src/app/components/contest/list-contest/list-contest.html=UTF-8
 encoding//WebContent/src/app/components/contest/new-contest/new-contest.html=UTF-8
 encoding//WebContent/src/app/components/contest/update-contest/update-contest.html=UTF-8
 encoding//WebContent/src/app/components/level/new-level/new-level.html=UTF-8
 encoding//WebContent/src/app/components/login/login.html=UTF-8
-<<<<<<< HEAD
+encoding//WebContent/src/app/components/question/list-question/list-question.html=UTF-8
 encoding//WebContent/src/app/components/question/new-question/new-question.html=UTF-8
-=======
+encoding//WebContent/src/app/components/question/new-question/new.question.controll.js=UTF-8
 encoding//WebContent/src/app/components/quiz/list-quiz/list-quiz.html=UTF-8
->>>>>>> ecfa1f6d1dda0fad0170e35807b900386c972273
 encoding//WebContent/src/app/components/student/list-student/list-student.html=UTF-8
 encoding//WebContent/src/app/shared/template/nav-menu.html=UTF-8
 encoding//WebContent/src/app/shared/template/rodape.html=UTF-8

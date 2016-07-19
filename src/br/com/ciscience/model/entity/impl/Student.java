@@ -2,6 +2,7 @@ package br.com.ciscience.model.entity.impl;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -13,6 +14,7 @@ public class Student extends User {
 	private List<Quiz> quiz;
 	private Contest contest;
 	private Long score;
+	private String token;
 
 	@ManyToMany
 	public List<Quiz> getQuiz() {
@@ -41,9 +43,18 @@ public class Student extends User {
 		this.score = score;
 	}
 
+	@Column(nullable = true)
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
-		return "Student [quiz=" + quiz + ", contest=" + contest + ", score=" + score + "]";
+		return "Student [quiz=" + quiz + ", contest=" + contest + ", score=" + score + ", token=" + token + "]";
 	}
 
 }

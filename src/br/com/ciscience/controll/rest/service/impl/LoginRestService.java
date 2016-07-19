@@ -17,17 +17,23 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import com.google.gson.Gson;
 
 import br.com.ciscience.controll.rest.service.MyHttpSessionManager;
+import br.com.ciscience.model.dao.impl.StudentDAO;
 import br.com.ciscience.model.dao.impl.UserDAO;
 import br.com.ciscience.model.entity.impl.Administrator;
+import br.com.ciscience.model.entity.impl.Student;
 import br.com.ciscience.model.entity.impl.User;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
+import br.com.ciscience.util.JSONUtil;
+import br.com.ciscience.util.ResponseBuilderGenerator;
+import br.com.ciscience.util.StringUtil;
 
 @Path("/login")
 public class LoginRestService {
 
 	private UserDAO userDao;
 	private JPAUtil jpaUtil;
+	private StudentDAO studentDAO;
 
 	@Context
 	private HttpServletRequest servletRequest;
@@ -61,7 +67,7 @@ public class LoginRestService {
 		} else {
 
 			User userToJson = new User();
-			System.out.println("nome----------------->"+userLoged.getName());
+			System.out.println("nome----------------->" + userLoged.getName());
 			userToJson.setName(userLoged.getName());
 			userToJson.setEmail(userLoged.getEmail());
 			userToJson.setProfile(userLoged.getClass().getSimpleName().toString());
@@ -150,6 +156,63 @@ public class LoginRestService {
 		}
 
 		return rb.build();
+
+	}
+
+	@POST
+	@Path("/student")
+	@PermitAll
+	public Response onPostRequestStudent(@FormParam("email") String email, @FormParam("password") String password) {
+
+		this.jpaUtil = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.jpaUtil.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.jpaUtil.beginTransaction();
+
+		try {
+
+			Student student = new Student();
+			student.setEmail(email);
+			student.setPassword(StringUtil.SHA1(password));
+
+			List<Student> students = this.studentDAO.getByEmailAndPassword(student);
+
+			if (students.size() > 0) {
+
+				if (students.get(0).getToken() != null) {
+					students.get(0).setBirthday(null);
+					students.get(0).setUserSince(null);
+
+					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+							JSONUtil.objectToJSON(students.get(0)));
+
+				} else {
+					students.get(0).setToken(StringUtil.generateRandomToken());
+
+					this.jpaUtil.commit();
+
+					students.get(0).setPassword(null);
+					students.get(0).setBirthday(null);
+					students.get(0).setUserSince(null);
+
+					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+							JSONUtil.objectToJSON(students.get(0)));
+				}
+
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.jpaUtil.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+			this.jpaUtil.close();
+		}
+
+		return responseBuilder.build();
 
 	}
 }
