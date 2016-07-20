@@ -9,6 +9,7 @@ app.controller('ListRankingCtrl', ['$http', '$location', '$scope', function($htt
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listRanking();
 		self.listContest();
+		appCtrl.getNameUser();
 	}
 
 	// ----- Filter List

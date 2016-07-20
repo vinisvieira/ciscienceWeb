@@ -8,6 +8,7 @@ app.controller('ListQuestionCtrl', ['$http', '$location', '$scope', function($ht
 	
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listQuestions();
+		appCtrl.getNameUser();
 	}
 
 	// ----- Filter List
