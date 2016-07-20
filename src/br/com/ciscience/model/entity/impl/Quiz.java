@@ -7,10 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.ManyToAny;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Quiz {
@@ -18,6 +17,7 @@ public class Quiz {
 	private Long id;
 	private String name;
 	private List<Question> questions;
+	private Contest contest;
 	private Date date;
 
 	@Id
@@ -47,6 +47,16 @@ public class Quiz {
 		this.questions = questions;
 	}
 
+	@OneToOne
+	@JoinColumn(name = "contest_id")
+	public Contest getContest() {
+		return contest;
+	}
+
+	public void setContest(Contest contest) {
+		this.contest = contest;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -57,8 +67,8 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", name=" + name + ", questions=" + questions
-				+ ", date=" + date + "]";
+		return "Quiz [id=" + id + ", name=" + name + ", questions=" + questions + ", contest=" + contest + ", date="
+				+ date + "]";
 	}
 
 	public boolean validateFields() {

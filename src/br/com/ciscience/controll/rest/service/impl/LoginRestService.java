@@ -168,6 +168,8 @@ public class LoginRestService {
 		this.studentDAO = new StudentDAO(this.jpaUtil.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
+		HttpSession session = servletRequest.getSession();
+
 		this.jpaUtil.beginTransaction();
 
 		try {
@@ -181,8 +183,12 @@ public class LoginRestService {
 			if (students.size() > 0) {
 
 				if (students.get(0).getToken() != null) {
+					
+					students.get(0).setPassword(null);
 					students.get(0).setBirthday(null);
 					students.get(0).setUserSince(null);
+					
+					MyHttpSessionManager.getInstance().setSessionUserLogged(session, students.get(0));
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
 							JSONUtil.objectToJSON(students.get(0)));
@@ -195,12 +201,15 @@ public class LoginRestService {
 					students.get(0).setPassword(null);
 					students.get(0).setBirthday(null);
 					students.get(0).setUserSince(null);
+					
+					MyHttpSessionManager.getInstance().setSessionUserLogged(session, students.get(0));
 
 					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
 							JSONUtil.objectToJSON(students.get(0)));
 				}
 
 			} else {
+				MyHttpSessionManager.getInstance().destoySessionUserLogged(session);
 				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
 			}
 

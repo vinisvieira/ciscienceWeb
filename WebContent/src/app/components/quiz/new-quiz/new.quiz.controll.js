@@ -18,7 +18,7 @@ app.controller('NewQuizCtrl', ['$http', '$location', '$scope', function($http, $
 		
 		var dateJson = self.quiz.date;
 		var from = dateJson.split("/");
-		dateJson = from[2]+"-"+from[1]+"-"+from[0]+"T00:00:00Z";
+		dateJson = from[2]+"-"+from[1]+"-"+from[0]+"T03:00:00Z";
 		self.quiz.date=dateJson;
 		
 		

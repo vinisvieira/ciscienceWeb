@@ -7,12 +7,15 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+
+import com.google.gson.Gson;
 
 import br.com.ciscience.model.dao.impl.QuizDAO;
 import br.com.ciscience.model.entity.impl.Question;
@@ -22,8 +25,6 @@ import br.com.ciscience.util.Constants;
 import br.com.ciscience.util.JSONUtil;
 import br.com.ciscience.util.MyDateGenerator;
 import br.com.ciscience.util.ResponseBuilderGenerator;
-
-import com.google.gson.Gson;
 
 @Path("/quiz")
 public class QuizRestService {
@@ -50,16 +51,15 @@ public class QuizRestService {
 
 			if (quiz.getQuestions().size() >= 10) {
 				if (!quiz.validateFields()) {
-					
+
 					System.out.println(quiz.toString());
-					
+
 					this.quizDAO.save(quiz);
 					this.simpleEntityManager.commit();
 
-					responseBuilder = ResponseBuilderGenerator
-							.createOKResponseTextPlain(responseBuilder);
+					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
 				} else {
-					
+
 					responseBuilder = ResponseBuilderGenerator.createErrorResponseJSON(responseBuilder,
 							JSONUtil.objectToJSON("Nome Invalido"));
 				}
@@ -72,8 +72,7 @@ public class QuizRestService {
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
 			e.printStackTrace();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
@@ -107,14 +106,13 @@ public class QuizRestService {
 
 			}
 
-			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(
-					responseBuilder, JSONUtil.objectToJSON(quizs));
+			responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+					JSONUtil.objectToJSON(quizs));
 
 		} catch (Exception e) {
 			System.out.println("Exception");
 			this.simpleEntityManager.rollBack();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			e.printStackTrace();
 		} finally {
 			this.simpleEntityManager.close();
@@ -140,20 +138,17 @@ public class QuizRestService {
 
 			if (quiz != null) {
 
-				responseBuilder = ResponseBuilderGenerator
-						.createOKResponseJSON(responseBuilder,
-								JSONUtil.objectToJSON(quiz));
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(quiz));
 
 			} else {
 				System.out.println("Quiz não existe");
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			e.printStackTrace();
 		} finally {
 			this.simpleEntityManager.close();
@@ -164,35 +159,41 @@ public class QuizRestService {
 
 	@GET
 	@Path("/current")
-	@RolesAllowed({ "Administrator" })
-	public Response readByDate() {
+	@PermitAll
+	public Response readByDate(@HeaderParam("token") String token) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizDAO = new QuizDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
 
+		System.out.println("token -> " + token);
+
 		this.simpleEntityManager.beginTransaction();
 
 		try {
-			List<Quiz> quiz = this.quizDAO.getByDate(MyDateGenerator
-					.getCurrentDate());
+			List<Quiz> quiz = this.quizDAO.getByDate(MyDateGenerator.getCurrentDate());
 
 			if (quiz != null) {
 
-				responseBuilder = ResponseBuilderGenerator
-						.createOKResponseJSON(responseBuilder,
-								JSONUtil.objectToJSON(quiz));
+				for (Quiz q : quiz) {
+					q.setDate(null);
+					for (Question qs : q.getQuestions()) {
+						qs.getMyFile().setDate(null);
+					}
+
+				}
+
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(quiz));
 
 			} else {
 				System.out.println("Quiz não existe");
-				responseBuilder = ResponseBuilderGenerator
-						.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {
 			this.simpleEntityManager.rollBack();
-			responseBuilder = ResponseBuilderGenerator
-					.createErrorResponse(responseBuilder);
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			e.printStackTrace();
 		} finally {
 			this.simpleEntityManager.close();

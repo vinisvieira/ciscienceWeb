@@ -18,7 +18,7 @@ public class QuizDAO extends GenericDAO<Long, Quiz> {
 
 	public List<Quiz> getByDate(Date date) {
 		EntityManager entityManager = super.getEntityManager();
-
+			
 		TypedQuery<Quiz> query = entityManager.createQuery(
 				"SELECT u FROM Quiz u WHERE u.date = :date", Quiz.class);
 		query.setParameter("date", date);
