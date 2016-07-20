@@ -8,6 +8,7 @@ app.controller('QuizListCtrl', ['$http', '$location', '$scope','$routeParams', f
 	
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listquiz();
+		appCtrl.getNameUser();
 	}
 
 	// ----- Filter List.

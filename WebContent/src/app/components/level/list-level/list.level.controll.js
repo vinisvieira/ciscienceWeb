@@ -8,6 +8,7 @@ app.controller('ListLevelCtrl', ['$http', '$location', '$scope', function($http,
 	
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listarLevel();
+		appCtrl.getNameUser();
 	}
 
 	// ----- Filter List

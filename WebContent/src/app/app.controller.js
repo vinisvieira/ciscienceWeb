@@ -17,7 +17,7 @@ app.controller('AppCtrl', ['$http', '$location', '$scope', function($http, $loca
 
 			self.loadSpiner(false);
 			
-			window.location.href = '#home';
+			window.location.href = '#login';
 
 		}).fail(function(returnOfRequest) {
 			
@@ -37,7 +37,6 @@ app.controller('AppCtrl', ['$http', '$location', '$scope', function($http, $loca
 		$http.get( $scope.applicationUrl + "api/login/get-user-loged"+"?radom="+Math.random() ).then(function(response){
 
 			$scope.user = response.data;
-			
 
 		}, function(response) {
 			//ERRO
@@ -46,8 +45,6 @@ app.controller('AppCtrl', ['$http', '$location', '$scope', function($http, $loca
 			window.location.href = "#home";
 		});
 	}
-	
-	self.getNameUser();
 	
 	/*
 	 * SPINER

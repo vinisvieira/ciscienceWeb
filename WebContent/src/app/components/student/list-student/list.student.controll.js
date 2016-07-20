@@ -11,6 +11,7 @@ app.controller('ListStudentCtrl', ['$http', '$location', '$scope','$routeParams'
 	
 	$scope.onLoadHtmlFileInNgView = function () {
 		self.listarStudent();
+		appCtrl.getNameUser();
 	}
 
 	// ----- Filter List.

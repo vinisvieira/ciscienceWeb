@@ -29,13 +29,6 @@ app.run(function($rootScope, $location, loginService){
 					if( ! ( paginasDoAdministrador.indexOf($location.path() ) != -1 ) ){
 						window.location.href = "#login";
 					}
-				}					
-					if(!_autorizada){
-						window.location.href = "#login";
-					}
-
-				else{
-					window.location.href = "#login";
 				}
 
 			}, function(response) {
