@@ -38,11 +38,6 @@ app.controller('AppCtrl', ['$http', '$location', '$scope', function($http, $loca
 
 			$scope.user = response.data;
 
-		}, function(response) {
-			//ERRO
-			self.loadSpiner(false);
-			alert("Foi Erroo");
-			window.location.href = "#home";
 		});
 	}
 	

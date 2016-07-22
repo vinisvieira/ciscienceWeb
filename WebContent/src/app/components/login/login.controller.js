@@ -22,7 +22,7 @@ app.controller('LoginCtrl', ['$http', '$location', '$scope', function($http, $lo
 
 			var perfil = loginObj.perfil;
 			
-			console.log(loginObj);
+			//console.log(loginObj);
 
 			var loginUrl = $scope.applicationUrl + "api/login/administrator";
 
