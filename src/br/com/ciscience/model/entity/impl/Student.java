@@ -14,6 +14,7 @@ public class Student extends User {
 	private List<Quiz> quiz;
 	private Contest contest;
 	private Long score;
+	private MyFile myFile;
 	private String token;
 
 	@ManyToMany
@@ -43,6 +44,16 @@ public class Student extends User {
 		this.score = score;
 	}
 
+	@OneToOne
+	@JoinColumn(name = "id_file")
+	public MyFile getMyFile() {
+		return myFile;
+	}
+
+	public void setMyFile(MyFile myFile) {
+		this.myFile = myFile;
+	}
+
 	@Column(nullable = true)
 	public String getToken() {
 		return token;
@@ -54,7 +65,8 @@ public class Student extends User {
 
 	@Override
 	public String toString() {
-		return "Student [quiz=" + quiz + ", contest=" + contest + ", score=" + score + ", token=" + token + "]";
+		return "Student [quiz=" + quiz + ", contest=" + contest + ", score=" + score + ", myFile=" + myFile + ", token="
+				+ token + "]";
 	}
 
 }
