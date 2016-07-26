@@ -119,12 +119,17 @@ public class QuestionRestService {
 				myFileDAO.save(questionPicture);
 
 				quest = new Gson().fromJson(parameters.get("question"), Question.class);
+				
+				String text =  new String(quest.getText().getBytes("ISO-8859-1"), "UTF-8");
+				quest.setText(text);
 
 				quest.setMyFile(questionPicture);
 
 				Contest contest = this.mContestDAO.getById(quest.getContest().getId());
 				Level level = this.mLevelDAO.getById(quest.getContest().getId());
 				for (Alternative alternative : quest.getAlternatives()) {
+					String alter =new String(alternative.getText().getBytes("ISO-8859-1"), "UTF-8");
+					alternative.setText(alter);
 					this.mAlternativeDAO.save(alternative);
 				}
 				if (level != null && contest != null) {
