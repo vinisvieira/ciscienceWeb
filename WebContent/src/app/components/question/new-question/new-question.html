@@ -31,14 +31,20 @@
 		<form name="formularioEnvioQuestao" method="post"
 			ng-submit="newQuestionCtrl.sendQuestion()">
 			<div class="form-group">
+				<label>Enunciado*</label>
 				<textarea placeholder="Enunciado*" rows="4" cols="30"
 					ng-model="newQuestionCtrl.question.text" class="form-control"
 					required></textarea>
 			</div>
-			<div class="form-group">
-				<input type="number" placeholder="Valor da Questão*"
-					ng-model="newQuestionCtrl.question.score" min="1"
-					class="form-control" required>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Valor da Questão*</label> <input type="number"
+							placeholder="Valor da Questão*"
+							ng-model="newQuestionCtrl.question.score" min="1"
+							class="form-control" required>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-4">
@@ -64,14 +70,19 @@
 			<br>
 			<div class="form-group" data-ng-repeat="alternativa in alternativas">
 				<input type="radio" ng-model="alternativa.answer" name="alternativa"
-					value="true"> <input type="text"
+					value="true" required> <input type="text"
 					ng-model="alternativa.text" placeholder="Digite alternativa"
 					size="95">
-					<button type="button" ng-show="showAddAlternativa(alternativa)"
-						class="btn btn-success" ng-click="addNewAlternativa()">Add
-						outra Alternativa</button>
 			</div>
-
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<button type="button" ng-show="showAddAlternativa(alternativa)"
+							class="btn btn-success" ng-click="addNewAlternativa()">Add
+							outra Alternativa</button>
+					</div>
+				</div>
+			</div>
 			<div class="form-group">
 				<label>Imagens Para Questão: </label> <input type="file"
 					id="inputFileImageQuestion" name="pic" accept="image/*">
