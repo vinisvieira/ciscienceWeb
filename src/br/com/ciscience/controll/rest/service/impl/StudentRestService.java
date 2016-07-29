@@ -183,7 +183,7 @@ public class StudentRestService {
 			student.setCpf(StringUtil.setCpfUnformatted(cpf));
 			student.setEmail(email);
 			student.setBirthday(MyDateGenerator.dateStringToSql(birthday));
-			student.setPassword(StringUtil.generateRandomicPassword(student.getCpf(), student.getEmail()));
+			student.setPassword(StringUtil.SHA1(student.getCpf()));
 			student.setScore(0L);
 			student.setUserSince(MyDateGenerator.getCurrentDate());
 			student.setStatus(Constants.ACTIVE_ENTITY);
@@ -206,9 +206,8 @@ public class StudentRestService {
 							MyMail myMail = new MyMail();
 							myMail.setTo(student.getEmail());
 							myMail.setSubject("SCIENCE - CADASTRO REALIZADO");
-							myMail.setBody(
-									"O cadastro de sua conta foi realizado.<br> " + "Login: <b> " + student.getEmail()
-											+ "<br>" + "Senha: <b> " + student.getCpf() + student.getEmail());
+							myMail.setBody("O cadastro de sua conta foi realizado.<br> " + "Login: <b> "
+									+ student.getEmail() + "<br>" + "Senha: <b> " + student.getCpf());
 
 							MyMailService.send(myMail);
 
@@ -385,6 +384,56 @@ public class StudentRestService {
 						JSONUtil.objectToJSON(students));
 			} else {
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+	}
+
+	@GET
+	@Path("/ranking/mobile")
+	@PermitAll
+	public Response listByRankingMobile(@HeaderParam("token") String token) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+
+			Student student = this.studentDAO.getByToken(token);
+
+			if (student != null) {
+
+				List<Student> students = this.studentDAO.listarRanking(student.getContest());
+
+				if (students != null) {
+
+					for (Student s : students) {
+						s.setBirthday(null);
+						s.setUserSince(null);
+						if (s.getMyFile() != null) s.getMyFile().setDate(null);
+						s.setQuiz(null);
+					}
+
+					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+							JSONUtil.objectToJSON(students));
+				} else {
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				}
+
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {

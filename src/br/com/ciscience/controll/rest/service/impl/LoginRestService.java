@@ -187,6 +187,7 @@ public class LoginRestService {
 					students.get(0).setPassword(null);
 					students.get(0).setBirthday(null);
 					students.get(0).setUserSince(null);
+					if (students.get(0).getMyFile() != null) students.get(0).getMyFile().setDate(null);
 					
 					MyHttpSessionManager.getInstance().setSessionUserLogged(session, students.get(0));
 

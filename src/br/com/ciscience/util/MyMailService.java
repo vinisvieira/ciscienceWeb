@@ -16,8 +16,8 @@ import br.com.ciscience.model.entity.impl.MyMail;
 
 public class MyMailService {
 
-	private static final String HOST = "smtp.gmail.com";
-	private static final int PORT = 465;
+	private static final String HOST = "smtp.scienceresultado.com.br";
+	private static final int PORT = 587;
 	private static final boolean AUTH = true;
 	private static final boolean DEBUG = true;
 
@@ -26,7 +26,7 @@ public class MyMailService {
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", HOST);
 		properties.put("mail.smtp.socketFactory.port", PORT);
-		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		properties.put("mail.smtp.auth", AUTH);
 		properties.put("mail.smtp.port", PORT);
 

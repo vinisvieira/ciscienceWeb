@@ -1,5 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -18,8 +19,12 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import com.google.gson.Gson;
 
 import br.com.ciscience.model.dao.impl.QuizDAO;
+import br.com.ciscience.model.dao.impl.QuizStudentDAO;
+import br.com.ciscience.model.dao.impl.StudentDAO;
 import br.com.ciscience.model.entity.impl.Question;
 import br.com.ciscience.model.entity.impl.Quiz;
+import br.com.ciscience.model.entity.impl.QuizStudent;
+import br.com.ciscience.model.entity.impl.Student;
 import br.com.ciscience.model.jpa.impl.JPAUtil;
 import br.com.ciscience.util.Constants;
 import br.com.ciscience.util.JSONUtil;
@@ -164,31 +169,65 @@ public class QuizRestService {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizDAO = new QuizDAO(this.simpleEntityManager.getEntityManager());
+		StudentDAO studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		QuizStudentDAO quizStudentDAO = new QuizStudentDAO(this.simpleEntityManager.getEntityManager());
 		ResponseBuilder responseBuilder = Response.noContent();
-
-		System.out.println("token -> " + token);
+		List<Quiz> currentQuiz = new ArrayList<>();
+		
+		boolean respondido = false;
 
 		this.simpleEntityManager.beginTransaction();
 
 		try {
-			List<Quiz> quiz = this.quizDAO.getByDate(MyDateGenerator.getCurrentDate());
 
-			if (quiz != null) {
+			Student student = studentDAO.getByToken(token);
 
-				for (Quiz q : quiz) {
-					q.setDate(null);
-					for (Question qs : q.getQuestions()) {
-						qs.getMyFile().setDate(null);
+			List<QuizStudent> quizStudent = quizStudentDAO.getByStudent(student);
+
+			if (student != null) {
+
+				List<Quiz> quiz = this.quizDAO.getByDateAndContest(MyDateGenerator.getCurrentDate(),
+						student.getContest());
+
+				if (quiz != null) {
+
+					for (Quiz q : quiz) {
+						q.setDate(null);
+						for (Question qs : q.getQuestions()) {
+							qs.getMyFile().setDate(null);
+						}
+
 					}
 
+					if (quizStudent.size() > 0) {
+
+						for (Quiz q : quiz) {
+							for (QuizStudent qs : quizStudent) {
+								if (qs.getQuiz().getId() == q.getId()) respondido = true;
+							}
+
+							if (!respondido) currentQuiz.add(q);
+							respondido = false;
+
+						}
+
+					} else {
+						System.out.println("Quantidade de Quiz Respondidos é menor que Zero -> " + quizStudent.size());
+						currentQuiz.addAll(quiz);
+					}
+
+					System.out.println("Quantidade de Quiz não respondidos -> " + currentQuiz.size());
+
+					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+							JSONUtil.objectToJSON(currentQuiz));
+
+				} else {
+					System.out.println("Quiz não existe");
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
 
-				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
-						JSONUtil.objectToJSON(quiz));
-
 			} else {
-				System.out.println("Quiz não existe");
-				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
 			}
 
 		} catch (Exception e) {

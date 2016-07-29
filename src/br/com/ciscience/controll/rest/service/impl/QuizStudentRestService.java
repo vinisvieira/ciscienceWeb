@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -121,8 +122,8 @@ public class QuizStudentRestService {
 	}
 
 	@POST
-	@RolesAllowed({ "Administrator" })
-	public Response create(@FormParam("quizStudent") String quizStudentJSON) {
+	@PermitAll
+	public Response create(@FormParam("quizStudent") String quizStudentJSON, @HeaderParam("token") String token) {
 
 		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
 		this.quizStudentDAO = new QuizStudentDAO(this.simpleEntityManager.getEntityManager());
@@ -132,7 +133,7 @@ public class QuizStudentRestService {
 
 		this.simpleEntityManager.beginTransaction();
 		QuizStudent quizStudent = new Gson().fromJson(quizStudentJSON, QuizStudent.class);
-		Student student = studentDAO.getById(quizStudent.getStudent().getId());
+		Student student = studentDAO.getByToken(token);
 		Quiz quiz = quizDAO.getById(quizStudent.getQuiz().getId());
 
 		try {
@@ -140,8 +141,9 @@ public class QuizStudentRestService {
 			if (student != null) {
 
 				if (quiz != null) {
-
+					quizStudent.setStudent(student);
 					if (quizStudent.validateEmptyFields()) {
+						quizStudent.getStudent().setScore((quizStudent.getStudent().getScore() + quizStudent.getTotalScore()));
 						this.quizStudentDAO.save(quizStudent);
 						this.simpleEntityManager.commit();
 

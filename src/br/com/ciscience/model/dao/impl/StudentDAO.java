@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import br.com.ciscience.model.dao.GenericDAO;
+import br.com.ciscience.model.entity.impl.Contest;
 import br.com.ciscience.model.entity.impl.Student;
 
 public class StudentDAO extends GenericDAO<Long, Student> {
@@ -48,6 +49,15 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 				.createQuery("SELECT u FROM Student u WHERE u.status = true ORDER BY u.score DESC ", Student.class);
 		return query.getResultList();
 	}
+	
+	public List<Student> listarRanking(Contest contest) {
+		EntityManager entityManager = super.getEntityManager();
+
+		TypedQuery<Student> query = entityManager
+				.createQuery("SELECT u FROM Student u WHERE u.status = true AND u.contest.id = :idContest ORDER BY u.score DESC ", Student.class);
+		query.setParameter("idContest", contest.getId());
+		return query.getResultList();
+	}
 
 	public List<Student> getByEmailAndPassword(Student student) {
 		EntityManager entityManager = super.getEntityManager();
@@ -58,4 +68,14 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 
 		return query.getResultList();
 	}
+	
+	public Student getByToken(String token) {
+		EntityManager entityManager = super.getEntityManager();
+		
+		TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s WHERE s.token = :token", Student.class);
+		query.setParameter("token", token);
+		
+		return query.getSingleResult();
+	}
+	
 }
