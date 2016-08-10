@@ -1,6 +1,12 @@
 package br.com.ciscience.controll.rest.service.impl;
 
+import java.io.File;
+
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -17,9 +23,15 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import br.com.ciscience.model.dao.impl.ContestDAO;
+import br.com.ciscience.model.dao.impl.MyFileDAO;
 import br.com.ciscience.model.dao.impl.StudentDAO;
 import br.com.ciscience.model.entity.impl.Contest;
+import br.com.ciscience.model.entity.impl.MyFile;
 import br.com.ciscience.model.entity.impl.MyMail;
 import br.com.ciscience.model.entity.impl.Quiz;
 import br.com.ciscience.model.entity.impl.Student;
@@ -174,9 +186,19 @@ public class StudentRestService {
 
 		ResponseBuilder responseBuilder = Response.noContent();
 
-		this.simpleEntityManager.beginTransaction();
+		MyFileDAO myFileDAO = new MyFileDAO(this.simpleEntityManager.getEntityManager());
+
+		MyFile studentPicture = new MyFile();
 
 		try {
+
+			this.simpleEntityManager.beginTransaction();
+
+			studentPicture.setName(null);
+			studentPicture.setDate(null);
+			studentPicture.setStatus(Constants.ACTIVE_ENTITY);
+
+			myFileDAO.save(studentPicture);
 
 			Student student = new Student();
 			student.setName(name);
@@ -185,6 +207,7 @@ public class StudentRestService {
 			student.setBirthday(MyDateGenerator.dateStringToSql(birthday));
 			student.setPassword(StringUtil.SHA1(student.getCpf()));
 			student.setScore(0L);
+			student.setMyFile(studentPicture);
 			student.setUserSince(MyDateGenerator.getCurrentDate());
 			student.setStatus(Constants.ACTIVE_ENTITY);
 
@@ -398,6 +421,77 @@ public class StudentRestService {
 		return responseBuilder.build();
 	}
 
+	@POST
+	@Path("/avata/mobile")
+	@PermitAll
+	public Response updateAvata(@Context HttpServletRequest request, @HeaderParam("token") String token) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		File f = null;
+		FileOutputStream fos = null;
+		byte[] media = null;
+		String mediaName = String.valueOf(System.currentTimeMillis());
+
+		Student student = studentDAO.getByToken(token);
+		
+		try {
+			this.simpleEntityManager.beginTransaction();
+
+			if (student != null) {
+
+				if (!ServletFileUpload.isMultipartContent(request)) {
+					System.err.println("Não é um Conteúdo multipart/form-data");
+				} else {
+					List<FileItem> fields = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+
+					HashMap<String, String> parameters = new HashMap<>();
+
+					for (int i = 0; i < fields.size(); i++) {
+						if (fields.get(i).isFormField()) {
+							parameters.put(fields.get(i).getFieldName(), fields.get(i).getString());
+						} else {
+							parameters.put(fields.get(i).getFieldName(), fields.get(i).getName());
+							f = new File(System.getProperty(Constants.CATALINA_BASE) + Constants.UPLOAD_PATH + mediaName
+									+ Constants.MEDIA_JPG);
+							media = fields.get(i).get();
+
+							student.getMyFile().setName(mediaName + Constants.MEDIA_JPG);
+							student.getMyFile().setDate(MyDateGenerator
+									.dateStringToSql(new SimpleDateFormat("dd/mm/yyyy").format(new Date())));
+							student.getMyFile().setStatus(Constants.ACTIVE_ENTITY);
+
+							if (media != null) {
+								fos = new FileOutputStream(f);
+
+								fos.write(media);
+								fos.flush();
+								fos.close();
+							}
+						}
+					}
+					this.simpleEntityManager.commit();
+					responseBuilder = ResponseBuilderGenerator.createOKResponseTextPlain(responseBuilder);
+				}
+
+			} else {
+
+				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+	}
+
 	@GET
 	@Path("/ranking/mobile")
 	@PermitAll
@@ -422,7 +516,8 @@ public class StudentRestService {
 					for (Student s : students) {
 						s.setBirthday(null);
 						s.setUserSince(null);
-						if (s.getMyFile() != null) s.getMyFile().setDate(null);
+						if (s.getMyFile() != null)
+							s.getMyFile().setDate(null);
 						s.setQuiz(null);
 					}
 
