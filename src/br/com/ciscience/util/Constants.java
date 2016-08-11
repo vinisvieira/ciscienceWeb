@@ -8,9 +8,9 @@ package br.com.ciscience.util;
  */
 public class Constants {
 
-	public static String APPLICATION_NAME = "Unnamed";
+	public static String APPLICATION_NAME = "Science Resultado";
 	
-	public static String PERSISTENCE_UNIT_NAME = "br.com.unnamed";
+	public static String PERSISTENCE_UNIT_NAME = "br.com.scienceresultado";
 	public static String LOGIN_PATH_NAME = "/login";
 
 	public static String SESSION_USER_LOGED = "userLoged";

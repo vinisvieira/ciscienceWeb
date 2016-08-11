@@ -422,7 +422,7 @@ public class StudentRestService {
 	}
 
 	@POST
-	@Path("/avata/mobile")
+	@Path("/avatar/mobile")
 	@PermitAll
 	public Response updateAvata(@Context HttpServletRequest request, @HeaderParam("token") String token) {
 
@@ -436,7 +436,7 @@ public class StudentRestService {
 		String mediaName = String.valueOf(System.currentTimeMillis());
 
 		Student student = studentDAO.getByToken(token);
-		
+
 		try {
 			this.simpleEntityManager.beginTransaction();
 
@@ -536,6 +536,50 @@ public class StudentRestService {
 			e.printStackTrace();
 			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+	}
+
+	@GET
+	@Path("/katana")
+	@PermitAll
+	public Response getStudentByToken(@HeaderParam("token") String token) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		System.out.println("token -> " + token);
+
+		try {
+
+			Student student = this.studentDAO.getByToken(token);
+
+			if (student != null) {
+
+				System.out.println(student.toString());
+				student.setPassword(null);
+				student.setBirthday(null);
+				student.setUserSince(null);
+				if (student.getMyFile() != null)
+					student.getMyFile().setDate(null);
+
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(student));
+
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 		} finally {
 			this.simpleEntityManager.close();
 		}
