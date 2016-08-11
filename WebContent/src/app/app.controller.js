@@ -2,7 +2,7 @@
 app.controller('AppCtrl', ['$http', '$location', '$scope', function($http, $location, $scope) {
 
 
-	$scope.applicationUrl = "http://localhost:8080/ciscience/";
+	$scope.applicationUrl = "http://scienceresultado.com.br/";
 
 	var self = this;
 	
