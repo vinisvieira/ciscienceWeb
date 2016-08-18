@@ -21,11 +21,7 @@
 		<properties>
 			<!-- String Conexao com o banco de dados -->
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/ciscience" />
-<<<<<<< HEAD
 <!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://ciscience.mysql.uhserver.com/ciscience" /> -->
-=======
-			<!-- <property name="hibernate.connection.url" value="jdbc:mysql://ciscience.mysql.uhserver.com/ciscience" /> -->
->>>>>>> ec9083ebfa07a2336c979fd425359da48e0e5dc2
 
 			<!-- Dialeto entendido pelo banco -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
@@ -35,20 +31,12 @@
 			
 			<property name="hibernate.connection.username" value="root" />
 			
-<<<<<<< HEAD
 			<property name="hibernate.connection.password" value="root" />
 			
 <!-- 			<property name="hibernate.connection.username" value="ciscience" /> -->
 			
 <!-- 			<property name="hibernate.connection.password" value="!@cIsCi3nc3!@" /> -->
-=======
-			<property name="hibernate.connection.password" value="" />
 			
-<!-- 		<property name="hibernate.connection.username" value="ciscience" />
-			
-			<property name="hibernate.connection.password" value="!@cIsCi3nc3!@" /> -->
-			
->>>>>>> ec9083ebfa07a2336c979fd425359da48e0e5dc2
 			<!-- c3p0 -->
 			<property name="hibernate.c3p0.min_size" value="5" />
 			<property name="hibernate.c3p0.max_size" value="20" />
