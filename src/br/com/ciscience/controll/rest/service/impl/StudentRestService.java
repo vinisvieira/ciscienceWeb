@@ -586,5 +586,51 @@ public class StudentRestService {
 
 		return responseBuilder.build();
 	}
+	
+	@POST
+	@Path("/recovery")
+	@PermitAll
+	public Response recoveryPassword(@FormParam("email") String email, @HeaderParam("recoveryKey") String recoveryKey) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+
+			Student student = this.studentDAO.getByEmail(email);
+
+			if (student != null && recoveryKey.equals(Constants.RECOVERY_KEY)) {
+
+				student.setPassword(StringUtil.SHA1(student.getCpf()));
+				
+				this.simpleEntityManager.commit();
+				
+				MyMail myMail = new MyMail();
+				myMail.setTo(student.getEmail());
+				myMail.setSubject("RECUPERAÇÃO DE SENHA");
+				myMail.setBody("Sua nova senha é: <b>" + student.getCpf() + "</b>");
+				
+				MyMailService.send(myMail);
+
+				responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder,
+						JSONUtil.objectToJSON(student));
+
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createUnauthorizedResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+	}
 
 }

@@ -18,6 +18,8 @@ public class Constants {
 	
 	public static final String ROBO_MAIL = "appcontato@scienceresultado.com.br";
 	public static final String ROBO_MAIL_PASS = "!@cIsCi3nc3!@";
+	
+	public static final String RECOVERY_KEY = "332ec4e3e4722932f5a93c16c3dacb389892783d";
 
 	// Entity Status
 	public static final boolean ACTIVE_ENTITY = true;

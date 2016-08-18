@@ -78,4 +78,13 @@ public class StudentDAO extends GenericDAO<Long, Student> {
 		return query.getSingleResult();
 	}
 	
+	public Student getByEmail(String email) {
+		EntityManager entityManager = super.getEntityManager();
+		
+		TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email", Student.class);
+		query.setParameter("email", email);
+		
+		return query.getSingleResult();
+	}
+	
 }
