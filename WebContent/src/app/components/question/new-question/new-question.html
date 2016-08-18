@@ -69,17 +69,18 @@
 			</div>
 			<br>
 			<div class="form-group" data-ng-repeat="alternativa in alternativas">
-				<input type="radio" ng-model="alternativa.answer" name="alternativa"
-					value="true" required> <input type="text"
-					ng-model="alternativa.text" placeholder="Digite alternativa"
-					size="95">
+					<input ng-model="alternativa.answer"
+						ng-click="updateSelection($index, alternativas)" name="alternativa"
+						type="checkbox"></td>
+					<input type="text" ng-model="alternativa.text" placeholder="Digite alternativa" size="95">	
 			</div>
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
 						<button type="button" ng-show="showAddAlternativa(alternativa)"
-							class="btn btn-success" ng-click="addNewAlternativa()">Add
-							outra Alternativa</button>
+							class="btn btn-success"
+							ng-click="newQuestionCtrl.addNewAlternativa()">Add outra
+							Alternativa</button>
 					</div>
 				</div>
 			</div>

@@ -21,8 +21,9 @@ app.controller('NewQuestionCtrl', ['$http', '$location', '$scope','$routeParams'
 		self.question.contest = self.contest;
 		self.question.alternatives = $scope.alternativas;
 		self.question.status = true;
-		console.log(JSON.stringify(self.question));
-			
+		
+		console.log(self.question);
+		
 		formData.append("question",JSON.stringify(self.question));
 		formData.append("media", $("#inputFileImageQuestion")[0].files[0] );
 
@@ -79,7 +80,7 @@ app.controller('NewQuestionCtrl', ['$http', '$location', '$scope','$routeParams'
 	
 	$scope.alternativas = [{"status":true, "answer":false}];
 
-	$scope.addNewAlternativa = function() {
+	self.addNewAlternativa = function() {
 	    var newItemNo = $scope.alternativas.length+1;
 	    $scope.alternativas.push({"status":true, "answer":false});
 	};
@@ -88,4 +89,10 @@ app.controller('NewQuestionCtrl', ['$http', '$location', '$scope','$routeParams'
 	   return alternativa.id === $scope.alternativas[$scope.alternativas.length-1].id;
 	};
 	
+	$scope.updateSelection = function(position, alternativas) {
+		  angular.forEach(alternativas, function(alternativa, index) {
+		    if (position != index) 
+		    	alternativa.answer = false;
+		  });
+		}
 }]);
