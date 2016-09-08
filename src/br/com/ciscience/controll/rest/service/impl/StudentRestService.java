@@ -1,7 +1,6 @@
 package br.com.ciscience.controll.rest.service.impl;
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -335,6 +334,52 @@ public class StudentRestService {
 				} else {
 					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 				}
+			} else {
+				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+			}
+
+		} catch (Exception e) {
+			this.simpleEntityManager.rollBack();
+			e.printStackTrace();
+			responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+		} finally {
+			this.simpleEntityManager.close();
+		}
+
+		return responseBuilder.build();
+
+	}
+	
+	@PUT
+	@Path("/update/mobile")
+	@PermitAll
+	public Response updateMobile(@FormParam("name") String name, @HeaderParam("token") String token) {
+
+		this.simpleEntityManager = new JPAUtil(Constants.PERSISTENCE_UNIT_NAME);
+		this.studentDAO = new StudentDAO(this.simpleEntityManager.getEntityManager());
+		ResponseBuilder responseBuilder = Response.noContent();
+
+		this.simpleEntityManager.beginTransaction();
+
+		try {
+
+			Student student = this.studentDAO.getByToken(token);
+
+			if (student != null) {
+				student.setName(name);
+				
+				if (student.validateEmptyFields()) {
+					this.simpleEntityManager.commit();
+					
+					student.setBirthday(null);
+					student.setUserSince(null);
+					student.getMyFile().setDate(null);
+					
+					responseBuilder = ResponseBuilderGenerator.createOKResponseJSON(responseBuilder, JSONUtil.objectToJSON(student));	
+				} else {
+					responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
+				}
+
 			} else {
 				responseBuilder = ResponseBuilderGenerator.createErrorResponse(responseBuilder);
 			}
